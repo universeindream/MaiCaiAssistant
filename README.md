@@ -1,11 +1,7 @@
-<<<<<<< HEAD
-# MaiCaiTools
-抢菜插件 - 支持美团买菜
-=======
-# HelpTools
-帮助类工具
 
-## 购物工具
+# MallHelp
+
+## 买菜工具
 
 ### 支持美团买菜
 
@@ -28,5 +24,3 @@
 | -  | - |
 | ------------- | ------------- |
 | <img src="https://user-images.githubusercontent.com/7286154/162237722-bf831b51-f904-41a0-bd48-5d4f79564630.png" width="200" >  | <img src="https://user-images.githubusercontent.com/7286154/162237920-7dce9f03-0cf5-4cab-9fd3-bc2b196401ba.png" width="200" > |
-
->>>>>>> 7967f2f (first commit)
