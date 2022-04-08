@@ -2,7 +2,8 @@
 
 ### 美团买菜
 
-[![GitHub release](https://img.shields.io/github/v/release/universeindream/MaiCaiAssistant.svg)](https://github.com/universeindream/MaiCaiAssistant/releases) ![Total Downloads](https://img.shields.io/github/downloads/universeindream/MaiCaiAssistant/total.svg)
+[![GitHub release](https://img.shields.io/github/v/release/universeindream/MaiCaiAssistant.svg)](https://github.com/universeindream/MaiCaiAssistant/releases) ![Total Downloads](https://img.shields.io/github/downloads/universeindream/MaiCaiAssistant/total.svg) ![Support Platforms](https://img.shields.io/badge/platform-android-blue)
+
 
 功能
 
