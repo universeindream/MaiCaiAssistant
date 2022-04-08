@@ -1,6 +1,6 @@
 ## 买菜、抢菜助手
 
-### 美团买菜
+### 美团买菜 - [Downlaod apk](https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk)
 
 [![GitHub release](https://img.shields.io/github/v/release/universeindream/MaiCaiAssistant.svg)](https://github.com/universeindream/MaiCaiAssistant/releases) ![Total Downloads](https://img.shields.io/github/downloads/universeindream/MaiCaiAssistant/total.svg) ![Support Platforms](https://img.shields.io/badge/platform-android-blue)
 
