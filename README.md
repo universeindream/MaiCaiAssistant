@@ -5,17 +5,20 @@
 [![GitHub release](https://img.shields.io/github/v/release/universeindream/MaiCaiAssistant.svg)](https://github.com/universeindream/MaiCaiAssistant/releases) ![Total Downloads](https://img.shields.io/github/downloads/universeindream/MaiCaiAssistant/total.svg) ![Support Platforms](https://img.shields.io/badge/platform-android-blue)
 
 
-功能
+**功能**
 
 - 点击抢购 - 自动打开美团买菜 APP，重复执行购买流程，执行到支付流程时，响铃提示
 
-自定义功能
+**自定义项**
 
 - 支持 - 设置抢购时长
-- 支持 - 设置定时抢购（拒绝早起抢菜，抢到再起床[旺柴]）
+- 支持 - 设置定时抢购（拒绝早起抢菜，抢到再起床 :rofl:）
 - 支持 - 设置送达时间响铃（关闭时，自动随机选择送达时间）
 - 支持 - 设置异常响铃（防止出现 BUG，导致错过抢购时间）
 
+TODO
+
+- [ ] 提升抢菜的成功率
 
 ---
 
