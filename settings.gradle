@@ -5,5 +5,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "MallHelp"
-include ':mallhelp'
+rootProject.name = "MaiCaiAssistant"
+include ':app'
