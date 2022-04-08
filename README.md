@@ -2,7 +2,7 @@
 
 ### 美团买菜
 
-[![GitHub release](https://img.shields.io/github/v/release/universeindream/MallHelp.svg)](https://github.com/universeindream/MallHelp/releases) ![Total Downloads](https://img.shields.io/github/downloads/itwangxiang/HelpTools/total.svg)
+[![GitHub release](https://img.shields.io/github/v/release/universeindream/MallHelp.svg)](https://github.com/universeindream/MallHelp/releases) ![Total Downloads](https://img.shields.io/github/downloads/universeindream/MallHelp/total.svg)
 
 功能
 
