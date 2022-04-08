@@ -2,7 +2,7 @@
 
 ### 美团买菜
 
-[![GitHub release](https://img.shields.io/github/v/release/universeindream/MallHelp.svg)](https://github.com/universeindream/MallHelp/releases) ![Total Downloads](https://img.shields.io/github/downloads/universeindream/MallHelp/total.svg)
+[![GitHub release](https://img.shields.io/github/v/release/universeindream/MaiCaiAssistant.svg)](https://github.com/universeindream/MaiCaiAssistant/releases) ![Total Downloads](https://img.shields.io/github/downloads/universeindream/MaiCaiAssistant/total.svg)
 
 功能
 
