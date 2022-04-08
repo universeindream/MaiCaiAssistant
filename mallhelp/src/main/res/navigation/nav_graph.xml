@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/ConfigFragment">
+
+    <fragment
+        android:id="@+id/ConfigFragment"
+        android:name="com.univerindream.mallhelp.ui.ConfigFragment"
+        android:label="@string/config_fragment_label"
+        tools:layout="@layout/fragment_config">
+
+        <action
+            android:id="@+id/action_ConfigFragment_to_HelpFragment"
+            app:destination="@id/HelpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/HelpFragment"
+        android:name="com.univerindream.mallhelp.ui.HelpFragment"
+        android:label="@string/help_fragment_label"
+        tools:layout="@layout/fragment_help">
+
+        <action
+            android:id="@+id/action_HelpFragment_to_ConfigFragment"
+            app:destination="@id/ConfigFragment" />
+    </fragment>
+</navigation>
