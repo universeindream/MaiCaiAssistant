@@ -186,11 +186,11 @@ class GlobalActionBarService : AccessibilityService() {
                         NodeUtil.clickByFirstMatchTxt(rootInActiveWindow, "我知道了")
                         mWindowStatusChangeTime.set(System.currentTimeMillis())
                     }
-                    NodeUtil.isClickByFirstMatchTxt(rootInActiveWindow, "结算(") -> {
+                    NodeUtil.isClickByFirstMatchTxt(rootInActiveWindow, "结算") -> {
                         //取消，会导致点击失败
                         Thread.sleep(200)
                         XLog.v("loop - isHomePage - 结算(")
-                        NodeUtil.clickByFirstMatchTxt(rootInActiveWindow, "结算(")
+                        NodeUtil.clickByFirstMatchTxt(rootInActiveWindow, "结算", true)
                     }
                     rootInActiveWindow?.childCount ?: 0 <= 15 -> {
                         XLog.v("loop - isPayPage - 空白页")
@@ -229,8 +229,8 @@ class GlobalActionBarService : AccessibilityService() {
 
                             MHUtil.playRingTone()
                             cancelTask()
-                        }else{
-                            val sendTimeList = arrayListOf("09:35-10:30", "10:30-14:30","14:30-18:30","18:30-22:30")
+                        } else {
+                            val sendTimeList = arrayListOf("09:35-10:30", "10:30-14:30", "14:30-18:30", "18:30-22:30")
                             val sendTime = sendTimeList.random()
                             NodeUtil.clickByFirstMatchTxt(rootInActiveWindow, sendTime)
                             MHUtil.notify(

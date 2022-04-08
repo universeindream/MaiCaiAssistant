@@ -22,7 +22,7 @@ object NodeUtil {
     /**
      * 获取点击节点 - 指定节点下及父节树
      */
-    fun getListByClick(root: AccessibilityNodeInfo?): ArrayList<AccessibilityNodeInfo> {
+    fun getListByClick(root: AccessibilityNodeInfo?, ignoreDisable: Boolean = false): ArrayList<AccessibilityNodeInfo> {
         if (root == null) return arrayListOf()
 
         val queue = ArrayDeque<AccessibilityNodeInfo>()
@@ -33,7 +33,7 @@ object NodeUtil {
         while (!queue.isEmpty()) {
             val node = queue.removeFirst()
 
-            if (node.isClickable && node.isEnabled) {
+            if (node.isClickable && if (ignoreDisable) true else node.isEnabled) {
                 data.add(node)
             }
 
@@ -48,9 +48,9 @@ object NodeUtil {
     /**
      * 获取点击节点 - 第一个匹配的
      */
-    fun getByFirstMatchClick(root: AccessibilityNodeInfo?): AccessibilityNodeInfo? {
+    fun getByFirstMatchClick(root: AccessibilityNodeInfo?, ignoreDisable: Boolean = false): AccessibilityNodeInfo? {
         if (root == null) return null
-        if (isClick(root)) return root
+        if (isClick(root, ignoreDisable)) return root
 
         val queue = ArrayDeque<AccessibilityNodeInfo>()
         queue.add(root)
@@ -58,7 +58,7 @@ object NodeUtil {
         while (!queue.isEmpty()) {
             val node = queue.removeFirst()
 
-            if (node.isClickable && node.isEnabled) {
+            if (node.isClickable && if (ignoreDisable) true else root.isEnabled) {
                 return node
             }
 
@@ -70,16 +70,24 @@ object NodeUtil {
         return null
     }
 
+
+    fun isExistFromId(root: AccessibilityNodeInfo?, id: String?) =
+        !id.isNullOrBlank() && root?.findAccessibilityNodeInfosByViewId(id)?.isNotEmpty() ?: false
+
+    fun isExistFromTxt(root: AccessibilityNodeInfo?, txt: String?) =
+        !txt.isNullOrBlank() && root?.findAccessibilityNodeInfosByText(txt)?.isNotEmpty() ?: false
+
     /**
      * 节点是否可以点击
      */
-    fun isClick(root: AccessibilityNodeInfo?) = root != null && root.isChecked && root.isClickable
+    fun isClick(root: AccessibilityNodeInfo?, ignoreDisable: Boolean = false) =
+        root != null && root.isClickable && if (ignoreDisable) true else root.isEnabled
 
     /**
      * 是否可以点击 - 指定节点
      */
-    fun isClickAndIncludeParent(root: AccessibilityNodeInfo?): Boolean {
-        return isClick(root) || getListByClick(root).size > 0
+    fun isClickAndIncludeParent(root: AccessibilityNodeInfo?, ignoreDisable: Boolean = false): Boolean {
+        return isClick(root, ignoreDisable) || getListByClick(root, ignoreDisable).size > 0
     }
 
     /**
@@ -109,21 +117,21 @@ object NodeUtil {
      * 点击节点
      */
     fun click(
-        root: AccessibilityNodeInfo?
+        root: AccessibilityNodeInfo?, ignoreDisable: Boolean = false
     ): Boolean {
         if (root == null) return false
-        if (isClick(root)) return root.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+        if (isClick(root, ignoreDisable)) return root.performAction(AccessibilityNodeInfo.ACTION_CLICK)
 
-        val node = getByFirstMatchClick(root)
+        val node = getByFirstMatchClick(root, ignoreDisable)
         return node?.performAction(AccessibilityNodeInfo.ACTION_CLICK) ?: false
     }
 
     /**
      * 点击节点 - 首个匹配 txt 节点
      */
-    fun clickByFirstMatchTxt(root: AccessibilityNodeInfo?, txt: String): Boolean {
+    fun clickByFirstMatchTxt(root: AccessibilityNodeInfo?, txt: String, ignoreDisable: Boolean = false): Boolean {
         return getByTxtAndFirstMatch(root, txt)?.let {
-            click(it)
+            click(it, ignoreDisable)
         } ?: false
     }
 
