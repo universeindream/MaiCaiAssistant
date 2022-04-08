@@ -1,4 +1,4 @@
-package com.univerindream.mallhelp
+package com.univerindream.maicaiassistant
 
 import android.accessibilityservice.AccessibilityService
 import android.app.*
@@ -17,10 +17,10 @@ import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.NotificationUtils
 import com.blankj.utilcode.util.Utils
 import com.elvishew.xlog.XLog
-import com.univerindream.mallhelp.receiver.AlarmReceiver
-import com.univerindream.mallhelp.service.GlobalActionBarService
-import com.univerindream.mallhelp.ui.MainActivity
-import com.univerindream.mallhelp.utils.NodeUtil
+import com.univerindream.maicaiassistant.receiver.AlarmReceiver
+import com.univerindream.maicaiassistant.service.GlobalActionBarService
+import com.univerindream.maicaiassistant.ui.MainActivity
+import com.univerindream.maicaiassistant.utils.NodeUtil
 import java.util.*
 
 object MHUtil {
@@ -98,7 +98,7 @@ object MHUtil {
             NotificationCompat.Builder(context, MHConfig.MALL_HELP_CHANNEL_ID)
                 .setContentTitle("持续抢购中")
                 .setContentText("请勿关闭")
-                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentIntent(pendingIntent)
                 .build()
         context.startForeground(1, notification)

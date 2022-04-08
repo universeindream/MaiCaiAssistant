@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">mallhelp</string>
+    <string name="app_name">买菜助手</string>
 
-    <string name="accessibility_service_label">mallhelp</string>
-    <string name="accessibility_service_description">抢购助手</string>
+    <string name="accessibility_service_label">买菜助手</string>
+    <string name="accessibility_service_description">买菜助手</string>
 
     <string name="openConfig">配置</string>
     <string name="startSnapUp">抢购</string>

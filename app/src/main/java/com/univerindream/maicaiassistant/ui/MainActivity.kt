@@ -1,4 +1,4 @@
-package com.univerindream.mallhelp.ui
+package com.univerindream.maicaiassistant.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -6,8 +6,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.univerindream.mallhelp.R
-import com.univerindream.mallhelp.databinding.ActivityMainBinding
+import com.univerindream.maicaiassistant.R
+import com.univerindream.maicaiassistant.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 

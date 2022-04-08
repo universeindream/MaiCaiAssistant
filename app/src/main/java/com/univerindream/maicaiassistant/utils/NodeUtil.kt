@@ -1,4 +1,4 @@
-package com.univerindream.mallhelp.utils
+package com.univerindream.maicaiassistant.utils
 
 import android.os.Build
 import android.view.accessibility.AccessibilityNodeInfo

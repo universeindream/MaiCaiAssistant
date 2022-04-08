@@ -1,4 +1,4 @@
-package com.univerindream.mallhelp.service
+package com.univerindream.maicaiassistant.service
 
 import android.accessibilityservice.AccessibilityService
 import android.graphics.PixelFormat
@@ -13,11 +13,11 @@ import androidx.annotation.WorkerThread
 import cn.hutool.core.thread.ThreadUtil
 import com.blankj.utilcode.util.ActivityUtils
 import com.elvishew.xlog.XLog
-import com.univerindream.mallhelp.MHData
-import com.univerindream.mallhelp.MHUtil
-import com.univerindream.mallhelp.R
-import com.univerindream.mallhelp.ui.MainActivity
-import com.univerindream.mallhelp.utils.NodeUtil
+import com.univerindream.maicaiassistant.MHData
+import com.univerindream.maicaiassistant.MHUtil
+import com.univerindream.maicaiassistant.R
+import com.univerindream.maicaiassistant.ui.MainActivity
+import com.univerindream.maicaiassistant.utils.NodeUtil
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode

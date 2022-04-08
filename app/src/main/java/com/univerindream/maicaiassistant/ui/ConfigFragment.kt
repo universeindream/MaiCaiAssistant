@@ -1,4 +1,4 @@
-package com.univerindream.mallhelp.ui
+package com.univerindream.maicaiassistant.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,11 +10,11 @@ import cn.hutool.core.date.DateUtil
 import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.elvishew.xlog.XLog
-import com.univerindream.mallhelp.MHData
-import com.univerindream.mallhelp.MHUtil
-import com.univerindream.mallhelp.R
-import com.univerindream.mallhelp.databinding.FragmentConfigBinding
-import com.univerindream.mallhelp.widget.TimePickerFragment
+import com.univerindream.maicaiassistant.MHData
+import com.univerindream.maicaiassistant.MHUtil
+import com.univerindream.maicaiassistant.R
+import com.univerindream.maicaiassistant.widget.TimePickerFragment
+import com.univerindream.maicaiassistant.databinding.FragmentConfigBinding
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode

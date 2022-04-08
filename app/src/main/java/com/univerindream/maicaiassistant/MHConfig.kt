@@ -1,4 +1,4 @@
-package com.univerindream.mallhelp
+package com.univerindream.maicaiassistant
 
 object MHConfig {
 

@@ -1,4 +1,4 @@
-package com.univerindream.mallhelp.ui
+package com.univerindream.maicaiassistant.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.univerindream.mallhelp.R
-import com.univerindream.mallhelp.databinding.FragmentHelpBinding
+import com.univerindream.maicaiassistant.R
+import com.univerindream.maicaiassistant.databinding.FragmentHelpBinding
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.

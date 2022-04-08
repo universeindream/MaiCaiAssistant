@@ -1,4 +1,4 @@
-package com.univerindream.mallhelp.widget
+package com.univerindream.maicaiassistant.widget
 
 import android.app.Dialog
 import android.app.TimePickerDialog

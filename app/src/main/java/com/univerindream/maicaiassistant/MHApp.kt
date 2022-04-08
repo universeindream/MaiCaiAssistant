@@ -1,4 +1,4 @@
-package com.univerindream.mallhelp
+package com.univerindream.maicaiassistant
 
 import android.app.Application
 import cn.hutool.core.date.DateUnit
@@ -11,7 +11,6 @@ import com.elvishew.xlog.flattener.DefaultFlattener
 import com.elvishew.xlog.formatter.border.DefaultBorderFormatter
 import com.elvishew.xlog.internal.SystemCompat
 import com.elvishew.xlog.printer.AndroidPrinter
-import com.elvishew.xlog.printer.ConsolePrinter
 import com.elvishew.xlog.printer.file.FilePrinter
 import com.elvishew.xlog.printer.file.backup.NeverBackupStrategy
 import com.elvishew.xlog.printer.file.clean.FileLastModifiedCleanStrategy
