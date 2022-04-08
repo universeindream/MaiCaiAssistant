@@ -4,7 +4,7 @@
 
 [![GitHub release](https://img.shields.io/github/v/release/universeindream/MaiCaiAssistant.svg)](https://github.com/universeindream/MaiCaiAssistant/releases) ![Total Downloads](https://img.shields.io/github/downloads/universeindream/MaiCaiAssistant/total.svg) ![Support Platforms](https://img.shields.io/badge/platform-android-blue)
 
-> 人少的可怜，就不做宣传了，多多反馈问题
+> 不做宣传，欢迎反馈问题
 
 
 **功能**
