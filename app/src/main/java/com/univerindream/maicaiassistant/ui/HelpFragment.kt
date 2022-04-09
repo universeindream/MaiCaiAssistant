@@ -5,8 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.univerindream.maicaiassistant.R
+import cn.hutool.json.JSONUtil
+import com.blankj.utilcode.util.ToastUtils
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.univerindream.maicaiassistant.MCStep
+import com.univerindream.maicaiassistant.MHConfig
+import com.univerindream.maicaiassistant.MHData
 import com.univerindream.maicaiassistant.databinding.FragmentHelpBinding
 
 /**
@@ -33,8 +38,47 @@ class HelpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonSecond.setOnClickListener {
-            findNavController().navigate(R.id.action_HelpFragment_to_ConfigFragment)
+        binding.helpSetDefault.setOnClickListener {
+            MHConfig.setDefaultStepsData()
+
+            loadData()
+        }
+        binding.helpSave.setOnClickListener {
+            val data = binding.helpSteps.text.toString()
+
+            if (JSONUtil.isTypeJSONArray(data)) {
+                val steps = Gson().fromJson<List<MCStep>>(
+                    MHData.stepsJsonMeiTuan,
+                    object : TypeToken<ArrayList<MCStep>>() {}.type
+                )
+                when (MHData.buyPlatform) {
+                    1 -> {
+                        MHData.stepsJsonMeiTuan = data
+                        MHConfig.mtSteps = steps
+                    }
+                    else -> {
+                        MHData.stepsJsonDingDong = data
+                        MHConfig.ddSteps = steps
+                    }
+                }
+                ToastUtils.showLong("保存成功")
+            } else {
+                ToastUtils.showLong("JSON 数据非法")
+            }
+        }
+
+        loadData()
+
+    }
+
+    fun loadData() {
+        when (MHData.buyPlatform) {
+            1 -> {
+                binding.helpSteps.setText(JSONUtil.formatJsonStr(MHData.stepsJsonMeiTuan))
+            }
+            else -> {
+                binding.helpSteps.setText(JSONUtil.formatJsonStr(MHData.stepsJsonDingDong))
+            }
         }
     }
 

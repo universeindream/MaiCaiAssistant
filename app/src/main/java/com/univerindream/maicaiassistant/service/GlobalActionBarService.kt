@@ -12,10 +12,7 @@ import android.widget.FrameLayout
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.elvishew.xlog.XLog
-import com.univerindream.maicaiassistant.MCHandleLog
-import com.univerindream.maicaiassistant.MHData
-import com.univerindream.maicaiassistant.MHUtil
-import com.univerindream.maicaiassistant.R
+import com.univerindream.maicaiassistant.*
 import com.univerindream.maicaiassistant.ui.MainActivity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -135,12 +132,13 @@ class GlobalActionBarService : AccessibilityService() {
                                 "失败提示",
                                 "${mHandleLog?.stepName} 长时间点击无效，运行失败"
                             )
+                            ToastUtils.showLong("失败提示 - ${mHandleLog?.stepName} 长时间点击无效，运行失败")
                             if (MHData.wrongAlarmStatus) MHUtil.playRingTone()
                             continue
                         }
                     }
 
-                    for (step in MHUtil.getSteps()) {
+                    for (step in MHConfig.getSteps()) {
                         val result = step.condList.all {
                             MHUtil.stepCond(
                                 rootInActiveWindow,

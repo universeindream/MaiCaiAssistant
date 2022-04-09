@@ -1,5 +1,6 @@
 package com.univerindream.maicaiassistant
 
+import com.blankj.utilcode.util.ResourceUtils
 import com.blankj.utilcode.util.SPUtils
 
 object MHData {
@@ -10,6 +11,20 @@ object MHData {
     var buyPlatform: Int
         get() = SPUtils.getInstance().getInt("buyPlatform", 1)
         set(value) = SPUtils.getInstance().put("buyPlatform", value)
+
+    /**
+     * 美团抢购流程
+     */
+    var stepsJsonMeiTuan: String
+        get() = SPUtils.getInstance().getString("stepsJsonMeiTuan", ResourceUtils.readRaw2String(R.raw.mt_steps))
+        set(value) = SPUtils.getInstance().put("stepsJsonMeiTuan", value)
+
+    /**
+     * 叮咚抢购流程
+     */
+    var stepsJsonDingDong: String
+        get() = SPUtils.getInstance().getString("stepsJsonDingDong", ResourceUtils.readRaw2String(R.raw.dd_steps))
+        set(value) = SPUtils.getInstance().put("stepsJsonDingDong", value)
 
     /**
      * 抢购时长

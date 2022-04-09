@@ -11,10 +11,7 @@ import android.text.TextUtils
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.core.app.NotificationCompat
 import cn.hutool.core.date.DateUtil
-import com.blankj.utilcode.util.ActivityUtils
-import com.blankj.utilcode.util.AppUtils
-import com.blankj.utilcode.util.NotificationUtils
-import com.blankj.utilcode.util.Utils
+import com.blankj.utilcode.util.*
 import com.elvishew.xlog.XLog
 import com.univerindream.maicaiassistant.receiver.AlarmReceiver
 import com.univerindream.maicaiassistant.service.GlobalActionBarService
@@ -38,11 +35,6 @@ object MHUtil {
                 AppUtils.launchApp(MHConfig.DD_PACKAGE_NAME)
             }
         }
-    }
-
-    fun getSteps() = when (MHData.buyPlatform) {
-        1 -> MHConfig.MeiTuanSteps
-        else -> MHConfig.DingDongSteps
     }
 
 

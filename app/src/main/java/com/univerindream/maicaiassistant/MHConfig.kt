@@ -1,5 +1,9 @@
 package com.univerindream.maicaiassistant
 
+import com.blankj.utilcode.util.ResourceUtils
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+
 object MHConfig {
 
     const val MALL_HELP_CHANNEL_ID = "mallhelp_1"
@@ -17,7 +21,29 @@ object MHConfig {
     const val MT_Tab_Cart = "com.meituan.retail.v.android:id/img_shopping_cart"
     const val MT_Tab_Cookbook = "com.meituan.retail.v.android:id/img_cookbook"
 
-    val MeiTuanSteps = arrayListOf(
+    var mtSteps: List<MCStep> = Gson().fromJson<List<MCStep>>(
+        MHData.stepsJsonMeiTuan,
+        object : TypeToken<ArrayList<MCStep>>() {}.type
+    )
+
+    var ddSteps: List<MCStep> = Gson().fromJson<List<MCStep>>(
+        MHData.stepsJsonDingDong,
+        object : TypeToken<ArrayList<MCStep>>() {}.type
+    )
+
+    fun getSteps(): List<MCStep> = when (MHData.buyPlatform) {
+        1 -> mtSteps
+        else -> ddSteps
+    }
+
+    fun setDefaultStepsData() {
+        when (MHData.buyPlatform) {
+            1 -> MHData.stepsJsonMeiTuan = ResourceUtils.readRaw2String(R.raw.mt_steps)
+            else -> MHData.stepsJsonDingDong = ResourceUtils.readRaw2String(R.raw.dd_steps)
+        }
+    }
+
+/*    val MeiTuanSteps = arrayListOf(
         MCStep(
             "openApp",
             condList = arrayListOf(
@@ -253,6 +279,6 @@ object MHConfig {
                 )
             )
         ),
-    )
+    )*/
 
 }

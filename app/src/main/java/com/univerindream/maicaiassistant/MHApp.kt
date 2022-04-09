@@ -24,14 +24,13 @@ class MHApp : Application() {
         super.onCreate()
         initXLog()
 
-
         XLog.v("HelpApp")
     }
 
     private fun initXLog() {
         XLog.init(
             LogConfiguration.Builder()
-                .tag("MallHelp")
+                .tag("MCHelp")
                 .logLevel(if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.INFO)
                 .borderFormatter(object : DefaultBorderFormatter() {
                     override fun format(segments: Array<out String>?): String {

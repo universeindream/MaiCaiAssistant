@@ -6,22 +6,38 @@
     android:layout_height="match_parent"
     tools:context=".ui.HelpFragment">
 
-    <TextView
-        android:id="@+id/textview_second"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/help_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/button_second"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="保存"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button_second"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/help_set_default"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/previous"
+        android:layout_marginStart="16dp"
+        android:text="恢复默认"
+        app:layout_constraintBottom_toBottomOf="@+id/help_save"
+        app:layout_constraintStart_toEndOf="@+id/help_save"
+        app:layout_constraintTop_toTopOf="@+id/help_save" />
+
+    <EditText
+        android:id="@+id/help_steps"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_second" />
+        app:layout_constraintTop_toBottomOf="@+id/help_save"
+        tools:ignore="SpeakableTextPresentCheck" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

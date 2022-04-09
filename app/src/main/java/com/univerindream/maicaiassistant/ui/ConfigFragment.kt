@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import cn.hutool.core.date.DateUtil
 import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.ToastUtils
@@ -53,6 +54,9 @@ class ConfigFragment : Fragment() {
                 R.id.setting_buy_meituanmaicai -> MHData.buyPlatform = 1
                 R.id.setting_buy_dingdong -> MHData.buyPlatform = 2
             }
+        }
+        binding.settingCustomStep.setOnClickListener {
+            findNavController().navigate(R.id.action_ConfigFragment_to_HelpFragment)
         }
         binding.settingBuyTimeValue.addTextChangedListener({ _, _, _, _ -> }, { _, _, _, _ -> }) { s ->
             s?.toString()?.let {

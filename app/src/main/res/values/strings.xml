@@ -10,7 +10,7 @@
 
     <!-- Strings used for fragments for navigation -->
     <string name="config_fragment_label">常规配置</string>
-    <string name="help_fragment_label">帮助页</string>
+    <string name="help_fragment_label">流程配置</string>
 
 
     <string name="previous">Previous</string>
