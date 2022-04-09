@@ -60,16 +60,6 @@
         app:layout_constraintTop_toBottomOf="@+id/setting_puy_time" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/setting_send_time_seleect_alarm_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="送达时间响铃开关 \n(关闭后时间随机取): "
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/setting_timer_trigger_status" />
-
-    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/setting_wrong_alarm_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -77,7 +67,7 @@
         android:layout_marginTop="16dp"
         android:text="异常响铃开关: "
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/setting_send_time_seleect_alarm_status" />
+        app:layout_constraintTop_toBottomOf="@+id/setting_timer_trigger_status" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/setting_ringtone_status"

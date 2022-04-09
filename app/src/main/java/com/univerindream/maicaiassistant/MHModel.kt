@@ -46,7 +46,11 @@ data class MCNode(
 data class MCStep(
     val name: String,
     val condList: List<MCCond> = arrayListOf(),
-    val handle: MCHandle
+    val handle: MCHandle,
+    /** 是否警报 **/
+    val isAlarm: Boolean = false,
+    /** 是否手动 **/
+    val isManual: Boolean = false
 )
 
 /**

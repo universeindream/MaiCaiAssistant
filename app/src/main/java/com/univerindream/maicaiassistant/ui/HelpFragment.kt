@@ -7,10 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import cn.hutool.json.JSONUtil
 import com.blankj.utilcode.util.ToastUtils
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.univerindream.maicaiassistant.MCStep
-import com.univerindream.maicaiassistant.MHConfig
 import com.univerindream.maicaiassistant.MHData
 import com.univerindream.maicaiassistant.databinding.FragmentHelpBinding
 
@@ -39,7 +35,7 @@ class HelpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.helpSetDefault.setOnClickListener {
-            MHConfig.setDefaultStepsData()
+            MHData.jsonSteps = ""
 
             loadData()
         }
@@ -47,20 +43,7 @@ class HelpFragment : Fragment() {
             val data = binding.helpSteps.text.toString()
 
             if (JSONUtil.isTypeJSONArray(data)) {
-                val steps = Gson().fromJson<List<MCStep>>(
-                    MHData.stepsJsonMeiTuan,
-                    object : TypeToken<ArrayList<MCStep>>() {}.type
-                )
-                when (MHData.buyPlatform) {
-                    1 -> {
-                        MHData.stepsJsonMeiTuan = data
-                        MHConfig.mtSteps = steps
-                    }
-                    else -> {
-                        MHData.stepsJsonDingDong = data
-                        MHConfig.ddSteps = steps
-                    }
-                }
+                MHData.jsonSteps = data
                 ToastUtils.showLong("保存成功")
             } else {
                 ToastUtils.showLong("JSON 数据非法")
@@ -72,14 +55,7 @@ class HelpFragment : Fragment() {
     }
 
     fun loadData() {
-        when (MHData.buyPlatform) {
-            1 -> {
-                binding.helpSteps.setText(JSONUtil.formatJsonStr(MHData.stepsJsonMeiTuan))
-            }
-            else -> {
-                binding.helpSteps.setText(JSONUtil.formatJsonStr(MHData.stepsJsonDingDong))
-            }
-        }
+        binding.helpSteps.setText(JSONUtil.formatJsonStr(MHData.jsonSteps))
     }
 
     override fun onDestroyView() {

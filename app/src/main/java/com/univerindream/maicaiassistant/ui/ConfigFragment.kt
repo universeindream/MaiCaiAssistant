@@ -98,17 +98,6 @@ class ConfigFragment : Fragment() {
             }.show(parentFragmentManager, "timePicker")
         }
 
-        binding.settingSendTimeSeleectAlarmStatus.setOnCheckedChangeListener { compoundButton, b ->
-            if (!compoundButton.isPressed) return@setOnCheckedChangeListener
-
-            MHData.sendTimeSelectAlarmStatus = b
-
-            if (MHData.sendTimeSelectAlarmStatus) {
-                ToastUtils.showShort("送达时间响铃已开启")
-            } else {
-                ToastUtils.showShort("送达时间响铃已关闭")
-            }
-        }
         binding.settingWrongAlarmStatus.setOnCheckedChangeListener { compoundButton, b ->
             if (!compoundButton.isPressed) return@setOnCheckedChangeListener
 
@@ -152,8 +141,6 @@ class ConfigFragment : Fragment() {
         binding.settingBuyTimeValue.setText(MHData.buyMinTime.toString())
 
         binding.settingTimerTriggerStatus.isChecked = MHData.timerTriggerStatus
-
-        binding.settingSendTimeSeleectAlarmStatus.isChecked = MHData.sendTimeSelectAlarmStatus
         binding.settingWrongAlarmStatus.isChecked = MHData.wrongAlarmStatus
 
         binding.settingRingtoneStatus.isChecked = MHUtil.ringtone.isPlaying

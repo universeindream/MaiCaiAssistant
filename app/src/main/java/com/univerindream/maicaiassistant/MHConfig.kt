@@ -1,6 +1,5 @@
 package com.univerindream.maicaiassistant
 
-import com.blankj.utilcode.util.ResourceUtils
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -21,29 +20,7 @@ object MHConfig {
     const val MT_Tab_Cart = "com.meituan.retail.v.android:id/img_shopping_cart"
     const val MT_Tab_Cookbook = "com.meituan.retail.v.android:id/img_cookbook"
 
-    var mtSteps: List<MCStep> = Gson().fromJson<List<MCStep>>(
-        MHData.stepsJsonMeiTuan,
-        object : TypeToken<ArrayList<MCStep>>() {}.type
-    )
-
-    var ddSteps: List<MCStep> = Gson().fromJson<List<MCStep>>(
-        MHData.stepsJsonDingDong,
-        object : TypeToken<ArrayList<MCStep>>() {}.type
-    )
-
-    fun getSteps(): List<MCStep> = when (MHData.buyPlatform) {
-        1 -> mtSteps
-        else -> ddSteps
-    }
-
-    fun setDefaultStepsData() {
-        when (MHData.buyPlatform) {
-            1 -> MHData.stepsJsonMeiTuan = ResourceUtils.readRaw2String(R.raw.mt_steps)
-            else -> MHData.stepsJsonDingDong = ResourceUtils.readRaw2String(R.raw.dd_steps)
-        }
-    }
-
-/*    val MeiTuanSteps = arrayListOf(
+    val defaultMeiTuanSteps = arrayListOf(
         MCStep(
             "openApp",
             condList = arrayListOf(
@@ -166,10 +143,12 @@ object MHConfig {
                 delay = 100,
                 nodes = arrayListOf(MCNode(EMCNodeType.TXT, "支付"))
             ),
+            isAlarm = true,
+            isManual = true
         ),
     )
 
-    val DingDongSteps = arrayListOf(
+    val defaultDingDongSteps = arrayListOf(
         MCStep(
             "openApp",
             arrayListOf(
@@ -279,6 +258,12 @@ object MHConfig {
                 )
             )
         ),
-    )*/
+    )
+
+    val steps
+        get() = Gson().fromJson<List<MCStep>>(
+            MHData.jsonSteps,
+            object : TypeToken<ArrayList<MCStep>>() {}.type
+        )
 
 }

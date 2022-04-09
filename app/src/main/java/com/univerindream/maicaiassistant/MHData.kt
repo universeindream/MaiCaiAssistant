@@ -1,7 +1,7 @@
 package com.univerindream.maicaiassistant
 
-import com.blankj.utilcode.util.ResourceUtils
 import com.blankj.utilcode.util.SPUtils
+import com.google.gson.Gson
 
 object MHData {
 
@@ -12,19 +12,31 @@ object MHData {
         get() = SPUtils.getInstance().getInt("buyPlatform", 1)
         set(value) = SPUtils.getInstance().put("buyPlatform", value)
 
+    var jsonSteps: String
+        get() = if (buyPlatform == 1) meiTuanJsonSteps else dingDongJsonSteps
+        set(value) {
+            if (buyPlatform == 1) {
+                meiTuanJsonSteps = value
+            } else {
+                dingDongJsonSteps = value
+            }
+        }
+
     /**
      * 美团抢购流程
      */
-    var stepsJsonMeiTuan: String
-        get() = SPUtils.getInstance().getString("stepsJsonMeiTuan", ResourceUtils.readRaw2String(R.raw.mt_steps))
-        set(value) = SPUtils.getInstance().put("stepsJsonMeiTuan", value)
+    private var meiTuanJsonSteps: String
+        get() = SPUtils.getInstance().getString("meiTuanJsonSteps", Gson().toJson(MHConfig.defaultMeiTuanSteps))
+        set(value) = if (value.isBlank()) SPUtils.getInstance().remove("meiTuanJsonSteps") else SPUtils.getInstance()
+            .put("meiTuanJsonSteps", value)
 
     /**
      * 叮咚抢购流程
      */
-    var stepsJsonDingDong: String
-        get() = SPUtils.getInstance().getString("stepsJsonDingDong", ResourceUtils.readRaw2String(R.raw.dd_steps))
-        set(value) = SPUtils.getInstance().put("stepsJsonDingDong", value)
+    private var dingDongJsonSteps: String
+        get() = SPUtils.getInstance().getString("dingDongJsonSteps", Gson().toJson(MHConfig.defaultDingDongSteps))
+        set(value) = if (value.isBlank()) SPUtils.getInstance().remove("dingDongJsonSteps") else SPUtils.getInstance()
+            .put("dingDongJsonSteps", value)
 
     /**
      * 抢购时长
@@ -46,14 +58,6 @@ object MHData {
     var timerTriggerTime: Long
         get() = SPUtils.getInstance().getLong("timerTriggerTime", -1)
         set(value) = SPUtils.getInstance().put("timerTriggerTime", value)
-
-
-    /**
-     * 选择送达时间响铃状态
-     */
-    var sendTimeSelectAlarmStatus: Boolean
-        get() = SPUtils.getInstance().getBoolean("sendTimeSelectAlarmStatus", true)
-        set(value) = SPUtils.getInstance().put("sendTimeSelectAlarmStatus", value)
 
     /**
      * 错误响铃状态

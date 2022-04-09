@@ -110,7 +110,7 @@ class GlobalActionBarService : AccessibilityService() {
                 if (mSnapUpStatus.get()) {
                     XLog.v("loop - curWindowClassName - $mCurClassNameByRootWindow")
 
-                    //校验任务运行时长是否已达标
+                    //任务时长是否达标
                     if (System.currentTimeMillis() > mLoopStartTime.get() + MHData.buyMinTime * 1000 * 60) {
                         XLog.i("loop - 任务已执行完 ${MHData.buyMinTime} 分钟，停止运行")
                         cancelTask()
@@ -121,25 +121,26 @@ class GlobalActionBarService : AccessibilityService() {
                         continue
                     }
 
-                    //校验页面是否正常运行中
+                    //异常检查
                     val now = System.currentTimeMillis()
                     val handleTime = mHandleLog?.handleTime ?: now
                     when {
                         now - handleTime > 10000 -> {
-                            XLog.e("loop - ${mHandleLog?.stepName} 任务已 >10s 未执行")
+                            XLog.e("流程 - ${mHandleLog?.stepName} 已超过 10s 未执行")
                             cancelTask()
                             MHUtil.notify(
-                                "失败提示",
-                                "${mHandleLog?.stepName} 长时间点击无效，运行失败"
+                                "异常提示",
+                                "流程 - ${mHandleLog?.stepName} 已重复执行 10s 未执行"
                             )
-                            ToastUtils.showLong("失败提示 - ${mHandleLog?.stepName} 长时间点击无效，运行失败")
+                            ToastUtils.showLong("异常提示 - 流程 - ${mHandleLog?.stepName} 已重复执行 10s 未执行")
                             if (MHData.wrongAlarmStatus) MHUtil.playRingTone()
                             continue
                         }
                     }
 
-                    for (step in MHConfig.getSteps()) {
-                        val result = step.condList.all {
+                    //操作流程
+                    for (step in MHConfig.steps) {
+                        val condResult = step.condList.all {
                             MHUtil.stepCond(
                                 rootInActiveWindow,
                                 mForegroundClassName,
@@ -147,17 +148,33 @@ class GlobalActionBarService : AccessibilityService() {
                                 it.node
                             )
                         }
-                        XLog.v("steps - ${step.name} - $result")
+                        XLog.v("steps - ${step.name} - $condResult")
 
-                        if (result) {
+                        if (condResult) {
                             XLog.v("steps: ${step.name} 符合条件 - 立即执行")
-
                             mHandleLog = mHandleLog ?: MCHandleLog(step.name, System.currentTimeMillis())
                             if (step.name != mHandleLog!!.stepName) {
                                 mHandleLog!!.stepName = step.name
                                 mHandleLog!!.handleTime = System.currentTimeMillis()
                             }
+
                             MHUtil.stepHandle(this@GlobalActionBarService, rootInActiveWindow, step.handle)
+
+                            if (step.isAlarm) {
+                                MHUtil.notify(
+                                    "${step.name} 流程",
+                                    "触发响铃"
+                                )
+                                MHUtil.playRingTone()
+                            }
+
+                            if (step.isManual) {
+                                MHUtil.notify(
+                                    "${step.name} 流程",
+                                    "需要人工操作"
+                                )
+                                cancelTask()
+                            }
                             break
                         }
                     }
