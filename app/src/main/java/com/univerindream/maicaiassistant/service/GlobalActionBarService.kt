@@ -22,14 +22,12 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 
 class GlobalActionBarService : AccessibilityService() {
 
     private lateinit var mLayout: FrameLayout
 
-    private var mNotifyId = AtomicInteger()
     private var mWindowStatusChangeTime = AtomicLong(System.currentTimeMillis())
     private var mWindowClassNameByWindowId = mutableMapOf<Int, String>()
     private var mSnapUpStatus = AtomicBoolean(false)
@@ -126,7 +124,6 @@ class GlobalActionBarService : AccessibilityService() {
                         XLog.i("loop - 任务已执行完 ${MHData.buyMinTime} 分钟，停止运行")
                         cancelTask()
                         MHUtil.notify(
-                            mNotifyId.incrementAndGet(),
                             "任务已停止",
                             "任务已执行完 ${MHData.buyMinTime} 分钟，停止运行"
                         )
@@ -142,7 +139,6 @@ class GlobalActionBarService : AccessibilityService() {
                             XLog.e("loop - 任务已 >5s 未执行")
                             cancelTask()
                             MHUtil.notify(
-                                mNotifyId.incrementAndGet(),
                                 "失败提示",
                                 "长时间点击无效，运行失败"
                             )
@@ -198,7 +194,6 @@ class GlobalActionBarService : AccessibilityService() {
                     else -> {
                         XLog.e("loop - isHomePage - 未知步骤 - childCount:%s", rootInActiveWindow?.childCount)
                         MHUtil.notify(
-                            mNotifyId.incrementAndGet(),
                             "未知流程",
                             "需要人工操作"
                         )
@@ -222,7 +217,6 @@ class GlobalActionBarService : AccessibilityService() {
 
                         if (MHData.sendTimeSelectAlarmStatus) {
                             MHUtil.notify(
-                                mNotifyId.incrementAndGet(),
                                 "选择送达时间流程",
                                 "需要人工操作"
                             )
@@ -234,7 +228,6 @@ class GlobalActionBarService : AccessibilityService() {
                             val sendTime = sendTimeList.random()
                             NodeUtil.clickByFirstMatchTxt(rootInActiveWindow, sendTime)
                             MHUtil.notify(
-                                mNotifyId.incrementAndGet(),
                                 "选择送达时间流程",
                                 "已自动选择 $sendTime"
                             )
@@ -244,7 +237,6 @@ class GlobalActionBarService : AccessibilityService() {
                         XLog.v("loop - isPayPage - 支付")
 
                         MHUtil.notify(
-                            mNotifyId.incrementAndGet(),
                             "支付流程",
                             "需要人工操作"
                         )
@@ -259,7 +251,6 @@ class GlobalActionBarService : AccessibilityService() {
                     else -> {
                         XLog.e("loop - isPayPage - 未知步骤 - childCount:%s", rootInActiveWindow?.childCount)
                         MHUtil.notify(
-                            mNotifyId.incrementAndGet(),
                             "未知流程",
                             "需要人工操作"
                         )

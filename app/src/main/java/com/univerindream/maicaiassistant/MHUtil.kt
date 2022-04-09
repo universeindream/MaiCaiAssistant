@@ -22,8 +22,12 @@ import com.univerindream.maicaiassistant.service.GlobalActionBarService
 import com.univerindream.maicaiassistant.ui.MainActivity
 import com.univerindream.maicaiassistant.utils.NodeUtil
 import java.util.*
+import java.util.concurrent.atomic.AtomicInteger
 
 object MHUtil {
+
+    private var mNotifyId = AtomicInteger()
+
 
     fun launchApp() {
         when (MHData.buyPlatform) {
@@ -160,10 +164,11 @@ object MHUtil {
 
     fun scheduleRingTone() = if (ringtone.isPlaying) ringtone.stop() else ringtone.play()
     fun playRingTone() {
-        if (!ringtone.isPlaying)  ringtone.play()
+        if (!ringtone.isPlaying) ringtone.play()
     }
-    fun stopRingTone(){
-        if (ringtone.isPlaying)  ringtone.stop()
+
+    fun stopRingTone() {
+        if (ringtone.isPlaying) ringtone.stop()
     }
 
     /// 定时相关
@@ -180,11 +185,10 @@ object MHUtil {
     private fun getAlarmManager() =
         Utils.getApp().getSystemService(AccessibilityService.ALARM_SERVICE) as AlarmManager
 
-    fun enableAlarm(triggerAtMillis: Long = MHData.timerTriggerTime): String {
+    fun enableAlarm(triggerAtMillis: Long): String {
         val friendlyTime = DateUtil.formatDateTime(Date(triggerAtMillis))
         XLog.v("enableAlarm - %s", friendlyTime)
 
-        MHData.timerTriggerTime = triggerAtMillis
         getAlarmManager().cancel(alarmPendingIntent)
         getAlarmManager().set(
             AlarmManager.RTC_WAKEUP,
@@ -219,7 +223,8 @@ object MHUtil {
         service.performGlobalAction(AccessibilityService.GLOBAL_ACTION_TAKE_SCREENSHOT)
     }
 
-    fun notify(id: Int, title: String, content: String) {
+    fun notify(title: String, content: String) {
+        val id = mNotifyId.incrementAndGet()
         NotificationUtils.notify(id) { param ->
             param.setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(title)
@@ -228,8 +233,11 @@ object MHUtil {
                     PendingIntent.getActivity(
                         Utils.getApp(),
                         0,
-                        Intent().putExtra("id", id),
-                        PendingIntent.FLAG_UPDATE_CURRENT
+                        Intent(
+                            Utils.getApp(),
+                            MainActivity::class.java
+                        ).putExtra("id", id),
+                        0
                     )
                 )
                 .setAutoCancel(true)

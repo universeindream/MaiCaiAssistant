@@ -22,7 +22,7 @@ object MHData {
      * 定时抢购
      */
     var timerTriggerStatus: Boolean
-        get() = SPUtils.getInstance().getBoolean("timerTriggerStatus") && timerTriggerTime > System.currentTimeMillis()
+        get() = SPUtils.getInstance().getBoolean("timerTriggerStatus")
         set(value) = SPUtils.getInstance().put("timerTriggerStatus", value)
 
     /**
@@ -34,7 +34,7 @@ object MHData {
 
 
     /**
-     * 支付响铃状态
+     * 选择送达时间响铃状态
      */
     var sendTimeSelectAlarmStatus: Boolean
         get() = SPUtils.getInstance().getBoolean("sendTimeSelectAlarmStatus", true)
