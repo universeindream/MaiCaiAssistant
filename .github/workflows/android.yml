@@ -3,7 +3,7 @@ name: Android CI
 on:
   push:
     tags:
-      - 'v*'
+      - 'v2*'
 
 jobs:
   Gradle:
@@ -26,4 +26,5 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
+          prerelease: true
           files: app/build/outputs/apk/release/*.apk
