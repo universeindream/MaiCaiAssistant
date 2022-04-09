@@ -4,7 +4,6 @@ on:
   push:
     tags:
       - 'v*'
-      - 'test*'
 
 jobs:
   Gradle:
@@ -24,11 +23,7 @@ jobs:
           ./gradlew build -x test -x lint -x lintVitalRelease
           ./gradlew assembleRelease -Pandroid.injected.signing.store.file=$GITHUB_WORKSPACE/signing-key.jks -Pandroid.injected.signing.store.password=${{ secrets.KEYSTOREPASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.KEYPASSWORD }}
           rm $GITHUB_WORKSPACE/signing-key.jks
-      - name: Automatic Releases
-        uses: marvinpinto/action-automatic-releases@v1.2.1
+      - name: Release
+        uses: softprops/action-gh-release@v1
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: false
-          files: |
-            app/build/outputs/apk/release/*.apk
+          files: app/build/outputs/apk/release/*.apk
