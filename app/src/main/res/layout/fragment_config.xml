@@ -110,7 +110,6 @@
             android:id="@+id/setting_buy_dingdong"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:enabled="false"
             android:text="叮咚" />
     </RadioGroup>
 

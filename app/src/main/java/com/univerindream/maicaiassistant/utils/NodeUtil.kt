@@ -71,6 +71,12 @@ object NodeUtil {
     }
 
 
+    fun isSelectedFromId(root: AccessibilityNodeInfo?, id: String?) =
+        !id.isNullOrBlank() && root?.findAccessibilityNodeInfosByViewId(id)?.firstOrNull()?.isSelected ?: false
+
+    fun isSelectedFromTxt(root: AccessibilityNodeInfo?, txt: String?) =
+        !txt.isNullOrBlank() && root?.findAccessibilityNodeInfosByText(txt)?.firstOrNull()?.isSelected ?: false
+
     fun isExistFromId(root: AccessibilityNodeInfo?, id: String?) =
         !id.isNullOrBlank() && root?.findAccessibilityNodeInfosByViewId(id)?.isNotEmpty() ?: false
 
@@ -88,6 +94,20 @@ object NodeUtil {
      */
     fun isClickAndIncludeParent(root: AccessibilityNodeInfo?, ignoreDisable: Boolean = false): Boolean {
         return isClick(root, ignoreDisable) || getListByClick(root, ignoreDisable).size > 0
+    }
+
+    /**
+     * 是否可以点击 - 任意一个匹配 txt 节点
+     */
+    fun isClickById(root: AccessibilityNodeInfo?, id: String): Boolean {
+        if (root == null) return false
+
+        val data = root.findAccessibilityNodeInfosByViewId(id)
+        data.forEach {
+            if (isClickAndIncludeParent(it)) return true
+        }
+
+        return false
     }
 
     /**

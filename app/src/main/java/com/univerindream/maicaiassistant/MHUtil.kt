@@ -9,7 +9,6 @@ import android.os.Build
 import android.provider.Settings
 import android.text.TextUtils
 import android.view.accessibility.AccessibilityNodeInfo
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import cn.hutool.core.date.DateUtil
 import com.blankj.utilcode.util.ActivityUtils
@@ -21,6 +20,7 @@ import com.univerindream.maicaiassistant.receiver.AlarmReceiver
 import com.univerindream.maicaiassistant.service.GlobalActionBarService
 import com.univerindream.maicaiassistant.ui.MainActivity
 import com.univerindream.maicaiassistant.utils.NodeUtil
+import kotlinx.coroutines.delay
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -40,6 +40,125 @@ object MHUtil {
         }
     }
 
+    fun getSteps() = when (MHData.buyPlatform) {
+        1 -> MHConfig.MeiTuanSteps
+        else -> MHConfig.DingDongSteps
+    }
+
+
+    /**
+     * 校验条件
+     */
+    fun stepCond(
+        rootInActiveWindow: AccessibilityNodeInfo?,
+        foregroundClassName: String,
+        cond: EMCCond,
+        condNode: MCNode
+    ): Boolean {
+        val nodeType = condNode.nodeType
+        val nodeKey = condNode.nodeKey
+
+        return when (cond) {
+            EMCCond.APP_IS_BACKGROUND -> {
+                condNode.packageName ?: return false
+                return rootInActiveWindow?.packageName != condNode.packageName
+            }
+            EMCCond.EQ_CLASS_NAME -> foregroundClassName == condNode.className
+            EMCCond.NODE_EXIST -> {
+                nodeType ?: return false
+                nodeKey ?: return false
+                return when (nodeType) {
+                    EMCNodeType.ID -> NodeUtil.isExistFromId(rootInActiveWindow, nodeKey)
+                    EMCNodeType.TXT -> NodeUtil.isExistFromTxt(rootInActiveWindow, nodeKey)
+                    else -> false
+                }
+            }
+            EMCCond.NODE_NO_EXIST -> {
+                nodeType ?: return false
+                nodeKey ?: return false
+                return when (nodeType) {
+                    EMCNodeType.ID -> !NodeUtil.isExistFromId(rootInActiveWindow, nodeKey)
+                    EMCNodeType.TXT -> !NodeUtil.isExistFromTxt(rootInActiveWindow, nodeKey)
+                    else -> false
+                }
+            }
+            EMCCond.NODE_IS_UNSELECTED -> {
+                nodeType ?: return false
+                nodeKey ?: return false
+                return when (nodeType) {
+                    EMCNodeType.ID -> !NodeUtil.isSelectedFromId(rootInActiveWindow, nodeKey)
+                    EMCNodeType.TXT -> !NodeUtil.isSelectedFromTxt(rootInActiveWindow, nodeKey)
+                    else -> false
+                }
+            }
+            EMCCond.NODE_CAN_CLICK -> {
+                nodeType ?: return false
+                nodeKey ?: return false
+                return when (nodeType) {
+                    EMCNodeType.ID -> NodeUtil.isClickById(rootInActiveWindow, nodeKey)
+                    EMCNodeType.TXT -> NodeUtil.isClickByTxt(rootInActiveWindow, nodeKey)
+                    else -> false
+                }
+            }
+            EMCCond.NODE_NOT_CLICK -> {
+                nodeType ?: return false
+                nodeKey ?: return false
+                return when (nodeType) {
+                    EMCNodeType.ID -> !NodeUtil.isClickById(rootInActiveWindow, nodeKey)
+                    EMCNodeType.TXT -> !NodeUtil.isClickByTxt(rootInActiveWindow, nodeKey)
+                    else -> false
+                }
+            }
+        }
+    }
+
+    suspend fun stepHandle(
+        service: AccessibilityService,
+        rootInActiveWindow: AccessibilityNodeInfo?,
+        handle: MCHandle
+    ): Boolean {
+        val type = handle.type
+        val nodes = handle.nodes
+        val delay = handle.delay
+        val firNode = nodes.firstOrNull()
+
+        val result = when (type) {
+            EMCHandle.LAUNCH -> {
+                firNode ?: return false
+                delay(100)
+                service.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS)
+                delay(100)
+                service.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK)
+                delay(100)
+                AppUtils.launchApp(firNode.packageName)
+                true
+            }
+            EMCHandle.CLICK_NODE -> {
+                firNode ?: return false
+                firNode.nodeType ?: return false
+                firNode.nodeKey ?: return false
+                when (firNode.nodeType) {
+                    EMCNodeType.ID -> NodeUtil.clickByFirstMatchId(rootInActiveWindow, firNode.nodeKey)
+                    EMCNodeType.TXT -> NodeUtil.clickByFirstMatchTxt(rootInActiveWindow, firNode.nodeKey)
+                    else -> false
+                }
+            }
+            EMCHandle.CLICK_SCOPE_RANDOM_NODE -> {
+                !nodes.isNullOrEmpty() && stepHandle(
+                    service, rootInActiveWindow,
+                    MCHandle(
+                        type = EMCHandle.CLICK_NODE,
+                        nodes = arrayListOf(nodes.random())
+                    )
+                )
+            }
+            else -> false
+        }
+
+        if (result) delay(delay)
+
+        return result
+    }
 
     fun toAccessibilitySetting() =
         ActivityUtils.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
@@ -109,46 +228,6 @@ object MHUtil {
     }
 
 
-    fun toCardTab(root: AccessibilityNodeInfo?) {
-        root ?: return
-        when (MHData.buyPlatform) {
-            1 -> {
-                val cartNode = NodeUtil.getByIdAndFirstMatch(root, MHConfig.MT_Tab_Cart)
-                if (cartNode?.isSelected != true) {
-                    NodeUtil.click(cartNode)
-                }
-            }
-            2 -> {
-                val cartNode = NodeUtil.getByIdAndFirstMatch(root, MHConfig.DD_Tab_Cart)
-                if (cartNode?.isSelected != true) {
-                    NodeUtil.click(cartNode)
-                }
-            }
-        }
-    }
-
-    fun isHomePage(className: String) = when (MHData.buyPlatform) {
-        1 -> {
-            MHConfig.MT_CLASS_HOME == className
-        }
-        2 -> {
-            MHConfig.DD_CLASS_HOME == className
-        }
-        else -> false
-    }
-
-
-    fun isPayPage(className: String) = when (MHData.buyPlatform) {
-        1 -> {
-            MHConfig.MT_CLASS_PAY == className
-        }
-        2 -> {
-            MHConfig.DD_CLASS_PAY == className
-        }
-        else -> false
-    }
-
-
     /**
      * 铃声播放器
      */
@@ -163,6 +242,7 @@ object MHUtil {
     }
 
     fun scheduleRingTone() = if (ringtone.isPlaying) ringtone.stop() else ringtone.play()
+
     fun playRingTone() {
         if (!ringtone.isPlaying) ringtone.play()
     }
@@ -218,9 +298,10 @@ object MHUtil {
         return c.timeInMillis
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
     fun screenshot(service: AccessibilityService) {
-        service.performGlobalAction(AccessibilityService.GLOBAL_ACTION_TAKE_SCREENSHOT)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            service.performGlobalAction(AccessibilityService.GLOBAL_ACTION_TAKE_SCREENSHOT)
+        }
     }
 
     fun notify(title: String, content: String) {

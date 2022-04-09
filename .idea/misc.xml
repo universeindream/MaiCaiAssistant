@@ -5,7 +5,8 @@
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.18072916666666666" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3619791666666667" />
-        <entry key="app/src/main/res/layout/fragment_config.xml" value="0.24895833333333334" />
+        <entry key="app/src/main/res/layout/content_settings.xml" value="0.37604166666666666" />
+        <entry key="app/src/main/res/layout/fragment_config.xml" value="0.1" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2075" />
         <entry key="hooktarget/src/main/res/layout/activity_main.xml" value="0.37604166666666666" />
         <entry key="mallhelp/src/main/res/layout/action_bar.xml" value="0.335" />

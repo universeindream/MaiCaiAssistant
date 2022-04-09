@@ -9,15 +9,17 @@ import android.view.WindowManager
 import android.view.accessibility.AccessibilityEvent
 import android.widget.Button
 import android.widget.FrameLayout
-import androidx.annotation.WorkerThread
-import cn.hutool.core.thread.ThreadUtil
 import com.blankj.utilcode.util.ActivityUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.elvishew.xlog.XLog
+import com.univerindream.maicaiassistant.MCHandleLog
 import com.univerindream.maicaiassistant.MHData
 import com.univerindream.maicaiassistant.MHUtil
 import com.univerindream.maicaiassistant.R
 import com.univerindream.maicaiassistant.ui.MainActivity
-import com.univerindream.maicaiassistant.utils.NodeUtil
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -28,12 +30,18 @@ class GlobalActionBarService : AccessibilityService() {
 
     private lateinit var mLayout: FrameLayout
 
-    private var mWindowStatusChangeTime = AtomicLong(System.currentTimeMillis())
-    private var mWindowClassNameByWindowId = mutableMapOf<Int, String>()
     private var mSnapUpStatus = AtomicBoolean(false)
     private var mLoopStartTime = AtomicLong(System.currentTimeMillis())
-    private val mCurWindowClassName: String
-        get() = mWindowClassNameByWindowId[rootInActiveWindow?.windowId] ?: ""
+
+    private var mHandleLog: MCHandleLog? = null
+
+    private var mForegroundPackageName: String = ""
+    private var mForegroundClassName: String = ""
+    private var mForegroundWindowId: Int = -1
+
+    private var mClassNameByWindowId = mutableMapOf<Int, String>()
+    private val mCurClassNameByRootWindow: String
+        get() = mClassNameByWindowId[rootInActiveWindow?.windowId] ?: ""
 
     override fun onCreate() {
         super.onCreate()
@@ -73,39 +81,25 @@ class GlobalActionBarService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
-        val packageName = event.packageName.toString()
-        val className = event.className.toString()
+        val pName = event.packageName.toString()
+        val cName = event.className.toString()
         val windowId = event.windowId
         val source = event.source
 
         when (event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED -> {
-                XLog.v(
-                    "TYPE_WINDOW_CONTENT_CHANGED - windowId:%s - packageName:%s - className:%s",
-                    source?.windowId,
-                    packageName,
-                    className
-                )
+                XLog.v("TYPE_WINDOW_CONTENT_CHANGED - %s - %s", event, source)
             }
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
-                mWindowStatusChangeTime.set(System.currentTimeMillis())
-                XLog.v(
-                    "TYPE_WINDOW_STATE_CHANGED - windowId:%s - packageName:%s - className:%s",
-                    source?.windowId,
-                    packageName,
-                    className
-                )
-
-                mWindowClassNameByWindowId[windowId] = className
+                XLog.v("TYPE_WINDOW_STATE_CHANGED - %s - %s", event, source)
+                if (pName == "com.android.systemui" || pName == "android") return
+                mForegroundPackageName = pName
+                mForegroundClassName = cName
+                mForegroundWindowId = windowId
+                mClassNameByWindowId[windowId] = cName
             }
             AccessibilityEvent.TYPE_VIEW_CLICKED -> {
-                XLog.v(
-                    "TYPE_VIEW_CLICKED - windowId:%s - packageName:%s - className:%s",
-                    source?.windowId,
-                    packageName,
-                    className
-                )
-                NodeUtil.log(source)
+                XLog.v("TYPE_VIEW_CLICKED - %s - %s", event, source)
             }
             else -> {}
         }
@@ -114,10 +108,10 @@ class GlobalActionBarService : AccessibilityService() {
     override fun onInterrupt() {}
 
     private fun runLoop() {
-        ThreadUtil.execAsync {
+        GlobalScope.launch {
             while (true) {
                 if (mSnapUpStatus.get()) {
-                    XLog.v("loop - curWindowClassName - $mCurWindowClassName")
+                    XLog.v("loop - curWindowClassName - $mCurClassNameByRootWindow")
 
                     //校验任务运行时长是否已达标
                     if (System.currentTimeMillis() > mLoopStartTime.get() + MHData.buyMinTime * 1000 * 60) {
@@ -130,135 +124,50 @@ class GlobalActionBarService : AccessibilityService() {
                         continue
                     }
 
-
                     //校验页面是否正常运行中
                     val now = System.currentTimeMillis()
-                    val changeTime = mWindowStatusChangeTime.get()
+                    val handleTime = mHandleLog?.handleTime ?: now
                     when {
-                        now - changeTime > 5000 -> {
-                            XLog.e("loop - 任务已 >5s 未执行")
+                        now - handleTime > 10000 -> {
+                            XLog.e("loop - ${mHandleLog?.stepName} 任务已 >10s 未执行")
                             cancelTask()
                             MHUtil.notify(
                                 "失败提示",
-                                "长时间点击无效，运行失败"
+                                "${mHandleLog?.stepName} 长时间点击无效，运行失败"
                             )
                             if (MHData.wrongAlarmStatus) MHUtil.playRingTone()
                             continue
                         }
-                        now - changeTime > 2000 -> {
-                            XLog.w("loop - 任务已 >2s 未执行")
-                            Thread.sleep(1000)
+                    }
+
+                    for (step in MHUtil.getSteps()) {
+                        val result = step.condList.all {
+                            MHUtil.stepCond(
+                                rootInActiveWindow,
+                                mForegroundClassName,
+                                it.type,
+                                it.node
+                            )
                         }
-                        now - changeTime >= 1000 -> {
-                            XLog.w("loop - 任务已 >1s 未执行")
-                            Thread.sleep(500)
+                        XLog.v("steps - ${step.name} - $result")
+
+                        if (result) {
+                            XLog.v("steps: ${step.name} 符合条件 - 立即执行")
+
+                            mHandleLog = mHandleLog ?: MCHandleLog(step.name, System.currentTimeMillis())
+                            if (step.name != mHandleLog!!.stepName) {
+                                mHandleLog!!.stepName = step.name
+                                mHandleLog!!.handleTime = System.currentTimeMillis()
+                            }
+                            MHUtil.stepHandle(this@GlobalActionBarService, rootInActiveWindow, step.handle)
+                            break
                         }
                     }
 
-                    doBuy()
-
-                    Thread.sleep(100)
+                    delay(100)
                 } else {
-                    Thread.sleep(500)
+                    delay(1000)
                 }
-            }
-        }
-
-    }
-
-    @WorkerThread
-    private fun doBuy() {
-        val curClassName = mCurWindowClassName
-
-        when {
-            MHUtil.isHomePage(curClassName) -> {
-                XLog.v("doBuy - isHomePage")
-
-                MHUtil.toCardTab(rootInActiveWindow)
-
-                when {
-                    NodeUtil.isClickByFirstMatchTxt(rootInActiveWindow, "我知道了") -> {
-                        XLog.v("loop - isHomePage - 我知道了")
-                        NodeUtil.clickByFirstMatchTxt(rootInActiveWindow, "我知道了")
-                        mWindowStatusChangeTime.set(System.currentTimeMillis())
-                    }
-                    NodeUtil.isClickByFirstMatchTxt(rootInActiveWindow, "结算") -> {
-                        //取消，会导致点击失败
-                        Thread.sleep(200)
-                        XLog.v("loop - isHomePage - 结算(")
-                        NodeUtil.clickByFirstMatchTxt(rootInActiveWindow, "结算", true)
-                    }
-                    rootInActiveWindow?.childCount ?: 0 <= 15 -> {
-                        XLog.v("loop - isPayPage - 空白页")
-                    }
-                    else -> {
-                        XLog.e("loop - isHomePage - 未知步骤 - childCount:%s", rootInActiveWindow?.childCount)
-                        MHUtil.notify(
-                            "未知流程",
-                            "需要人工操作"
-                        )
-                    }
-                }
-            }
-            MHUtil.isPayPage(curClassName) -> {
-                XLog.v("doBuy - isPayPage")
-
-                when {
-                    NodeUtil.isClickByFirstMatchTxt(rootInActiveWindow, "我知道了") -> {
-                        XLog.v("loop - isPayPage - 我知道了")
-                        NodeUtil.clickByFirstMatchTxt(rootInActiveWindow, "我知道了")
-                    }
-                    NodeUtil.isClickByFirstMatchTxt(rootInActiveWindow, "返回购物车") -> {
-                        XLog.v("loop - isPayPage - 返回购物车")
-                        NodeUtil.clickByFirstMatchTxt(rootInActiveWindow, "返回购物车")
-                    }
-                    NodeUtil.getByTxtAndFirstMatch(rootInActiveWindow, "选择送达时间") != null -> {
-                        XLog.v("loop - isPayPage - 选择送达时间")
-
-                        if (MHData.sendTimeSelectAlarmStatus) {
-                            MHUtil.notify(
-                                "选择送达时间流程",
-                                "需要人工操作"
-                            )
-
-                            MHUtil.playRingTone()
-                            cancelTask()
-                        } else {
-                            val sendTimeList = arrayListOf("09:35-10:30", "10:30-14:30", "14:30-18:30", "18:30-22:30")
-                            val sendTime = sendTimeList.random()
-                            NodeUtil.clickByFirstMatchTxt(rootInActiveWindow, sendTime)
-                            MHUtil.notify(
-                                "选择送达时间流程",
-                                "已自动选择 $sendTime"
-                            )
-                        }
-                    }
-                    NodeUtil.clickByFirstMatchTxt(rootInActiveWindow, "支付") -> {
-                        XLog.v("loop - isPayPage - 支付")
-
-                        MHUtil.notify(
-                            "支付流程",
-                            "需要人工操作"
-                        )
-
-                        MHUtil.playRingTone()
-
-                        cancelTask()
-                    }
-                    rootInActiveWindow?.childCount ?: 0 <= 15 -> {
-                        XLog.v("loop - isPayPage - 空白页")
-                    }
-                    else -> {
-                        XLog.e("loop - isPayPage - 未知步骤 - childCount:%s", rootInActiveWindow?.childCount)
-                        MHUtil.notify(
-                            "未知流程",
-                            "需要人工操作"
-                        )
-                    }
-                }
-            }
-            else -> {
-                XLog.e("doBuy - 未知页面 - %s", curClassName)
             }
         }
 
@@ -267,10 +176,10 @@ class GlobalActionBarService : AccessibilityService() {
     private fun enableTask() {
         mSnapUpStatus.set(true)
         mLoopStartTime.set(System.currentTimeMillis())
-        mWindowStatusChangeTime.set(System.currentTimeMillis())
+        mHandleLog = null
         updateSnapUpButton()
 
-        MHUtil.launchApp()
+        ToastUtils.showShort("任务启动中...")
     }
 
     private fun cancelTask() {
@@ -297,20 +206,15 @@ class GlobalActionBarService : AccessibilityService() {
             if (mSnapUpStatus.get()) {
                 cancelTask()
             } else {
-                MHUtil.launchApp()
                 enableTask()
             }
         }
     }
 
     private fun configureOpenAppButton() {
-        val stopSnapUpButton = mLayout.findViewById<View>(R.id.open_app) as Button
-        stopSnapUpButton.setOnClickListener {
+        val openAppButton = mLayout.findViewById<View>(R.id.open_app) as Button
+        openAppButton.setOnClickListener {
             MHUtil.launchApp()
-        }
-        stopSnapUpButton.setOnLongClickListener {
-            MHUtil.scheduleRingTone()
-            return@setOnLongClickListener false
         }
     }
 
