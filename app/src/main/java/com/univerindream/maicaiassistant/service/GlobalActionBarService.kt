@@ -211,10 +211,7 @@ class GlobalActionBarService : AccessibilityService() {
     private fun configureConfigButton() {
         val openConfigButton = mLayout.findViewById<View>(R.id.config) as Button
         openConfigButton.setOnClickListener {
-//            AppUtils.launchApp(AppUtils.getAppPackageName())
-
-            val launchIntent = packageManager.getLaunchIntentForPackage(AppUtils.getAppPackageName())
-            launchIntent?.let { startActivity(it) }
+            AppUtils.launchApp(AppUtils.getAppPackageName())
         }
     }
 
