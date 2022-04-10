@@ -1,4 +1,3 @@
-![Screenshot_20220411_004158](https://user-images.githubusercontent.com/7286154/162630164-d0851eff-3d11-4ba4-a678-f61eee3acf65.png)
 ## 买菜助手
 
 [![GitHub release](https://img.shields.io/github/v/release/universeindream/MaiCaiAssistant.svg)](https://github.com/universeindream/MaiCaiAssistant/releases) [![Total Downloads](https://img.shields.io/github/downloads/universeindream/MaiCaiAssistant/total.svg)](https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk) ![Support Platforms](https://img.shields.io/badge/platform-android-blue)
