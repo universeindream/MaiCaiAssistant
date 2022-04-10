@@ -21,7 +21,6 @@ import com.univerindream.maicaiassistant.widget.TimePickerFragment
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.util.*
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -37,6 +36,9 @@ class ConfigFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentConfigBinding.inflate(inflater, container, false)
+
+
+
         return binding.root
     }
 
@@ -49,6 +51,10 @@ class ConfigFragment : Fragment() {
             KeyboardUtils.hideSoftInput(view)
             view.requestFocus()
             return@setOnTouchListener false
+        }
+
+        binding.settingAutoInfo.setOnClickListener {
+            findNavController().navigate(R.id.action_ConfigFragment_to_HelpFragment)
         }
 
         binding.settingChooseAuto.setOnClickListener {
