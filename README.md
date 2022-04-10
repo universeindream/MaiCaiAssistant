@@ -1,4 +1,4 @@
-## 买菜、抢菜助手
+## 买菜助手 -> [v2](https://github.com/universeindream/MaiCaiAssistant/tree/v2)
 
 ### 美团买菜 - [Downlaod apk](https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk)
 
