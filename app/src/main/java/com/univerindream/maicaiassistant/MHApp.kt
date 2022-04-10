@@ -25,6 +25,10 @@ class MHApp : Application() {
         initXLog()
 
         XLog.v("HelpApp")
+        if(BuildConfig.DEBUG){
+            MHData.curJsonMHSolution = ""
+            MHData.allJsonMHSolution = ""
+        }
     }
 
     private fun initXLog() {

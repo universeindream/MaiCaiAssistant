@@ -11,7 +11,10 @@ import android.text.TextUtils
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.core.app.NotificationCompat
 import cn.hutool.core.date.DateUtil
-import com.blankj.utilcode.util.*
+import com.blankj.utilcode.util.ActivityUtils
+import com.blankj.utilcode.util.AppUtils
+import com.blankj.utilcode.util.NotificationUtils
+import com.blankj.utilcode.util.Utils
 import com.elvishew.xlog.XLog
 import com.univerindream.maicaiassistant.receiver.AlarmReceiver
 import com.univerindream.maicaiassistant.service.GlobalActionBarService
@@ -24,19 +27,6 @@ import java.util.concurrent.atomic.AtomicInteger
 object MHUtil {
 
     private var mNotifyId = AtomicInteger()
-
-
-    fun launchApp() {
-        when (MHData.buyPlatform) {
-            1 -> {
-                AppUtils.launchApp(MHConfig.MT_PACKAGE_NAME)
-            }
-            2 -> {
-                AppUtils.launchApp(MHConfig.DD_PACKAGE_NAME)
-            }
-        }
-    }
-
 
     /**
      * 校验条件
@@ -60,27 +50,76 @@ object MHUtil {
                 nodeType ?: return false
                 nodeKey ?: return false
                 return when (nodeType) {
-                    EMCNodeType.ID -> NodeUtil.isExistFromId(rootInActiveWindow, nodeKey)
-                    EMCNodeType.TXT -> NodeUtil.isExistFromTxt(rootInActiveWindow, nodeKey)
-                    else -> false
+                    EMCNodeType.ID -> NodeUtil.isExistById(rootInActiveWindow, nodeKey)
+                    EMCNodeType.TXT -> NodeUtil.isExistByTxt(rootInActiveWindow, nodeKey)
                 }
             }
             EMCCond.NODE_NO_EXIST -> {
                 nodeType ?: return false
                 nodeKey ?: return false
                 return when (nodeType) {
-                    EMCNodeType.ID -> !NodeUtil.isExistFromId(rootInActiveWindow, nodeKey)
-                    EMCNodeType.TXT -> !NodeUtil.isExistFromTxt(rootInActiveWindow, nodeKey)
-                    else -> false
+                    EMCNodeType.ID -> !NodeUtil.isExistById(rootInActiveWindow, nodeKey)
+                    EMCNodeType.TXT -> !NodeUtil.isExistByTxt(rootInActiveWindow, nodeKey)
                 }
             }
-            EMCCond.NODE_IS_UNSELECTED -> {
+            EMCCond.NODE_SELECTED -> {
                 nodeType ?: return false
                 nodeKey ?: return false
                 return when (nodeType) {
-                    EMCNodeType.ID -> !NodeUtil.isSelectedFromId(rootInActiveWindow, nodeKey)
-                    EMCNodeType.TXT -> !NodeUtil.isSelectedFromTxt(rootInActiveWindow, nodeKey)
-                    else -> false
+                    EMCNodeType.ID -> NodeUtil.matchInParentByFirstId(
+                        rootInActiveWindow,
+                        nodeKey,
+                        EMCMatch.SELECTED
+                    )
+                    EMCNodeType.TXT -> NodeUtil.matchInParentByFirstTxt(rootInActiveWindow, nodeKey, EMCMatch.SELECTED)
+                }
+            }
+            EMCCond.NODE_NOT_SELECTED -> {
+                nodeType ?: return false
+                nodeKey ?: return false
+                return when (nodeType) {
+                    EMCNodeType.ID -> !NodeUtil.matchInParentByFirstId(
+                        rootInActiveWindow,
+                        nodeKey,
+                        EMCMatch.SELECTED
+                    )
+                    EMCNodeType.TXT -> !NodeUtil.matchInParentByFirstTxt(
+                        rootInActiveWindow,
+                        nodeKey,
+                        EMCMatch.SELECTED
+                    )
+                }
+            }
+            EMCCond.NODE_CHECKED -> {
+                nodeType ?: return false
+                nodeKey ?: return false
+                return when (nodeType) {
+                    EMCNodeType.ID -> NodeUtil.matchInParentByFirstId(
+                        rootInActiveWindow,
+                        nodeKey,
+                        EMCMatch.CHECKED
+                    )
+                    EMCNodeType.TXT -> NodeUtil.matchInParentByFirstTxt(
+                        rootInActiveWindow,
+                        nodeKey,
+                        EMCMatch.CHECKED
+                    )
+                }
+            }
+            EMCCond.NODE_NOT_CHECKED -> {
+                nodeType ?: return false
+                nodeKey ?: return false
+                return when (nodeType) {
+                    EMCNodeType.ID -> !NodeUtil.matchInParentByFirstId(
+                        rootInActiveWindow,
+                        nodeKey,
+                        EMCMatch.CHECKED
+                    )
+                    EMCNodeType.TXT -> !NodeUtil.matchInParentByFirstTxt(
+                        rootInActiveWindow,
+                        nodeKey,
+                        EMCMatch.CHECKED
+                    )
                 }
             }
             EMCCond.NODE_CAN_CLICK -> {
@@ -89,7 +128,6 @@ object MHUtil {
                 return when (nodeType) {
                     EMCNodeType.ID -> NodeUtil.isClickById(rootInActiveWindow, nodeKey)
                     EMCNodeType.TXT -> NodeUtil.isClickByTxt(rootInActiveWindow, nodeKey)
-                    else -> false
                 }
             }
             EMCCond.NODE_NOT_CLICK -> {
@@ -98,7 +136,6 @@ object MHUtil {
                 return when (nodeType) {
                     EMCNodeType.ID -> !NodeUtil.isClickById(rootInActiveWindow, nodeKey)
                     EMCNodeType.TXT -> !NodeUtil.isClickByTxt(rootInActiveWindow, nodeKey)
-                    else -> false
                 }
             }
         }
@@ -125,13 +162,29 @@ object MHUtil {
                 AppUtils.launchApp(firNode.packageName)
                 true
             }
+            EMCHandle.BACK -> {
+                service.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK)
+            }
+            EMCHandle.RECENTS -> {
+                service.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS)
+            }
             EMCHandle.CLICK_NODE -> {
                 firNode ?: return false
                 firNode.nodeType ?: return false
                 firNode.nodeKey ?: return false
                 when (firNode.nodeType) {
-                    EMCNodeType.ID -> NodeUtil.clickByFirstMatchId(rootInActiveWindow, firNode.nodeKey)
-                    EMCNodeType.TXT -> NodeUtil.clickByFirstMatchTxt(rootInActiveWindow, firNode.nodeKey)
+                    EMCNodeType.ID -> NodeUtil.clickByFirstId(rootInActiveWindow, firNode.nodeKey)
+                    EMCNodeType.TXT -> NodeUtil.clickByFirstTxt(rootInActiveWindow, firNode.nodeKey)
+                    else -> false
+                }
+            }
+            EMCHandle.SELECT_NODE -> {
+                firNode ?: return false
+                firNode.nodeType ?: return false
+                firNode.nodeKey ?: return false
+                when (firNode.nodeType) {
+                    EMCNodeType.ID -> NodeUtil.selectByFirstId(rootInActiveWindow, firNode.nodeKey)
+                    EMCNodeType.TXT -> NodeUtil.selectByFirstTxt(rootInActiveWindow, firNode.nodeKey)
                     else -> false
                 }
             }

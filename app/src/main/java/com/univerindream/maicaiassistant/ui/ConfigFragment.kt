@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import cn.hutool.core.date.DateUtil
 import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.elvishew.xlog.XLog
+import com.univerindream.maicaiassistant.MHConfig
 import com.univerindream.maicaiassistant.MHData
 import com.univerindream.maicaiassistant.MHUtil
 import com.univerindream.maicaiassistant.R
@@ -49,14 +50,19 @@ class ConfigFragment : Fragment() {
             return@setOnTouchListener false
         }
 
-        binding.settingBuyPlatform.setOnCheckedChangeListener { radioGroup, i ->
-            when (i) {
-                R.id.setting_buy_meituanmaicai -> MHData.buyPlatform = 1
-                R.id.setting_buy_dingdong -> MHData.buyPlatform = 2
-            }
-        }
-        binding.settingCustomStep.setOnClickListener {
-            findNavController().navigate(R.id.action_ConfigFragment_to_HelpFragment)
+        binding.settingChooseAuto.setOnClickListener {
+            //findNavController().navigate(R.id.action_ConfigFragment_to_HelpFragment)
+
+            val builder = AlertDialog.Builder(this@ConfigFragment.requireContext())
+            builder.setTitle(R.string.dialog_choose_solution)
+                .setItems(
+                    MHConfig.allMHSolution.map { it.name }.toTypedArray()
+                ) { _, which ->
+                    MHConfig.curMHSolution = MHConfig.allMHSolution[which]
+                    loadData()
+                }
+            builder.create().show()
+
         }
         binding.settingBuyTimeValue.addTextChangedListener({ _, _, _, _ -> }, { _, _, _, _ -> }) { s ->
             s?.toString()?.let {
@@ -136,8 +142,8 @@ class ConfigFragment : Fragment() {
     private fun loadData() {
         binding.settingPermission.isChecked = MHUtil.hasServicePermission()
 
+        binding.settingAutoInfo.text = MHConfig.curMHSolution.name
 
-        binding.settingBuyPlatform.check(if (MHData.buyPlatform == 1) R.id.setting_buy_meituanmaicai else R.id.setting_buy_dingdong)
         binding.settingBuyTimeValue.setText(MHData.buyMinTime.toString())
 
         binding.settingTimerTriggerStatus.isChecked = MHData.timerTriggerStatus

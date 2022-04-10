@@ -35,7 +35,7 @@ class HelpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.helpSetDefault.setOnClickListener {
-            MHData.jsonSteps = ""
+            MHData.curJsonMHSolution = ""
 
             loadData()
         }
@@ -43,7 +43,7 @@ class HelpFragment : Fragment() {
             val data = binding.helpSteps.text.toString()
 
             if (JSONUtil.isTypeJSONArray(data)) {
-                MHData.jsonSteps = data
+                MHData.curJsonMHSolution = data
                 ToastUtils.showLong("保存成功")
             } else {
                 ToastUtils.showLong("JSON 数据非法")
@@ -55,7 +55,7 @@ class HelpFragment : Fragment() {
     }
 
     fun loadData() {
-        binding.helpSteps.setText(JSONUtil.formatJsonStr(MHData.jsonSteps))
+        binding.helpSteps.setText(JSONUtil.formatJsonStr(MHData.curJsonMHSolution))
     }
 
     override fun onDestroyView() {

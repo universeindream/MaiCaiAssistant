@@ -139,7 +139,7 @@ class GlobalActionBarService : AccessibilityService() {
                     }
 
                     //操作流程
-                    for (step in MHConfig.steps) {
+                    for (step in MHConfig.curMHSolution.steps) {
                         val condResult = step.condList.all {
                             MHUtil.stepCond(
                                 rootInActiveWindow,
@@ -151,7 +151,6 @@ class GlobalActionBarService : AccessibilityService() {
                         XLog.v("steps - ${step.name} - $condResult")
 
                         if (condResult) {
-                            XLog.v("steps: ${step.name} 符合条件 - 立即执行")
                             mHandleLog = mHandleLog ?: MCHandleLog(step.name, System.currentTimeMillis())
                             if (step.name != mHandleLog!!.stepName) {
                                 mHandleLog!!.stepName = step.name
@@ -229,7 +228,7 @@ class GlobalActionBarService : AccessibilityService() {
     private fun configureOpenAppButton() {
         val openAppButton = mLayout.findViewById<View>(R.id.open_app) as Button
         openAppButton.setOnClickListener {
-            MHUtil.launchApp()
+
         }
     }
 

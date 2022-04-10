@@ -79,8 +79,8 @@
         app:layout_constraintStart_toEndOf="@+id/settingPermission"
         app:layout_constraintTop_toTopOf="@+id/settingPermission" />
 
-    <RadioGroup
-        android:id="@+id/setting_buy_platform"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/setting_auto_info"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -88,23 +88,9 @@
         android:orientation="horizontal"
         android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView"
-        app:layout_constraintEnd_toStartOf="@+id/setting_custom_step"
+        app:layout_constraintEnd_toStartOf="@+id/setting_choose_auto"
         app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="@+id/textView">
-
-        <RadioButton
-            android:id="@+id/setting_buy_meituanmaicai"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="美团" />
-
-        <RadioButton
-            android:id="@+id/setting_buy_dingdong"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="叮咚" />
-
-    </RadioGroup>
+        app:layout_constraintTop_toTopOf="@+id/textView" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textView"
@@ -114,7 +100,7 @@
         android:layout_marginTop="16dp"
         android:gravity="center_vertical"
         android:minHeight="60dp"
-        android:text="抢购平台："
+        android:text="购买方案："
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -148,13 +134,13 @@
         tools:ignore="SpeakableTextPresentCheck" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/setting_custom_step"
+        android:id="@+id/setting_choose_auto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:inputType="number"
         android:minHeight="48dp"
-        android:text="自定义流程"
+        android:text="选择方案"
         app:layout_constraintBottom_toBottomOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView"
