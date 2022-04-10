@@ -7,11 +7,11 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.univerindream.app"
+        applicationId "com.univerindream.maicaiassistant"
         minSdk 21
         targetSdk 32
         versionCode 2
-        versionName "1.0.2"
+        versionName "2.1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -51,8 +51,6 @@ dependencies {
     implementation 'com.google.android.material:material:1.5.0'
 
     implementation 'com.blankj:utilcodex:1.31.0'
-
-    implementation "cn.hutool:hutool-all:5.7.22"
 
     implementation 'com.elvishew:xlog:1.10.1'
 
