@@ -30,10 +30,6 @@
 | <img src="https://user-images.githubusercontent.com/7286154/162581494-73f5e91e-04f8-45c1-a1d4-7855611ca7a8.png" width="200" >  | <img src="https://user-images.githubusercontent.com/7286154/162237920-7dce9f03-0cf5-4cab-9fd3-bc2b196401ba.png" width="200" > |
 
 
-**视频**
-
-[a](https://user-images.githubusercontent.com/7286154/162372907-3d40f3d2-102a-4ec9-9f10-4fb91bdba4ab.mp4)
-
 ### TODO
 
 - [ ] 支持全选
