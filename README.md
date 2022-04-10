@@ -1,8 +1,8 @@
 ## 买菜助手 -> [v2](https://github.com/universeindream/MaiCaiAssistant/tree/v2)
 
-### 美团买菜 - [Downlaod apk](https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk)
+### 美团买菜
 
-[![GitHub release](https://img.shields.io/github/v/release/universeindream/MaiCaiAssistant.svg)](https://github.com/universeindream/MaiCaiAssistant/releases) ![Total Downloads](https://img.shields.io/github/downloads/universeindream/MaiCaiAssistant/total.svg) ![Support Platforms](https://img.shields.io/badge/platform-android-blue)
+[![GitHub release](https://img.shields.io/github/v/release/universeindream/MaiCaiAssistant.svg)](https://github.com/universeindream/MaiCaiAssistant/releases) [![Total Downloads](https://img.shields.io/github/downloads/universeindream/MaiCaiAssistant/total.svg)](https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk) ![Support Platforms](https://img.shields.io/badge/platform-android-blue)
 
 > 不做宣传，欢迎反馈，记得点 :star:
 
