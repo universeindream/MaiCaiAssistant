@@ -24,9 +24,13 @@
 | <img src="https://user-images.githubusercontent.com/7286154/162630173-52a6101e-77e8-44ac-8645-a84e370f58f1.png" width="200" >  | <img src="https://user-images.githubusercontent.com/7286154/162630225-2f3df5c2-3d6f-4ea5-ab37-30136b5ec515.png" width="200" > |
 
 
+**录像**
+
+
+https://user-images.githubusercontent.com/7286154/162630474-3c3460d4-a01f-4556-bec9-6f88fd14dade.mp4
+
 
 ### TODO
 
 - [ ] 支持全选
-- [ ] 提高抢菜成功率
 
