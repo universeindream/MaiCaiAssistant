@@ -1,8 +1,10 @@
 package com.univerindream.maicaiassistant
 
-enum class EMCNodeType {
+enum class EMCSearch {
     ID, //ID 节点
     TXT, //内容节点
+    CLASSNAME,
+    PACKAGE_NAME,
 }
 
 /**
@@ -29,9 +31,12 @@ enum class EMCHandle {
     BACK,//返回上一页
     RECENTS,//打开最近
     LAUNCH,//运行 APP
-    CLICK_NODE,//单个节点运行
-    SELECT_NODE,//选中节点运行
+    CLICK_NODE,//点击节点
+    CLICK_PARENT_NODE,//点击父节点
+    CLICK_MULTIPLE_NODE,//点击多节点
     CLICK_SCOPE_RANDOM_NODE, //指定多个节点，随机运行
+    CLICK_RANDOM_NODE, //随机点击
+    NONE
 }
 
 /**
@@ -39,26 +44,32 @@ enum class EMCHandle {
  */
 enum class EMCMatch {
     CLICKABLE,
+    CLICKABLE_SELF_OR_PARENT,
     CLICKABLE_WITH_DISABLE,
 
     CHECKABLE,
+    CHECKABLE_SELF_OR_BROTHER,
     CHECKABLE_WITH_DISABLE,
 
     SELECTED,
+    SELECTED_SELF_OR_BROTHER,
     SELECTED_WITH_DISABLE,
 
     CHECKED,
+    CHECKED_SELF_OR_BROTHER,
     CHECKED_WITH_DISABLE,
+
+    ALL
 }
 
 /**
  * 节点
  */
 data class MCNode(
-    val nodeType: EMCNodeType? = null,
-    val nodeKey: String? = null,
-    val className: String? = null,
-    val packageName: String? = null,
+    val search: EMCSearch,
+    val nodeKey: String = "",
+    val className: String = "",
+    val packageName: String = "",
 )
 
 /**

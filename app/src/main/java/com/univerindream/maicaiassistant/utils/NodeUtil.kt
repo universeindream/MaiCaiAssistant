@@ -6,224 +6,173 @@ import cn.hutool.json.JSONConfig
 import cn.hutool.json.JSONUtil
 import com.elvishew.xlog.XLog
 import com.univerindream.maicaiassistant.EMCMatch
+import com.univerindream.maicaiassistant.EMCSearch
+import com.univerindream.maicaiassistant.MCNode
 
 object NodeUtil {
-
-    fun isExistById(root: AccessibilityNodeInfo?, id: String): Boolean =
-        getByFirstId(root, id) != null
-
-    fun isExistByTxt(root: AccessibilityNodeInfo?, txt: String): Boolean =
-        getByFirstTxt(root, txt) != null
-
-    fun matchByFirstId(
-        root: AccessibilityNodeInfo?, id: String, match: EMCMatch,
-        upwards: Int = 10000
-    ): Boolean =
-        getFirstAttrMatchNode(getByFirstId(root, id), match, upwards) != null
-
-    fun matchByFirstTxt(
-        root: AccessibilityNodeInfo?, txt: String, match: EMCMatch,
-        upwards: Int = 10000
-    ) =
-        getFirstAttrMatchNode(getByFirstTxt(root, txt), match, upwards) != null
-
-    fun matchInParentByFirstId(
-        root: AccessibilityNodeInfo?, id: String, match: EMCMatch
-    ) =
-        getFirstAttrMatchInParentNode(getByFirstId(root, id), match) != null
-
-    fun matchInParentByFirstTxt(
-        root: AccessibilityNodeInfo?, txt: String, match: EMCMatch
-    ) =
-        getFirstAttrMatchInParentNode(getByFirstTxt(root, txt), match) != null
-
-    /**
-     * 是否可以点击 - 任意一个匹配 txt 节点
-     */
-    fun isClickById(root: AccessibilityNodeInfo?, id: String): Boolean {
-        if (root == null) return false
-
-        val data = root.findAccessibilityNodeInfosByViewId(id)
-        data.forEach {
-            if (getFirstAttrMatchNode(it, EMCMatch.CLICKABLE) != null) return true
-        }
-
-        return false
-    }
-
-    /**
-     * 是否可以点击 - 任意一个匹配 txt 节点
-     */
-    fun isClickByTxt(root: AccessibilityNodeInfo?, txt: String): Boolean {
-        if (root == null) return false
-
-        val data = root.findAccessibilityNodeInfosByText(txt)
-        data.forEach {
-            if (getFirstAttrMatchNode(it, EMCMatch.CLICKABLE) != null) return true
-        }
-
-        return false
-    }
-
 
     /**
      * 属性是否匹配
      */
-    fun isAttributesMatch(info: AccessibilityNodeInfo?, match: EMCMatch): Boolean {
+    fun isMatch(info: AccessibilityNodeInfo?, match: EMCMatch = EMCMatch.ALL): Boolean {
         if (info == null) return false
 
         return when (match) {
             EMCMatch.CLICKABLE -> info.isClickable && info.isEnabled
+            EMCMatch.CLICKABLE_SELF_OR_PARENT -> {
+                val queue = ArrayDeque<AccessibilityNodeInfo>()
+                queue.add(info)
+
+                while (!queue.isEmpty()) {
+                    val node = queue.removeLast()
+
+                    if (node.isClickable && node.isEnabled) {
+                        return true
+                    }
+
+                    node.parent?.let {
+                        queue.addFirst(it)
+                    }
+
+                }
+
+                return false
+            }
             EMCMatch.CLICKABLE_WITH_DISABLE -> info.isClickable
 
             EMCMatch.CHECKABLE -> info.isCheckable && info.isEnabled
+            EMCMatch.CHECKABLE_SELF_OR_BROTHER -> {
+                if (info.isCheckable && info.isEnabled) return true
+
+                val parent = info.parent
+                val child = arrayListOf<AccessibilityNodeInfo>()
+
+                for (index in 0 until parent.childCount) {
+                    child.add(parent.getChild(index))
+                }
+
+                return child.any { it.isCheckable && it.isEnabled }
+            }
             EMCMatch.CHECKABLE_WITH_DISABLE -> info.isCheckable
 
             EMCMatch.SELECTED -> info.isSelected && info.isEnabled
+            EMCMatch.SELECTED_SELF_OR_BROTHER -> {
+                if (info.isSelected && info.isEnabled) return true
+
+                val parent = info.parent
+                val child = arrayListOf<AccessibilityNodeInfo>()
+
+                for (index in 0 until parent.childCount) {
+                    child.add(parent.getChild(index))
+                }
+
+                return child.any { it.isSelected && it.isEnabled }
+            }
             EMCMatch.SELECTED_WITH_DISABLE -> info.isSelected
 
             EMCMatch.CHECKED -> info.isChecked && info.isEnabled
+            EMCMatch.CHECKED_SELF_OR_BROTHER -> {
+                if (info.isChecked && info.isEnabled) return true
+
+                val parent = info.parent
+                val child = arrayListOf<AccessibilityNodeInfo>()
+
+                for (index in 0 until parent.childCount) {
+                    child.add(parent.getChild(index))
+                }
+
+                return child.any { it.isChecked && it.isEnabled }
+            }
             EMCMatch.CHECKED_WITH_DISABLE -> info.isChecked
+
+            EMCMatch.ALL -> true
         }
     }
 
-    /**
-     * 获取节点 - 首个 id 匹配的节点
-     */
-    fun getByFirstId(root: AccessibilityNodeInfo?, id: String): AccessibilityNodeInfo? =
-        root?.findAccessibilityNodeInfosByViewId(id)?.getOrNull(0)
-
-    /**
-     * 获取节点 - 首个 txt 匹配的节点
-     */
-    fun getByFirstTxt(root: AccessibilityNodeInfo?, txt: String): AccessibilityNodeInfo? =
-        root?.findAccessibilityNodeInfosByText(txt)?.getOrNull(0)
-
-    /**
-     * 获取第一个匹配节点
-     */
-    fun getFirstAttrMatchNode(
+    fun searchAllNode(
         root: AccessibilityNodeInfo?,
-        match: EMCMatch,
-        upwards: Int = 10000
-    ): AccessibilityNodeInfo? = getAllAttrMatchNode(root, match, upwards, true).firstOrNull()
-
-    /**
-     * 获取第一个匹配的父节点内的节点
-     */
-    fun getFirstAttrMatchInParentNode(
-        root: AccessibilityNodeInfo?,
-        match: EMCMatch
-    ): AccessibilityNodeInfo? {
-        root ?: return null
-        val parent = root.parent ?: return null
-
-        for (index in 0 until parent.childCount) {
-            val curNode = parent.getChild(index)
-            if (isAttributesMatch(curNode, match)) return curNode
-        }
-
-        return null
-    }
-
-    /**
-     * 获取所有匹配节点
-     */
-    fun getAllAttrMatchNode(
-        root: AccessibilityNodeInfo?,
-        match: EMCMatch,
-        upwards: Int = 10000, //向上遍历数
-        firstMatch: Boolean = false, //第一个匹配
+        node: MCNode,
+        match: EMCMatch = EMCMatch.ALL
     ): List<AccessibilityNodeInfo> {
+        root ?: return emptyList()
+
         val result = arrayListOf<AccessibilityNodeInfo>()
-        if (root == null) return result
+
+        val nodeType = node.search
+        val nodeKey = node.nodeKey
+        val className = node.className
+        val packageName = node.packageName
+
+        if (nodeType == EMCSearch.PACKAGE_NAME) {
+            if (root.packageName == packageName) {
+                result.add(root)
+            }
+            return result
+        }
+
+        if (nodeType == EMCSearch.CLASSNAME) {
+            if (root.className == className) {
+                result.add(root)
+            }
+            return result
+        }
+
+        var data = when (nodeType) {
+            EMCSearch.ID -> root.findAccessibilityNodeInfosByViewId(nodeKey)
+            EMCSearch.TXT -> root.findAccessibilityNodeInfosByText(nodeKey)
+            else -> arrayListOf<AccessibilityNodeInfo>()
+        }
+
+        if (className.isNotBlank()) {
+            data = data.filter { it.className == className }
+        }
+
+        if (match != EMCMatch.ALL) {
+            data = data.filter { isMatch(it, match) }
+        }
+
+        return data
+    }
+
+    fun searchFirstNode(
+        root: AccessibilityNodeInfo?,
+        node: MCNode,
+        match: EMCMatch = EMCMatch.ALL
+    ): AccessibilityNodeInfo? =
+        searchAllNode(root, node, match).firstOrNull()
+
+    fun isExist(root: AccessibilityNodeInfo?, node: MCNode, match: EMCMatch = EMCMatch.ALL): Boolean =
+        searchAllNode(root, node, match).isNotEmpty()
+
+    fun click(root: AccessibilityNodeInfo?): Boolean {
+        root ?: return false
 
         val queue = ArrayDeque<AccessibilityNodeInfo>()
         queue.add(root)
 
-        var curUpwards = 0
         while (!queue.isEmpty()) {
             val node = queue.removeLast()
 
-            if (isAttributesMatch(node, match)) {
-                result.add(node)
-                if (firstMatch) return result
+            if (node.isClickable && node.isEnabled) {
+                return node.performAction(AccessibilityNodeInfo.ACTION_CLICK)
             }
-
-            if (curUpwards > upwards) return result
 
             node.parent?.let {
                 queue.addFirst(it)
-                curUpwards++
             }
 
         }
 
-        return result
+        return false
     }
 
-    /**
-     * 点击节点
-     */
-    fun click(
-        root: AccessibilityNodeInfo?, match: EMCMatch = EMCMatch.CLICKABLE
-    ): Boolean {
-        if (root == null) return false
-        if (isAttributesMatch(root, match)) return root.performAction(AccessibilityNodeInfo.ACTION_CLICK)
-
-        val node = getFirstAttrMatchNode(root, match)
-        return node?.performAction(AccessibilityNodeInfo.ACTION_CLICK) ?: false
+    fun clickFirstNode(root: AccessibilityNodeInfo?, node: MCNode, match: EMCMatch = EMCMatch.ALL): Boolean {
+        return click(searchFirstNode(root, node, match))
     }
 
-    /**
-     * 点击第一个节点 - 首个 id 匹配的节点
-     */
-    fun clickByFirstId(root: AccessibilityNodeInfo?, id: String, match: EMCMatch = EMCMatch.CLICKABLE): Boolean =
-        getByFirstId(root, id)?.let {
-            click(it, match)
-        } ?: false
-
-    /**
-     * 点击第一个节点 - 首个 txt 匹配的节点
-     */
-    fun clickByFirstTxt(root: AccessibilityNodeInfo?, txt: String, match: EMCMatch = EMCMatch.CLICKABLE): Boolean =
-        getByFirstTxt(root, txt)?.let {
-            click(it, match)
-        } ?: false
-
-    /**
-     * 选中节点
-     */
-    fun select(
-        root: AccessibilityNodeInfo?,
-        match: EMCMatch = EMCMatch.CHECKABLE
-    ): Boolean {
-        if (root == null) return false
-        if (isAttributesMatch(root, match)) return root.performAction(AccessibilityNodeInfo.ACTION_SELECT)
-
-        val node = getFirstAttrMatchNode(root, match)
-        return node?.performAction(AccessibilityNodeInfo.ACTION_SELECT) ?: false
+    fun clickRandomNode(root: AccessibilityNodeInfo?, node: MCNode, match: EMCMatch = EMCMatch.ALL): Boolean {
+        return click(searchAllNode(root, node, match).randomOrNull())
     }
-
-    /**
-     * 点击节点 - 首个匹配 txt 节点
-     */
-    fun selectByFirstTxt(
-        root: AccessibilityNodeInfo?, txt: String,
-        match: EMCMatch = EMCMatch.CHECKABLE
-    ): Boolean = getByFirstTxt(root, txt)?.let {
-        select(it, match)
-    } ?: false
-
-    /**
-     * 点击节点 - 首个匹配 id 节点
-     */
-    fun selectByFirstId(
-        root: AccessibilityNodeInfo?, id: String,
-        match: EMCMatch = EMCMatch.CHECKABLE
-    ): Boolean = getByFirstId(root, id)?.let {
-        select(it, match)
-    } ?: false
 
     fun log(nodeInfo: AccessibilityNodeInfo?, filterGone: Boolean = false) {
         nodeInfo ?: return

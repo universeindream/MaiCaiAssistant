@@ -37,106 +37,34 @@ object MHUtil {
         cond: EMCCond,
         condNode: MCNode
     ): Boolean {
-        val nodeType = condNode.nodeType
-        val nodeKey = condNode.nodeKey
-
         return when (cond) {
             EMCCond.APP_IS_BACKGROUND -> {
-                condNode.packageName ?: return false
                 return rootInActiveWindow?.packageName != condNode.packageName
             }
             EMCCond.EQ_CLASS_NAME -> foregroundClassName == condNode.className
             EMCCond.NODE_EXIST -> {
-                nodeType ?: return false
-                nodeKey ?: return false
-                return when (nodeType) {
-                    EMCNodeType.ID -> NodeUtil.isExistById(rootInActiveWindow, nodeKey)
-                    EMCNodeType.TXT -> NodeUtil.isExistByTxt(rootInActiveWindow, nodeKey)
-                }
+                return NodeUtil.isExist(rootInActiveWindow, condNode)
             }
             EMCCond.NODE_NO_EXIST -> {
-                nodeType ?: return false
-                nodeKey ?: return false
-                return when (nodeType) {
-                    EMCNodeType.ID -> !NodeUtil.isExistById(rootInActiveWindow, nodeKey)
-                    EMCNodeType.TXT -> !NodeUtil.isExistByTxt(rootInActiveWindow, nodeKey)
-                }
+                return !NodeUtil.isExist(rootInActiveWindow, condNode)
             }
             EMCCond.NODE_SELECTED -> {
-                nodeType ?: return false
-                nodeKey ?: return false
-                return when (nodeType) {
-                    EMCNodeType.ID -> NodeUtil.matchInParentByFirstId(
-                        rootInActiveWindow,
-                        nodeKey,
-                        EMCMatch.SELECTED
-                    )
-                    EMCNodeType.TXT -> NodeUtil.matchInParentByFirstTxt(rootInActiveWindow, nodeKey, EMCMatch.SELECTED)
-                }
+                return NodeUtil.isExist(rootInActiveWindow, condNode, EMCMatch.SELECTED_SELF_OR_BROTHER)
             }
             EMCCond.NODE_NOT_SELECTED -> {
-                nodeType ?: return false
-                nodeKey ?: return false
-                return when (nodeType) {
-                    EMCNodeType.ID -> !NodeUtil.matchInParentByFirstId(
-                        rootInActiveWindow,
-                        nodeKey,
-                        EMCMatch.SELECTED
-                    )
-                    EMCNodeType.TXT -> !NodeUtil.matchInParentByFirstTxt(
-                        rootInActiveWindow,
-                        nodeKey,
-                        EMCMatch.SELECTED
-                    )
-                }
+                return !NodeUtil.isExist(rootInActiveWindow, condNode, EMCMatch.SELECTED_SELF_OR_BROTHER)
             }
             EMCCond.NODE_CHECKED -> {
-                nodeType ?: return false
-                nodeKey ?: return false
-                return when (nodeType) {
-                    EMCNodeType.ID -> NodeUtil.matchInParentByFirstId(
-                        rootInActiveWindow,
-                        nodeKey,
-                        EMCMatch.CHECKED
-                    )
-                    EMCNodeType.TXT -> NodeUtil.matchInParentByFirstTxt(
-                        rootInActiveWindow,
-                        nodeKey,
-                        EMCMatch.CHECKED
-                    )
-                }
+                return NodeUtil.isExist(rootInActiveWindow, condNode, EMCMatch.CHECKED_SELF_OR_BROTHER)
             }
             EMCCond.NODE_NOT_CHECKED -> {
-                nodeType ?: return false
-                nodeKey ?: return false
-                return when (nodeType) {
-                    EMCNodeType.ID -> !NodeUtil.matchInParentByFirstId(
-                        rootInActiveWindow,
-                        nodeKey,
-                        EMCMatch.CHECKED
-                    )
-                    EMCNodeType.TXT -> !NodeUtil.matchInParentByFirstTxt(
-                        rootInActiveWindow,
-                        nodeKey,
-                        EMCMatch.CHECKED
-                    )
-                }
+                return !NodeUtil.isExist(rootInActiveWindow, condNode, EMCMatch.CHECKED_SELF_OR_BROTHER)
             }
             EMCCond.NODE_CAN_CLICK -> {
-                nodeType ?: return false
-                nodeKey ?: return false
-                return when (nodeType) {
-                    EMCNodeType.ID -> NodeUtil.isClickById(rootInActiveWindow, nodeKey)
-                    EMCNodeType.TXT -> NodeUtil.isClickByTxt(rootInActiveWindow, nodeKey)
-                }
+                return NodeUtil.isExist(rootInActiveWindow, condNode, EMCMatch.CLICKABLE_SELF_OR_PARENT)
             }
             EMCCond.NODE_NOT_CLICK -> {
-                nodeType ?: return false
-                nodeKey ?: return false
-                return when (nodeType) {
-                    EMCNodeType.ID -> !NodeUtil.isClickById(rootInActiveWindow, nodeKey)
-                    EMCNodeType.TXT -> !NodeUtil.isClickByTxt(rootInActiveWindow, nodeKey)
-                }
+                return !NodeUtil.isExist(rootInActiveWindow, condNode, EMCMatch.CLICKABLE_SELF_OR_PARENT)
             }
         }
     }
@@ -151,7 +79,7 @@ object MHUtil {
         val delay = handle.delay
         val firNode = nodes.firstOrNull()
 
-        val result = when (type) {
+        val result: Boolean = when (type) {
             EMCHandle.LAUNCH -> {
                 firNode ?: return false
                 delay(100)
@@ -170,22 +98,15 @@ object MHUtil {
             }
             EMCHandle.CLICK_NODE -> {
                 firNode ?: return false
-                firNode.nodeType ?: return false
-                firNode.nodeKey ?: return false
-                when (firNode.nodeType) {
-                    EMCNodeType.ID -> NodeUtil.clickByFirstId(rootInActiveWindow, firNode.nodeKey)
-                    EMCNodeType.TXT -> NodeUtil.clickByFirstTxt(rootInActiveWindow, firNode.nodeKey)
-                    else -> false
-                }
+                NodeUtil.clickFirstNode(rootInActiveWindow, firNode, EMCMatch.CLICKABLE_SELF_OR_PARENT)
             }
-            EMCHandle.SELECT_NODE -> {
-                firNode ?: return false
-                firNode.nodeType ?: return false
-                firNode.nodeKey ?: return false
-                when (firNode.nodeType) {
-                    EMCNodeType.ID -> NodeUtil.selectByFirstId(rootInActiveWindow, firNode.nodeKey)
-                    EMCNodeType.TXT -> NodeUtil.selectByFirstTxt(rootInActiveWindow, firNode.nodeKey)
-                    else -> false
+            EMCHandle.CLICK_MULTIPLE_NODE -> {
+                nodes.all {
+                    stepHandle(
+                        service,
+                        rootInActiveWindow,
+                        MCHandle(EMCHandle.CLICK_NODE, 100, arrayListOf(it))
+                    )
                 }
             }
             EMCHandle.CLICK_SCOPE_RANDOM_NODE -> {
@@ -197,6 +118,11 @@ object MHUtil {
                     )
                 )
             }
+            EMCHandle.CLICK_RANDOM_NODE -> {
+                firNode ?: return false
+                NodeUtil.clickRandomNode(rootInActiveWindow, firNode, EMCMatch.CLICKABLE_SELF_OR_PARENT)
+            }
+            EMCHandle.NONE -> true
             else -> false
         }
 
