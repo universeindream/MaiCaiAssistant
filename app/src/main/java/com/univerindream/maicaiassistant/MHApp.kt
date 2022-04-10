@@ -1,9 +1,8 @@
 package com.univerindream.maicaiassistant
 
 import android.app.Application
-import cn.hutool.core.date.DateUnit
-import cn.hutool.core.date.DateUtil
 import com.blankj.utilcode.util.PathUtils
+import com.blankj.utilcode.util.TimeUtils
 import com.elvishew.xlog.LogConfiguration
 import com.elvishew.xlog.LogLevel
 import com.elvishew.xlog.XLog
@@ -15,7 +14,6 @@ import com.elvishew.xlog.printer.file.FilePrinter
 import com.elvishew.xlog.printer.file.backup.NeverBackupStrategy
 import com.elvishew.xlog.printer.file.clean.FileLastModifiedCleanStrategy
 import com.elvishew.xlog.printer.file.naming.DateFileNameGenerator
-import java.util.*
 
 
 class MHApp : Application() {
@@ -25,7 +23,7 @@ class MHApp : Application() {
         initXLog()
 
         XLog.v("HelpApp")
-        if(BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             MHData.curJsonMHSolution = ""
             MHData.allJsonMHSolution = ""
         }
@@ -48,7 +46,7 @@ class MHApp : Application() {
             FilePrinter.Builder(PathUtils.join(PathUtils.getExternalAppCachePath(), "logs"))
                 .fileNameGenerator(DateFileNameGenerator())
                 .backupStrategy(NeverBackupStrategy())
-                .cleanStrategy(FileLastModifiedCleanStrategy(DateUnit.DAY.millis * 24))
+                .cleanStrategy(FileLastModifiedCleanStrategy(1000 * 60 * 60 * 24))
                 .flattener(object : DefaultFlattener() {
                     override fun flatten(
                         timeMillis: Long,
@@ -56,7 +54,7 @@ class MHApp : Application() {
                         tag: String?,
                         message: String?
                     ): CharSequence {
-                        return (DateUtil.formatDateTime(Date(timeMillis))
+                        return (TimeUtils.millis2String(timeMillis)
                                 + '|' + LogLevel.getShortLevelName(logLevel)
                                 + '|' + tag
                                 + '|' + message)

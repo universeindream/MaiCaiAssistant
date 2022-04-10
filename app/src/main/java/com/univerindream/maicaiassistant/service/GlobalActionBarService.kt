@@ -10,11 +10,10 @@ import android.view.WindowManager
 import android.view.accessibility.AccessibilityEvent
 import android.widget.Button
 import android.widget.FrameLayout
-import com.blankj.utilcode.util.ActivityUtils
+import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.elvishew.xlog.XLog
 import com.univerindream.maicaiassistant.*
-import com.univerindream.maicaiassistant.ui.MainActivity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -54,7 +53,13 @@ class GlobalActionBarService : AccessibilityService() {
         val wm = getSystemService(WINDOW_SERVICE) as WindowManager
         mLayout = FrameLayout(this)
         val lp = WindowManager.LayoutParams()
-        lp.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            lp.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
+        } else {
+            lp.type = WindowManager.LayoutParams.TYPE_PHONE
+        }
+
         lp.format = PixelFormat.TRANSLUCENT
         lp.flags = lp.flags or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT
@@ -206,7 +211,10 @@ class GlobalActionBarService : AccessibilityService() {
     private fun configureConfigButton() {
         val openConfigButton = mLayout.findViewById<View>(R.id.config) as Button
         openConfigButton.setOnClickListener {
-            ActivityUtils.startActivity(MainActivity::class.java)
+//            AppUtils.launchApp(AppUtils.getAppPackageName())
+
+            val launchIntent = packageManager.getLaunchIntentForPackage(AppUtils.getAppPackageName())
+            launchIntent?.let { startActivity(it) }
         }
     }
 

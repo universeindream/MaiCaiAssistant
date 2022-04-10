@@ -7,8 +7,9 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import cn.hutool.core.date.DateUtil
+import androidx.navigation.fragment.findNavController
 import com.blankj.utilcode.util.KeyboardUtils
+import com.blankj.utilcode.util.TimeUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.elvishew.xlog.XLog
 import com.univerindream.maicaiassistant.MHConfig
@@ -51,8 +52,6 @@ class ConfigFragment : Fragment() {
         }
 
         binding.settingChooseAuto.setOnClickListener {
-            //findNavController().navigate(R.id.action_ConfigFragment_to_HelpFragment)
-
             val builder = AlertDialog.Builder(this@ConfigFragment.requireContext())
             builder.setTitle(R.string.dialog_choose_solution)
                 .setItems(
@@ -80,7 +79,7 @@ class ConfigFragment : Fragment() {
                 val timerTime = MHData.timerTriggerTime
                 if (timerTime > System.currentTimeMillis()) {
                     MHUtil.enableAlarm(timerTime)
-                    ToastUtils.showShort("将于 ${DateUtil.formatDateTime(Date(timerTime))} 开启定时抢购")
+                    ToastUtils.showShort("将于 ${TimeUtils.millis2String(timerTime)} 开启定时抢购")
                 } else {
                     MHData.timerTriggerStatus = false
                     compoundButton.isChecked = false
@@ -91,15 +90,15 @@ class ConfigFragment : Fragment() {
                 ToastUtils.showShort("定时抢购已取消")
             }
         }
-        binding.settingTimerTriggerValue.text = DateUtil.formatDateTime(Date(MHData.timerTriggerTime))
+        binding.settingTimerTriggerValue.text = TimeUtils.millis2String(MHData.timerTriggerTime)
         binding.settingTimerTriggerChange.setOnClickListener {
             TimePickerFragment { _, h, m ->
                 val nextTime = MHUtil.calcNextTime(h, m)
                 MHData.timerTriggerTime = nextTime
-                binding.settingTimerTriggerValue.text = DateUtil.formatDateTime(Date(nextTime))
+                binding.settingTimerTriggerValue.text = TimeUtils.millis2String(nextTime)
                 if (MHData.timerTriggerStatus) {
                     MHUtil.enableAlarm(nextTime)
-                    ToastUtils.showShort("将于 ${DateUtil.formatDateTime(Date(MHData.timerTriggerTime))} 开启定时抢购")
+                    ToastUtils.showShort("将于 ${TimeUtils.millis2String(MHData.timerTriggerTime)} 开启定时抢购")
                 }
             }.show(parentFragmentManager, "timePicker")
         }

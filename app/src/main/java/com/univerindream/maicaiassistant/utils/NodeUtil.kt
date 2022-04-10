@@ -2,9 +2,8 @@ package com.univerindream.maicaiassistant.utils
 
 import android.os.Build
 import android.view.accessibility.AccessibilityNodeInfo
-import cn.hutool.json.JSONConfig
-import cn.hutool.json.JSONUtil
 import com.elvishew.xlog.XLog
+import com.google.gson.Gson
 import com.univerindream.maicaiassistant.EMCMatch
 import com.univerindream.maicaiassistant.EMCSearch
 import com.univerindream.maicaiassistant.MCNode
@@ -211,7 +210,7 @@ object NodeUtil {
 
         data["detail"] = nodeInfo.toString()
 
-        XLog.tag("Node-Log").json(JSONUtil.toJsonStr(data, JSONConfig.create().setOrder(true)))
+        XLog.tag("Node-Log").json(Gson().toJson(data))
     }
 
     fun logRoot(root: AccessibilityNodeInfo?) {

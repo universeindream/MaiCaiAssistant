@@ -10,11 +10,7 @@ import android.provider.Settings
 import android.text.TextUtils
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.core.app.NotificationCompat
-import cn.hutool.core.date.DateUtil
-import com.blankj.utilcode.util.ActivityUtils
-import com.blankj.utilcode.util.AppUtils
-import com.blankj.utilcode.util.NotificationUtils
-import com.blankj.utilcode.util.Utils
+import com.blankj.utilcode.util.*
 import com.elvishew.xlog.XLog
 import com.univerindream.maicaiassistant.receiver.AlarmReceiver
 import com.univerindream.maicaiassistant.service.GlobalActionBarService
@@ -237,7 +233,7 @@ object MHUtil {
         Utils.getApp().getSystemService(AccessibilityService.ALARM_SERVICE) as AlarmManager
 
     fun enableAlarm(triggerAtMillis: Long): String {
-        val friendlyTime = DateUtil.formatDateTime(Date(triggerAtMillis))
+        val friendlyTime = TimeUtils.millis2String(triggerAtMillis)
         XLog.v("enableAlarm - %s", friendlyTime)
 
         getAlarmManager().cancel(alarmPendingIntent)
