@@ -2,6 +2,7 @@ package com.univerindream.maicaiassistant.service
 
 import android.accessibilityservice.AccessibilityService
 import android.graphics.PixelFormat
+import android.os.Build
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -227,6 +228,7 @@ class GlobalActionBarService : AccessibilityService() {
 
     private fun configureOpenAppButton() {
         val openAppButton = mLayout.findViewById<View>(R.id.open_app) as Button
+        if (BuildConfig.DEBUG) openAppButton.visibility = View.VISIBLE
         openAppButton.setOnClickListener {
 
         }

@@ -20,25 +20,28 @@
 
     <Button
         android:id="@+id/config"
-        android:layout_width="70dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:background="#40B0C4DE"
+        android:background="#60B0C4DE"
+        android:padding="8dp"
         android:paddingStart="1dp"
         android:paddingEnd="1dp"
         android:text="@string/openConfig" />
 
     <Button
         android:id="@+id/snapUp"
-        android:layout_width="70dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:background="#40B0C4DE"
+        android:background="#60B0C4DE"
+        android:padding="8dp"
         android:text="@string/startSnapUp" />
 
     <Button
         android:id="@+id/open_app"
-        android:layout_width="70dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:background="#40B0C4DE"
-        android:text="@string/openApp" />
+        android:text="@string/openApp"
+        android:visibility="gone" />
 
 </LinearLayout>
