@@ -32,4 +32,4 @@ https://user-images.githubusercontent.com/7286154/162630474-3c3460d4-a01f-4556-b
 ### TODO
 
 - [ ] 支持全选
-- [ ] 方案图形化编辑
+- [ ] 方案友好界面编辑
