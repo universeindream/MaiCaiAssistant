@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.JsonUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.univerindream.maicaiassistant.MHData
+import com.univerindream.maicaiassistant.MHSolution
 import com.univerindream.maicaiassistant.databinding.FragmentHelpBinding
 
 /**
@@ -42,10 +44,11 @@ class HelpFragment : Fragment() {
         binding.helpSave.setOnClickListener {
             val data = binding.helpSteps.text.toString()
 
-            if (JsonUtils.isJSONArray(data)) {
+            try {
+                GsonUtils.fromJson(data, MHSolution::class.java)
                 MHData.curJsonMHSolution = data
                 ToastUtils.showLong("保存成功")
-            } else {
+            } catch (e: Exception) {
                 ToastUtils.showLong("JSON 数据非法")
             }
         }
