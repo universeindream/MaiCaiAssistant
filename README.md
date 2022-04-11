@@ -1,8 +1,8 @@
 ## 买菜助手
 
-> 一切的源头： `拒绝早起抢菜，抢到再起床`  :rofl:
-
 [![GitHub release](https://img.shields.io/github/v/release/universeindream/MaiCaiAssistant.svg)](https://github.com/universeindream/MaiCaiAssistant/releases) [![Total Downloads](https://img.shields.io/github/downloads/universeindream/MaiCaiAssistant/total.svg)](https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk) ![Support Platforms](https://img.shields.io/badge/platform-android-blue)
+
+> 一切的源头： `拒绝早起抢菜，抢到再起床`  :rofl:
 
 ### 功能特点
 
