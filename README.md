@@ -4,9 +4,11 @@
 
 ### 概述
 
-买菜助手 - 支持美团、叮咚买菜，可定时执行
+**买菜助手 - 支持美团、叮咚买菜，可定时执行**
 
-> 一切的源头： `拒绝早起抢菜，抢到再起床`  :rofl:
+起因：`拒绝早起抢菜，抢到了起床支付` :rofl: 
+<br/>
+结果：`往自动化助手的方向跑了` :zany_face:
 
 ### 特性
 
@@ -39,6 +41,11 @@ https://user-images.githubusercontent.com/7286154/162630474-3c3460d4-a01f-4556-b
 - [ ] 方案友好界面编辑
 
 
----
+### License
 
-写着写着就往自动化助手的方向跑了 :zany_face:
+GNU General Public License v3.0(https://github.com/universeindream/MaiCaiAssistant/blob/main/LICENSE)
+
+
+### 贡献
+
+如果你有好的意见或建议，欢迎提 issue 或 pull request。
