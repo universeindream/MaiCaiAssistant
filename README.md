@@ -48,7 +48,7 @@ https://user-images.githubusercontent.com/7286154/162630474-3c3460d4-a01f-4556-b
 
 ### License
 
-GNU General Public License v3.0
+[GNU General Public License v3.0](https://github.com/universeindream/MaiCaiAssistant/blob/main/LICENSE)
 
 
 ### 贡献
