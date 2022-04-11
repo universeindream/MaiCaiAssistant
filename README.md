@@ -4,7 +4,7 @@
 
 ### 概述
 
-**买菜助手 - 支持美团、叮咚买菜，可定时执行**
+**[买菜助手](https://github.com/universeindream/MaiCaiAssistant) - 支持美团、叮咚买菜，可定时执行**
 
 起因：`拒绝早起抢菜，抢到了起床支付` :rofl: 
 <br/>
