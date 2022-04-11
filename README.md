@@ -2,18 +2,17 @@
 
 [![GitHub release](https://img.shields.io/github/v/release/universeindream/MaiCaiAssistant.svg)](https://github.com/universeindream/MaiCaiAssistant/releases) [![Total Downloads](https://img.shields.io/github/downloads/universeindream/MaiCaiAssistant/total.svg)](https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk) ![Support Platforms](https://img.shields.io/badge/platform-android-blue)
 
-### 功能
+> 一切的源头： `拒绝早起抢菜，抢到再起床`  :rofl:
 
-- 点击抢购 - 自动打开美团、叮咚 APP，重复执行购买流程，执行到支付流程时，响铃提示
-- 多种方案
+### 功能特点
 
-**自定义项**
-
-- 支持 - 设置抢购时长
-- 支持 - 设置定时抢购（拒绝早起抢菜，抢到再起床 :rofl:）
-   - 注意：请设置屏幕常亮
-- 支持 - 设置异常响铃（防止出现 BUG，导致错过抢购时间）
-- 支持 - 修改 JSON 来自定义流程（流程有问题自己也可以尝试处理）
+- 可选择适合你的购买方案
+- 可设置执行时长
+- 可定时执行
+   - 注意：需设置屏幕常亮
+- 可设置异常响铃 - `防止出现 BUG，导致错过抢购时间`
+- 可自定义购买方案 - `目前暂时支持 JSON 修改`
+   - 流程有问题，自己也可以尝试处理了 
 
 ---
 
