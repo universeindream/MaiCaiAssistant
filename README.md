@@ -2,9 +2,13 @@
 
 [![GitHub release](https://img.shields.io/github/v/release/universeindream/MaiCaiAssistant.svg)](https://github.com/universeindream/MaiCaiAssistant/releases) [![Total Downloads](https://img.shields.io/github/downloads/universeindream/MaiCaiAssistant/total.svg)](https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk) ![Support Platforms](https://img.shields.io/badge/platform-android-blue)
 
+### 概述
+
+买菜助手 - 支持美团、叮咚买菜，可定时执行
+
 > 一切的源头： `拒绝早起抢菜，抢到再起床`  :rofl:
 
-### 功能特点
+### 特性
 
 - 可选择适合的购买方案
 - 可设置执行时长
@@ -14,7 +18,7 @@
 - 可自定义购买方案 - `目前暂时支持 JSON 修改`
    - 流程有问题，自己也可以尝试处理了 
 
-### 功能展示
+### 预览
 
 **效果图**
 
