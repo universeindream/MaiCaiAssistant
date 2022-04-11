@@ -1,6 +1,7 @@
 package com.univerindream.maicaiassistant
 
 import android.app.Application
+import cat.ereza.customactivityoncrash.config.CaocConfig
 import com.blankj.utilcode.util.PathUtils
 import com.blankj.utilcode.util.TimeUtils
 import com.elvishew.xlog.LogConfiguration
@@ -20,13 +21,19 @@ class MHApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        initCrash()
         initXLog()
 
-        XLog.v("HelpApp")
         if (BuildConfig.DEBUG) {
             MHData.curJsonMHSolution = ""
             MHData.allJsonMHSolution = ""
         }
+    }
+
+    private fun initCrash() {
+        CaocConfig.Builder.create()
+            .apply()
     }
 
     private fun initXLog() {

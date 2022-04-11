@@ -235,7 +235,7 @@ class GlobalActionBarService : AccessibilityService() {
         val openAppButton = mLayout.findViewById<View>(R.id.open_app) as Button
         if (BuildConfig.DEBUG) openAppButton.visibility = View.VISIBLE
         openAppButton.setOnClickListener {
-
+            //throw RuntimeException("Boom!")
         }
     }
 
