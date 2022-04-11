@@ -21,7 +21,7 @@
    - 注意：需设置屏幕常亮
 - 可设置异常响铃 - `防止出现 BUG，导致错过抢购时间`
    - 10 s, 执行同一流程会被标志为异常
-- 可自定义购买方案 - `目前暂时支持 JSON 修改`
+- 可自定义购买方案 - `目前暂时支持 JSON 修改` - [doc](https://github.com/universeindream/MaiCaiAssistant/wiki/%E6%B5%81%E7%A8%8B%E9%85%8D%E7%BD%AE)
    - 流程有问题，自己也可以尝试处理了 
 
 ### 预览
