@@ -14,9 +14,7 @@ import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.elvishew.xlog.XLog
 import com.univerindream.maicaiassistant.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -217,7 +215,13 @@ class GlobalActionBarService : AccessibilityService() {
 
     private fun updateSnapUpButton() {
         val snapUpButton = mLayout.findViewById<View>(R.id.snapUp) as Button
-        snapUpButton.text = if (mSnapUpStatus.get()) "取消" else "抢购"
+        val targetTxt = if (mSnapUpStatus.get()) "取消" else "抢购"
+        if (targetTxt == snapUpButton.text) return
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                snapUpButton.text = targetTxt
+            }
+        }
     }
 
     private fun configureSnapUpButton() {
