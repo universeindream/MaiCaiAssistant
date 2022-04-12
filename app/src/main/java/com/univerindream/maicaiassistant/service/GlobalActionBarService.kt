@@ -84,8 +84,8 @@ class GlobalActionBarService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
-        val pName = event.packageName.toString()
-        val cName = event.className.toString()
+        val pName = event.packageName?.toString() ?: ""
+        val cName = event.className?.toString() ?: ""
         val windowId = event.windowId
         val source = event.source
 
