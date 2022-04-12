@@ -44,6 +44,9 @@ object MHUtil {
             EMCCond.NODE_NO_EXIST -> {
                 return !NodeUtil.isExist(rootInActiveWindow, condNode)
             }
+            EMCCond.NODE_VISIBLE -> {
+                return NodeUtil.isExist(rootInActiveWindow, condNode, EMCMatch.VISIBLE)
+            }
             EMCCond.NODE_SELECTED -> {
                 return NodeUtil.isExist(rootInActiveWindow, condNode, EMCMatch.SELECTED_SELF_OR_BROTHER)
             }

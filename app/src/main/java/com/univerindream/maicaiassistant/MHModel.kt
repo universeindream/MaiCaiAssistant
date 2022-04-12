@@ -15,6 +15,7 @@ enum class EMCCond {
     EQ_CLASS_NAME, //类名一致
     NODE_EXIST, //节点存在
     NODE_NO_EXIST, //节点不存在
+    NODE_VISIBLE, //节点存在
     NODE_CAN_CLICK, //节点可点击
     NODE_NOT_CLICK, //节点不可点击
     NODE_SELECTED, //节点必须已选择
@@ -58,6 +59,8 @@ enum class EMCMatch {
     CHECKED,
     CHECKED_SELF_OR_BROTHER,
     CHECKED_WITH_DISABLE,
+
+    VISIBLE,
 
     ALL
 }

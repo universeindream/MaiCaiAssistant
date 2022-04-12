@@ -4,7 +4,7 @@ object MHDefault {
 
     val defaultMHSolutions = arrayListOf(
         MHSolution(
-            name = "美团紧急购买 - 支付宝 - 自动选择送达时间",
+            name = "美团抢购 - 自动选择送达时间 - 支付宝",
             steps = arrayListOf(
                 MCStep(
                     "打开 app",
@@ -210,7 +210,7 @@ object MHDefault {
             )
         ),
         MHSolution(
-            name = "美团紧急购买 - 微信 - 自动选择送达时间",
+            name = "美团抢购 - 自动选择送达时间 - 微信",
             steps = arrayListOf(
                 MCStep(
                     "打开 app",
@@ -416,7 +416,7 @@ object MHDefault {
             )
         ),
         MHSolution(
-            name = "美团紧急购买 - 人工选择送达时间",
+            name = "美团抢购 - 人工选择送达时间",
             steps = arrayListOf(
                 MCStep(
                     "打开 app",
@@ -564,7 +564,7 @@ object MHDefault {
             )
         ),
         MHSolution(
-            name = "叮咚紧急购买",
+            name = "叮咚抢购",
             steps = arrayListOf(
                 MCStep(
                     "打开 app",
@@ -679,7 +679,7 @@ object MHDefault {
             )
         ),
         MHSolution(
-            name = "美团非紧急购买 - 支付宝",
+            name = "美团正常购买 - 支付宝",
             steps = arrayListOf(
                 MCStep(
                     "打开 app",
@@ -855,7 +855,7 @@ object MHDefault {
             )
         ),
         MHSolution(
-            name = "美团非紧急购买 - 微信",
+            name = "美团正常购买 - 微信",
             steps = arrayListOf(
                 MCStep(
                     "打开 app",
@@ -1031,7 +1031,7 @@ object MHDefault {
             )
         ),
         MHSolution(
-            name = "叮咚非紧急购买",
+            name = "叮咚正常购买",
             steps = arrayListOf(
                 MCStep(
                     "打开 app",
@@ -1126,6 +1126,113 @@ object MHDefault {
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
                         nodes = arrayListOf(MCNode(EMCSearch.TXT, "立即支付"))
+                    ),
+                    isAlarm = true,
+                    isManual = true
+                ),
+            )
+        ),
+        MHSolution(
+            name = "盒马正常购买",
+            steps = arrayListOf(
+                MCStep(
+                    "打开 app",
+                    arrayListOf(
+                        MCCond(
+                            EMCCond.APP_IS_BACKGROUND,
+                            MCNode(search = EMCSearch.PACKAGE_NAME, packageName = "com.wudaokou.hippo")
+                        )
+                    ),
+                    handle = MCHandle(
+                        type = EMCHandle.LAUNCH,
+                        delay = 500,
+                        nodes = arrayListOf(MCNode(search = EMCSearch.PACKAGE_NAME, packageName = "com.wudaokou.hippo"))
+                    )
+                ),
+                MCStep(
+                    "点击购物车",
+                    arrayListOf(
+                        MCCond(
+                            EMCCond.NODE_EXIST,
+                            MCNode(EMCSearch.TXT, "购物车", className = "android.widget.TextView")
+                        ),
+                        MCCond(
+                            EMCCond.NODE_NOT_SELECTED,
+                            MCNode(EMCSearch.TXT, "购物车", className = "android.widget.TextView")
+                        )
+                    ),
+                    handle = MCHandle(
+                        type = EMCHandle.CLICK_NODE,
+                        delay = 500,
+                        nodes = arrayListOf(
+                            MCNode(EMCSearch.TXT, "购物车", className = "android.widget.TextView")
+                        )
+                    )
+                ),
+                MCStep(
+                    "结算",
+                    arrayListOf(
+                        MCCond(
+                            EMCCond.NODE_CAN_CLICK,
+                            MCNode(EMCSearch.TXT, "结算")
+                        )
+                    ),
+                    handle = MCHandle(
+                        type = EMCHandle.CLICK_NODE,
+                        delay = 100,
+                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "结算"))
+                    ),
+                ),
+                MCStep(
+                    "确认选择时间",
+                    arrayListOf(
+                        MCCond(
+                            EMCCond.NODE_EXIST,
+                            MCNode(EMCSearch.TXT, "选择时间", className = "android.widget.LinearLayout")
+                        ),
+                        MCCond(
+                            EMCCond.NODE_VISIBLE,
+                            MCNode(EMCSearch.TXT, "选择时间", className = "android.widget.LinearLayout")
+                        ),
+                    ),
+                    handle = MCHandle(
+                        type = EMCHandle.CLICK_NODE,
+                        nodes = arrayListOf(
+                            MCNode(EMCSearch.TXT, "确认"),
+                        )
+                    )
+                ),
+                MCStep(
+                    "点击选择时间",
+                    arrayListOf(
+                        MCCond(
+                            EMCCond.NODE_EXIST,
+                            MCNode(EMCSearch.TXT, "选择时间", className = "android.widget.TextView")
+                        ),
+                        MCCond(
+                            EMCCond.NODE_VISIBLE,
+                            MCNode(EMCSearch.TXT, "选择时间", className = "android.widget.TextView")
+                        ),
+                    ),
+                    handle = MCHandle(
+                        type = EMCHandle.CLICK_NODE,
+                        nodes = arrayListOf(
+                            MCNode(EMCSearch.TXT, "选择时间"),
+                        )
+                    )
+                ),
+                MCStep(
+                    "提交订单",
+                    arrayListOf(
+                        MCCond(
+                            EMCCond.NODE_CAN_CLICK,
+                            MCNode(EMCSearch.TXT, "提交订单")
+                        )
+                    ),
+                    handle = MCHandle(
+                        type = EMCHandle.CLICK_NODE,
+                        delay = 100,
+                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "提交订单"))
                     ),
                     isAlarm = true,
                     isManual = true

@@ -83,6 +83,7 @@ object NodeUtil {
                 return child.any { it.isChecked && it.isEnabled }
             }
             EMCMatch.CHECKED_WITH_DISABLE -> info.isChecked
+            EMCMatch.VISIBLE -> info.isVisibleToUser
 
             EMCMatch.ALL -> true
         }
