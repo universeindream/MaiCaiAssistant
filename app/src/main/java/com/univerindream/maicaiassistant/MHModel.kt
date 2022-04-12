@@ -33,7 +33,6 @@ enum class EMCHandle {
     RECENTS,//打开最近
     LAUNCH,//运行 APP
     CLICK_NODE,//点击节点
-    CLICK_PARENT_NODE,//点击父节点
     CLICK_MULTIPLE_NODE,//点击多节点
     CLICK_SCOPE_RANDOM_NODE, //指定多个节点，随机运行
     CLICK_RANDOM_NODE, //随机点击
