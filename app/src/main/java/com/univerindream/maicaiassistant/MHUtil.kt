@@ -221,12 +221,21 @@ object MHUtil {
     /// 定时相关
 
     private val alarmPendingIntent: PendingIntent by lazy {
-        PendingIntent.getBroadcast(
-            Utils.getApp(),
-            0,
-            Intent(Utils.getApp(), AlarmReceiver::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.getBroadcast(
+                Utils.getApp(),
+                0,
+                Intent(Utils.getApp(), AlarmReceiver::class.java),
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
+        } else {
+            PendingIntent.getBroadcast(
+                Utils.getApp(),
+                0,
+                Intent(Utils.getApp(), AlarmReceiver::class.java),
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
+        }
     }
 
     private fun getAlarmManager() =
