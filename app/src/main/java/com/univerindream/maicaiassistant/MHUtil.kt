@@ -186,10 +186,17 @@ object MHUtil {
         }
 
         val notificationIntent = Intent(context, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(
-            context,
-            0, notificationIntent, 0
-        )
+        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.getActivity(
+                context,
+                0, notificationIntent, PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+            )
+        } else {
+            PendingIntent.getActivity(
+                context,
+                0, notificationIntent, PendingIntent.FLAG_ONE_SHOT
+            )
+        }
         val notification: Notification =
             NotificationCompat.Builder(context, MHConfig.MALL_HELP_CHANNEL_ID)
                 .setContentTitle("持续抢购中")
