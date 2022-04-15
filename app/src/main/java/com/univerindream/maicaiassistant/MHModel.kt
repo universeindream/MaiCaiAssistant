@@ -4,7 +4,17 @@ enum class EMCSearch {
     ID, //ID 节点
     TXT, //内容节点
     CLASSNAME,
-    PACKAGE_NAME,
+    PACKAGE_NAME, ;
+
+    override fun toString(): String {
+
+        return when (this) {
+            ID -> "ID"
+            TXT -> "文本"
+            CLASSNAME -> "类目"
+            PACKAGE_NAME -> "包名"
+        }
+    }
 }
 
 /**
@@ -19,10 +29,28 @@ enum class EMCCond {
     NODE_NO_VISIBLE, //节点不可见
     NODE_CAN_CLICK, //节点可点击
     NODE_NOT_CLICK, //节点不可点击
-    NODE_SELECTED, //节点必须已选择
-    NODE_NOT_SELECTED, //节点必须已选择
+    NODE_SELECTED, //节点已选择
+    NODE_NOT_SELECTED, //节点未选择
     NODE_CHECKED, //节点必须已选择
-    NODE_NOT_CHECKED, //节点必须已选择
+    NODE_NOT_CHECKED; //节点必须已选择
+
+    override fun toString(): String {
+
+        return when (this) {
+            APP_IS_BACKGROUND -> "App 在后台"
+            EQ_CLASS_NAME -> "类名一致"
+            NODE_EXIST -> "节点存在"
+            NODE_NO_EXIST -> "节点不存在"
+            NODE_VISIBLE -> "节点可见"
+            NODE_NO_VISIBLE -> "节点不可见"
+            NODE_CAN_CLICK -> "节点可点击"
+            NODE_NOT_CLICK -> "节点不可点击"
+            NODE_SELECTED -> "节点已选择"
+            NODE_NOT_SELECTED -> "节点未选择"
+            NODE_CHECKED -> "节点已选中"
+            NODE_NOT_CHECKED -> "节点未选中"
+        }
+    }
 }
 
 
@@ -34,10 +62,19 @@ enum class EMCHandle {
     RECENTS,//打开最近
     LAUNCH,//运行 APP
     CLICK_NODE,//点击节点
-    CLICK_MULTIPLE_NODE,//点击多节点
-    CLICK_SCOPE_RANDOM_NODE, //指定多个节点，随机运行
     CLICK_RANDOM_NODE, //随机点击
-    NONE
+    NONE;
+
+    override fun toString(): String {
+        return when (this) {
+            BACK -> "返回健"
+            RECENTS -> "最近健"
+            LAUNCH -> "运行软件"
+            CLICK_NODE -> "点击控件"
+            CLICK_RANDOM_NODE -> "点击随机控件"
+            NONE -> "无动作"
+        }
+    }
 }
 
 /**
@@ -110,7 +147,7 @@ data class MCCond(
 data class MCHandle(
     val type: EMCHandle,
     val delay: Long = 0,
-    val nodes: List<MCNode>
+    val node: MCNode
 )
 
 /**

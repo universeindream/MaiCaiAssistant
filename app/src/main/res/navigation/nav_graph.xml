@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_ConfigFragment_to_HelpFragment"
             app:destination="@id/HelpFragment" />
+        <action
+            android:id="@+id/action_ConfigFragment_to_SolutionFragment"
+            app:destination="@id/SolutionFragment" />
     </fragment>
     <fragment
         android:id="@+id/HelpFragment"
@@ -24,5 +27,71 @@
         <action
             android:id="@+id/action_HelpFragment_to_ConfigFragment"
             app:destination="@id/ConfigFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/SolutionFragment"
+        android:name="com.univerindream.maicaiassistant.ui.SolutionFragment"
+        android:label="@string/solution_fragment_label"
+        tools:layout="@layout/fragment_solution">
+
+        <action
+            android:id="@+id/action_SolutionFragment_to_ConfigFragment"
+            app:destination="@id/ConfigFragment" />
+        <action
+            android:id="@+id/action_SolutionFragment_to_StepFragment"
+            app:destination="@id/StepFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/StepFragment"
+        android:name="com.univerindream.maicaiassistant.ui.StepFragment"
+        android:label="@string/step_fragment_label"
+        tools:layout="@layout/fragment_step">
+
+        <argument
+            android:name="stepIndex"
+            android:defaultValue="0"
+            app:argType="integer" />
+
+        <argument
+            android:name="handleJson"
+            android:defaultValue="{}"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_stepFragment_to_SolutionFragment"
+            app:destination="@id/SolutionFragment" />
+        <action
+            android:id="@+id/action_StepFragment_to_CondFragment"
+            app:destination="@id/CondFragment" />
+        <action
+            android:id="@+id/action_StepFragment_to_handleFragment"
+            app:destination="@id/handleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/CondFragment"
+        android:name="com.univerindream.maicaiassistant.ui.CondFragment"
+        android:label="条件配置"
+        tools:layout="@layout/fragment_cond">
+
+        <argument
+            android:name="condJson"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_nodeFragment_to_StepFragment"
+            app:destination="@id/StepFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/handleFragment"
+        android:name="com.univerindream.maicaiassistant.ui.HandleFragment"
+        android:label="HandleFragment">
+        <argument
+            android:name="handleJson"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_handleFragment_to_StepFragment"
+            app:destination="@id/StepFragment" />
     </fragment>
 </navigation>

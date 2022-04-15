@@ -4,6 +4,75 @@ object MHDefault {
 
     val defaultMHSolutions = arrayListOf(
         MHSolution(
+            name = "每日优鲜购买",
+            steps = arrayListOf(
+                MCStep(
+                    "打开每日优鲜",
+                    arrayListOf(
+                        MCCond(
+                            EMCCond.APP_IS_BACKGROUND,
+                            MCNode(EMCSearch.PACKAGE_NAME, packageName = "cn.missfresh.application"),
+                        )
+                    ),
+                    handle = MCHandle(
+                        type = EMCHandle.LAUNCH,
+                        delay = 500,
+                        node = MCNode(EMCSearch.PACKAGE_NAME, packageName = "cn.missfresh.application")
+                    ),
+
+                    ),
+                MCStep(
+                    "跳过开屏广告",
+                    condList = arrayListOf(
+                        MCCond(
+                            EMCCond.EQ_CLASS_NAME,
+                            MCNode(EMCSearch.CLASSNAME, className = "cn.missfresh.module.main.view.SplashActivity"),
+                        )
+                    ),
+                    handle = MCHandle(
+                        type = EMCHandle.CLICK_NODE,
+                        delay = 500,
+                        node = MCNode(EMCSearch.TXT, "跳过")
+                    )
+
+                ),
+                MCStep(
+                    "点击购物车",
+                    arrayListOf(
+                        MCCond(
+                            EMCCond.NODE_EXIST,
+                            MCNode(EMCSearch.TXT, "购物车", className = "android.widget.TextView")
+                        ),
+                        MCCond(
+                            EMCCond.NODE_NOT_SELECTED,
+                            MCNode(EMCSearch.TXT, "购物车", className = "android.widget.TextView")
+                        )
+                    ),
+                    handle = MCHandle(
+                        type = EMCHandle.CLICK_NODE,
+                        delay = 500,
+                        node =
+                        MCNode(EMCSearch.TXT, "购物车", className = "android.widget.TextView")
+
+                    )
+                ),
+                MCStep(
+                    "去结算",
+                    arrayListOf(
+                        MCCond(
+                            EMCCond.NODE_CAN_CLICK,
+                            MCNode(EMCSearch.TXT, "去结算")
+                        )
+                    ),
+                    handle = MCHandle(
+                        type = EMCHandle.CLICK_NODE,
+                        delay = 100,
+                        node = MCNode(EMCSearch.TXT, "去结算")
+                    ),
+                ),
+            )
+        ),
+        MHSolution(
             name = "美团抢购 - 自动选择送达时间 - 支付宝",
             steps = arrayListOf(
                 MCStep(
@@ -17,10 +86,10 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.LAUNCH,
                         delay = 500,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.PACKAGE_NAME, packageName = "com.meituan.retail.v.android"),
+                        node =
+                        MCNode(EMCSearch.PACKAGE_NAME, packageName = "com.meituan.retail.v.android"),
+
                         )
-                    )
                 ),
                 MCStep(
                     "点击跳过",
@@ -36,7 +105,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 500,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "跳过"))
+                        node = MCNode(EMCSearch.TXT, "跳过")
                     )
                 ),
                 MCStep(
@@ -54,7 +123,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 500,
-                        nodes = arrayListOf(MCNode(EMCSearch.ID, "com.meituan.retail.v.android:id/img_shopping_cart"))
+                        node = MCNode(EMCSearch.ID, "com.meituan.retail.v.android:id/img_shopping_cart")
                     )
                 ),
                 MCStep(
@@ -67,10 +136,10 @@ object MHDefault {
                     ),
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.TXT, "我知道了"),
+                        node =
+                        MCNode(EMCSearch.TXT, "我知道了"),
+
                         )
-                    )
                 ),
                 MCStep(
                     "点击返回购物车",
@@ -82,10 +151,10 @@ object MHDefault {
                     ),
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.TXT, "返回购物车"),
+                        node =
+                        MCNode(EMCSearch.TXT, "返回购物车"),
+
                         )
-                    )
                 ),
                 MCStep(
                     "点击结算",
@@ -97,7 +166,7 @@ object MHDefault {
                     ),
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "结算"))
+                        node = MCNode(EMCSearch.TXT, "结算")
                     ),
                 ),
                 MCStep(
@@ -111,7 +180,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "立即支付"))
+                        node = MCNode(EMCSearch.TXT, "立即支付")
                     ),
                 ),
                 MCStep(
@@ -124,10 +193,10 @@ object MHDefault {
                     ),
                     handle = MCHandle(
                         type = EMCHandle.CLICK_RANDOM_NODE,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.TXT, "-"),
-                        )
-                    ),
+                        node =
+                        MCNode(EMCSearch.TXT, "-"),
+
+                        ),
                 ),
                 MCStep(
                     "确认支付",
@@ -144,7 +213,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "确认支付"))
+                        node = MCNode(EMCSearch.TXT, "确认支付")
                     ),
                 ),
                 MCStep(
@@ -162,7 +231,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "展开更多支付方式"))
+                        node = MCNode(EMCSearch.TXT, "展开更多支付方式")
                     ),
                 ),
                 MCStep(
@@ -184,7 +253,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "支付宝支付"))
+                        node = MCNode(EMCSearch.TXT, "支付宝支付")
                     ),
                 ),
                 MCStep(
@@ -202,7 +271,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "确认支付"))
+                        node = MCNode(EMCSearch.TXT, "确认支付")
                     ),
                     isAlarm = true,
                     isManual = true
@@ -223,10 +292,10 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.LAUNCH,
                         delay = 500,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.PACKAGE_NAME, packageName = "com.meituan.retail.v.android"),
+                        node =
+                        MCNode(EMCSearch.PACKAGE_NAME, packageName = "com.meituan.retail.v.android"),
+
                         )
-                    )
                 ),
                 MCStep(
                     "点击跳过",
@@ -242,7 +311,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 500,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "跳过"))
+                        node = MCNode(EMCSearch.TXT, "跳过")
                     )
                 ),
                 MCStep(
@@ -260,7 +329,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 500,
-                        nodes = arrayListOf(MCNode(EMCSearch.ID, "com.meituan.retail.v.android:id/img_shopping_cart"))
+                        node = MCNode(EMCSearch.ID, "com.meituan.retail.v.android:id/img_shopping_cart")
                     )
                 ),
                 MCStep(
@@ -273,10 +342,10 @@ object MHDefault {
                     ),
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.TXT, "我知道了"),
+                        node =
+                        MCNode(EMCSearch.TXT, "我知道了"),
+
                         )
-                    )
                 ),
                 MCStep(
                     "点击返回购物车",
@@ -288,10 +357,10 @@ object MHDefault {
                     ),
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.TXT, "返回购物车"),
+                        node =
+                        MCNode(EMCSearch.TXT, "返回购物车"),
+
                         )
-                    )
                 ),
                 MCStep(
                     "点击结算",
@@ -303,7 +372,7 @@ object MHDefault {
                     ),
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "结算"))
+                        node = MCNode(EMCSearch.TXT, "结算")
                     ),
                 ),
                 MCStep(
@@ -317,7 +386,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "立即支付"))
+                        node = MCNode(EMCSearch.TXT, "立即支付")
                     ),
                 ),
                 MCStep(
@@ -330,10 +399,10 @@ object MHDefault {
                     ),
                     handle = MCHandle(
                         type = EMCHandle.CLICK_RANDOM_NODE,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.TXT, "-"),
-                        )
-                    ),
+                        node =
+                        MCNode(EMCSearch.TXT, "-"),
+
+                        ),
                 ),
                 MCStep(
                     "确认支付",
@@ -350,7 +419,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "确认支付"))
+                        node = MCNode(EMCSearch.TXT, "确认支付")
                     ),
                 ),
                 MCStep(
@@ -368,7 +437,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "展开更多支付方式"))
+                        node = MCNode(EMCSearch.TXT, "展开更多支付方式")
                     ),
                 ),
                 MCStep(
@@ -390,7 +459,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "微信支付"))
+                        node = MCNode(EMCSearch.TXT, "微信支付")
                     ),
                 ),
                 MCStep(
@@ -408,7 +477,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "确认支付"))
+                        node = MCNode(EMCSearch.TXT, "确认支付")
                     ),
                     isAlarm = true,
                     isManual = true
@@ -429,10 +498,10 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.LAUNCH,
                         delay = 500,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.PACKAGE_NAME, packageName = "com.meituan.retail.v.android"),
+                        node =
+                        MCNode(EMCSearch.PACKAGE_NAME, packageName = "com.meituan.retail.v.android"),
+
                         )
-                    )
                 ),
                 MCStep(
                     "点击跳过",
@@ -448,7 +517,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 500,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "跳过"))
+                        node = MCNode(EMCSearch.TXT, "跳过")
                     )
                 ),
                 MCStep(
@@ -466,7 +535,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 500,
-                        nodes = arrayListOf(MCNode(EMCSearch.ID, "com.meituan.retail.v.android:id/img_shopping_cart"))
+                        node = MCNode(EMCSearch.ID, "com.meituan.retail.v.android:id/img_shopping_cart")
                     )
                 ),
                 MCStep(
@@ -479,10 +548,10 @@ object MHDefault {
                     ),
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.TXT, "我知道了"),
+                        node =
+                        MCNode(EMCSearch.TXT, "我知道了"),
+
                         )
-                    )
                 ),
                 MCStep(
                     "点击返回购物车",
@@ -494,10 +563,10 @@ object MHDefault {
                     ),
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.TXT, "返回购物车"),
+                        node =
+                        MCNode(EMCSearch.TXT, "返回购物车"),
+
                         )
-                    )
                 ),
                 MCStep(
                     "点击结算",
@@ -509,7 +578,7 @@ object MHDefault {
                     ),
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "结算"))
+                        node = MCNode(EMCSearch.TXT, "结算")
                     ),
                 ),
                 MCStep(
@@ -523,7 +592,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "立即支付"))
+                        node = MCNode(EMCSearch.TXT, "立即支付")
                     ),
                 ),
                 MCStep(
@@ -536,7 +605,7 @@ object MHDefault {
                     ),
                     handle = MCHandle(
                         type = EMCHandle.NONE,
-                        nodes = arrayListOf()
+                        node = MCNode(EMCSearch.PACKAGE_NAME)
                     ),
                     isAlarm = true,
                     isManual = true
@@ -556,7 +625,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "确认支付"))
+                        node = MCNode(EMCSearch.TXT, "确认支付")
                     ),
                     isAlarm = true,
                     isManual = true
@@ -577,7 +646,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.LAUNCH,
                         delay = 500,
-                        nodes = arrayListOf(MCNode(EMCSearch.PACKAGE_NAME, packageName = "com.yaya.zone"))
+                        node = MCNode(EMCSearch.PACKAGE_NAME, packageName = "com.yaya.zone")
                     )
                 ),
                 MCStep(
@@ -591,7 +660,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 500,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "跳过"))
+                        node = MCNode(EMCSearch.TXT, "跳过")
                     )
                 ),
                 MCStep(
@@ -609,9 +678,9 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 500,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.TXT, "购物车", className = "android.widget.TextView")
-                        )
+                        node =
+                        MCNode(EMCSearch.TXT, "购物车", className = "android.widget.TextView")
+
                     )
                 ),
                 MCStep(
@@ -625,7 +694,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "去结算"))
+                        node = MCNode(EMCSearch.TXT, "去结算")
                     ),
                 ),
                 MCStep(
@@ -638,7 +707,7 @@ object MHDefault {
                     ),
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "重新加载"))
+                        node = MCNode(EMCSearch.TXT, "重新加载")
                     ),
                 ),
                 MCStep(
@@ -655,10 +724,10 @@ object MHDefault {
                     ),
                     handle = MCHandle(
                         type = EMCHandle.CLICK_RANDOM_NODE,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.TXT, "-"),
+                        node =
+                        MCNode(EMCSearch.TXT, "-"),
+
                         )
-                    )
                 ),
                 MCStep(
                     "立即支付",
@@ -671,7 +740,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "立即支付"))
+                        node = MCNode(EMCSearch.TXT, "立即支付")
                     ),
                     isAlarm = true,
                     isManual = true
@@ -692,10 +761,10 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.LAUNCH,
                         delay = 500,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.PACKAGE_NAME, packageName = "com.meituan.retail.v.android"),
+                        node =
+                        MCNode(EMCSearch.PACKAGE_NAME, packageName = "com.meituan.retail.v.android"),
+
                         )
-                    )
                 ),
                 MCStep(
                     "点击跳过",
@@ -711,7 +780,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 500,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "跳过"))
+                        node = MCNode(EMCSearch.TXT, "跳过")
                     )
                 ),
                 MCStep(
@@ -729,7 +798,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 500,
-                        nodes = arrayListOf(MCNode(EMCSearch.ID, "com.meituan.retail.v.android:id/img_shopping_cart"))
+                        node = MCNode(EMCSearch.ID, "com.meituan.retail.v.android:id/img_shopping_cart")
                     )
                 ),
                 MCStep(
@@ -742,7 +811,7 @@ object MHDefault {
                     ),
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "结算"))
+                        node = MCNode(EMCSearch.TXT, "结算")
                     ),
                 ),
                 MCStep(
@@ -756,7 +825,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "立即支付"))
+                        node = MCNode(EMCSearch.TXT, "立即支付")
                     ),
                 ),
                 MCStep(
@@ -769,10 +838,10 @@ object MHDefault {
                     ),
                     handle = MCHandle(
                         type = EMCHandle.CLICK_RANDOM_NODE,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.TXT, "-"),
+                        node =
+                        MCNode(EMCSearch.TXT, "-"),
+
                         )
-                    )
                 ),
                 MCStep(
                     "确认支付",
@@ -789,7 +858,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "确认支付"))
+                        node = MCNode(EMCSearch.TXT, "确认支付")
                     ),
                 ),
                 MCStep(
@@ -807,7 +876,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "展开更多支付方式"))
+                        node = MCNode(EMCSearch.TXT, "展开更多支付方式")
                     ),
                 ),
                 MCStep(
@@ -829,7 +898,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "支付宝支付"))
+                        node = MCNode(EMCSearch.TXT, "支付宝支付")
                     ),
                 ),
                 MCStep(
@@ -847,7 +916,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "确认支付"))
+                        node = MCNode(EMCSearch.TXT, "确认支付")
                     ),
                     isAlarm = true,
                     isManual = true
@@ -868,10 +937,10 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.LAUNCH,
                         delay = 500,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.PACKAGE_NAME, packageName = "com.meituan.retail.v.android"),
+                        node =
+                        MCNode(EMCSearch.PACKAGE_NAME, packageName = "com.meituan.retail.v.android"),
+
                         )
-                    )
                 ),
                 MCStep(
                     "点击跳过",
@@ -887,7 +956,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 500,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "跳过"))
+                        node = MCNode(EMCSearch.TXT, "跳过")
                     )
                 ),
                 MCStep(
@@ -905,7 +974,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 500,
-                        nodes = arrayListOf(MCNode(EMCSearch.ID, "com.meituan.retail.v.android:id/img_shopping_cart"))
+                        node = MCNode(EMCSearch.ID, "com.meituan.retail.v.android:id/img_shopping_cart")
                     )
                 ),
                 MCStep(
@@ -918,7 +987,7 @@ object MHDefault {
                     ),
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "结算"))
+                        node = MCNode(EMCSearch.TXT, "结算")
                     ),
                 ),
                 MCStep(
@@ -932,7 +1001,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "立即支付"))
+                        node = MCNode(EMCSearch.TXT, "立即支付")
                     ),
                 ),
                 MCStep(
@@ -945,10 +1014,10 @@ object MHDefault {
                     ),
                     handle = MCHandle(
                         type = EMCHandle.CLICK_RANDOM_NODE,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.TXT, "-"),
+                        node =
+                        MCNode(EMCSearch.TXT, "-"),
+
                         )
-                    )
                 ),
                 MCStep(
                     "确认支付",
@@ -965,7 +1034,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "确认支付"))
+                        node = MCNode(EMCSearch.TXT, "确认支付")
                     ),
                 ),
                 MCStep(
@@ -983,7 +1052,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "展开更多支付方式"))
+                        node = MCNode(EMCSearch.TXT, "展开更多支付方式")
                     ),
                 ),
                 MCStep(
@@ -1005,7 +1074,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "微信支付"))
+                        node = MCNode(EMCSearch.TXT, "微信支付")
                     ),
                 ),
                 MCStep(
@@ -1023,7 +1092,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "确认支付"))
+                        node = MCNode(EMCSearch.TXT, "确认支付")
                     ),
                     isAlarm = true,
                     isManual = true
@@ -1044,7 +1113,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.LAUNCH,
                         delay = 500,
-                        nodes = arrayListOf(MCNode(EMCSearch.PACKAGE_NAME, packageName = "com.yaya.zone"))
+                        node = MCNode(EMCSearch.PACKAGE_NAME, packageName = "com.yaya.zone")
                     )
                 ),
                 MCStep(
@@ -1058,7 +1127,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 500,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "跳过"))
+                        node = MCNode(EMCSearch.TXT, "跳过")
                     )
                 ),
                 MCStep(
@@ -1076,9 +1145,9 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 500,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.TXT, "购物车", className = "android.widget.TextView")
-                        )
+                        node =
+                        MCNode(EMCSearch.TXT, "购物车", className = "android.widget.TextView")
+
                     )
                 ),
                 MCStep(
@@ -1092,7 +1161,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "去结算"))
+                        node = MCNode(EMCSearch.TXT, "去结算")
                     ),
                 ),
                 MCStep(
@@ -1109,10 +1178,10 @@ object MHDefault {
                     ),
                     handle = MCHandle(
                         type = EMCHandle.CLICK_RANDOM_NODE,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.TXT, "-"),
+                        node =
+                        MCNode(EMCSearch.TXT, "-"),
+
                         )
-                    )
                 ),
                 MCStep(
                     "立即支付",
@@ -1125,7 +1194,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "立即支付"))
+                        node = MCNode(EMCSearch.TXT, "立即支付")
                     ),
                     isAlarm = true,
                     isManual = true
@@ -1146,7 +1215,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.LAUNCH,
                         delay = 500,
-                        nodes = arrayListOf(MCNode(search = EMCSearch.PACKAGE_NAME, packageName = "com.wudaokou.hippo"))
+                        node = MCNode(search = EMCSearch.PACKAGE_NAME, packageName = "com.wudaokou.hippo")
                     )
                 ),
                 MCStep(
@@ -1164,9 +1233,9 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 500,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.TXT, "购物车", className = "android.widget.TextView")
-                        )
+                        node =
+                        MCNode(EMCSearch.TXT, "购物车", className = "android.widget.TextView")
+
                     )
                 ),
                 MCStep(
@@ -1180,7 +1249,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "结算"))
+                        node = MCNode(EMCSearch.TXT, "结算")
                     ),
                 ),
                 MCStep(
@@ -1197,10 +1266,10 @@ object MHDefault {
                     ),
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.TXT, "确认"),
+                        node =
+                        MCNode(EMCSearch.TXT, "确认"),
+
                         )
-                    )
                 ),
                 MCStep(
                     "点击选择时间",
@@ -1216,10 +1285,10 @@ object MHDefault {
                     ),
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
-                        nodes = arrayListOf(
-                            MCNode(EMCSearch.TXT, "选择时间"),
+                        node =
+                        MCNode(EMCSearch.TXT, "选择时间"),
+
                         )
-                    )
                 ),
                 MCStep(
                     "提交订单",
@@ -1232,7 +1301,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         delay = 100,
-                        nodes = arrayListOf(MCNode(EMCSearch.TXT, "提交订单"))
+                        node = MCNode(EMCSearch.TXT, "提交订单")
                     ),
                     isAlarm = true,
                     isManual = true

@@ -77,19 +77,18 @@ object MHUtil {
         handle: MCHandle
     ): Boolean {
         val type = handle.type
-        val nodes = handle.nodes
+        val node = handle.node
         val delay = handle.delay
-        val firNode = nodes.firstOrNull()
 
         val result: Boolean = when (type) {
             EMCHandle.LAUNCH -> {
-                firNode ?: return false
+                node ?: return false
                 delay(100)
                 service.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS)
                 delay(100)
                 service.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK)
                 delay(100)
-                AppUtils.launchApp(firNode.packageName)
+                AppUtils.launchApp(node.packageName)
                 true
             }
             EMCHandle.BACK -> {
@@ -99,30 +98,12 @@ object MHUtil {
                 service.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS)
             }
             EMCHandle.CLICK_NODE -> {
-                firNode ?: return false
-                NodeUtil.clickFirstNode(rootInActiveWindow, firNode, EMCMatch.CLICKABLE_SELF_OR_PARENT)
-            }
-            EMCHandle.CLICK_MULTIPLE_NODE -> {
-                nodes.all {
-                    stepHandle(
-                        service,
-                        rootInActiveWindow,
-                        MCHandle(EMCHandle.CLICK_NODE, 100, arrayListOf(it))
-                    )
-                }
-            }
-            EMCHandle.CLICK_SCOPE_RANDOM_NODE -> {
-                !nodes.isNullOrEmpty() && stepHandle(
-                    service, rootInActiveWindow,
-                    MCHandle(
-                        type = EMCHandle.CLICK_NODE,
-                        nodes = arrayListOf(nodes.random())
-                    )
-                )
+                node ?: return false
+                NodeUtil.clickFirstNode(rootInActiveWindow, node, EMCMatch.CLICKABLE_SELF_OR_PARENT)
             }
             EMCHandle.CLICK_RANDOM_NODE -> {
-                firNode ?: return false
-                NodeUtil.clickRandomNode(rootInActiveWindow, firNode, EMCMatch.CLICKABLE_SELF_OR_PARENT)
+                node ?: return false
+                NodeUtil.clickRandomNode(rootInActiveWindow, node, EMCMatch.CLICKABLE_SELF_OR_PARENT)
             }
             EMCHandle.NONE -> true
             else -> false

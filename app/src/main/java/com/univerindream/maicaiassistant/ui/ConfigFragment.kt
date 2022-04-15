@@ -36,9 +36,6 @@ class ConfigFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentConfigBinding.inflate(inflater, container, false)
-
-
-
         return binding.root
     }
 
@@ -54,7 +51,12 @@ class ConfigFragment : Fragment() {
         }
 
         binding.settingAutoInfo.setOnClickListener {
+            findNavController().navigate(R.id.action_ConfigFragment_to_SolutionFragment)
+        }
+
+        binding.settingAutoInfo.setOnLongClickListener {
             findNavController().navigate(R.id.action_ConfigFragment_to_HelpFragment)
+            return@setOnLongClickListener false
         }
 
         binding.settingChooseAuto.setOnClickListener {
