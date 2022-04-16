@@ -16,7 +16,7 @@
 由于本人所有购物平台都停运了，所有合适的方案很难给到大家！！！
 为了方便大家讨论出合适的抢购方案，建个微信群，大家互相帮助！！！
 
-<img src="https://user-images.githubusercontent.com/7286154/163676248-d7a02cf3-cc34-49ae-af50-b3da30b4d76e.png" width="200">
+<img src="https://user-images.githubusercontent.com/7286154/163676248-d7a02cf3-cc34-49ae-af50-b3da30b4d76e.png" width="150">
 
 
 ### 特性
