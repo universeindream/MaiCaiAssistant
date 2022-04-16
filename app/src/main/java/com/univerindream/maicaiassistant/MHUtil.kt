@@ -156,7 +156,7 @@ object MHUtil {
     fun startForegroundService(context: Service) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val serviceChannel = NotificationChannel(
-                MHConfig.MALL_HELP_CHANNEL_ID,
+                MHConfig.MAI_CAI_ASSISTANT_CHANNEL_ID,
                 "Recording Service Channel",
                 NotificationManager.IMPORTANCE_HIGH
             )
@@ -166,26 +166,54 @@ object MHUtil {
             manager.createNotificationChannel(serviceChannel)
         }
 
-        val notificationIntent = Intent(context, MainActivity::class.java)
-        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            PendingIntent.getActivity(
-                context,
-                0, notificationIntent, PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
-            )
-        } else {
-            PendingIntent.getActivity(
-                context,
-                0, notificationIntent, PendingIntent.FLAG_ONE_SHOT
-            )
-        }
-        val notification: Notification =
-            NotificationCompat.Builder(context, MHConfig.MALL_HELP_CHANNEL_ID)
-                .setContentTitle("持续抢购中")
-                .setContentText("请勿关闭")
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            Intent(context, MainActivity::class.java).also {
+                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            },
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+            } else {
+                PendingIntent.FLAG_ONE_SHOT
+            }
+        )
+        val notification: Notification = NotificationCompat.Builder(context, MHConfig.MAI_CAI_ASSISTANT_CHANNEL_ID)
+            .setContentTitle("持续抢购中")
+            .setContentText("请勿关闭")
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentIntent(pendingIntent)
+            .setTicker("ticker")
+            .build()
+        context.startForeground(100000000, notification)
+    }
+
+    fun notify(title: String, content: String) {
+        val id = mNotifyId.incrementAndGet()
+        val context = Utils.getApp()
+
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            Intent(context, MainActivity::class.java).also {
+                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            },
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
+            } else {
+                PendingIntent.FLAG_NO_CREATE
+            }
+        )
+
+        NotificationUtils.notify(id) { param ->
+            param
                 .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(title)
+                .setContentText(content)
                 .setContentIntent(pendingIntent)
-                .build()
-        context.startForeground(1, notification)
+                .setAutoCancel(true)
+            null
+        }
     }
 
 
@@ -266,43 +294,6 @@ object MHUtil {
         }
 
         return c.timeInMillis
-    }
-
-    fun screenshot(service: AccessibilityService) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            service.performGlobalAction(AccessibilityService.GLOBAL_ACTION_TAKE_SCREENSHOT)
-        }
-    }
-
-    fun notify(title: String, content: String) {
-        val id = mNotifyId.incrementAndGet()
-
-        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            PendingIntent.getActivity(
-                Utils.getApp(),
-                0, Intent(
-                    Utils.getApp(),
-                    MainActivity::class.java
-                ).putExtra("id", id), PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
-            )
-        } else {
-            PendingIntent.getActivity(
-                Utils.getApp(),
-                0, Intent(
-                    Utils.getApp(),
-                    MainActivity::class.java
-                ).putExtra("id", id), PendingIntent.FLAG_ONE_SHOT
-            )
-        }
-
-        NotificationUtils.notify(id) { param ->
-            param.setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(title)
-                .setContentText(content)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
-            null
-        }
     }
 
 }

@@ -4,7 +4,8 @@ import com.google.gson.Gson
 
 object MHConfig {
 
-    const val MALL_HELP_CHANNEL_ID = "mallhelp_1"
+    const val MAI_CAI_ASSISTANT_CHANNEL_ID = "MaiCaiAssistant_fixed"
+    const val MAI_CAI_ASSISTANT_TIP_CHANNEL_ID = "MaiCaiAssistant_tip"
 
     var curMCSolution: MCSolution = MCSolution("", arrayListOf())
         get() {
