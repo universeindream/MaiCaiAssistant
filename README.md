@@ -4,7 +4,7 @@
 
 ### 概述
 
-[买菜助手](https://github.com/universeindream/MaiCaiAssistant) 是一款可以自动执行购买流程的 APP。目前支持方案有：[`美团抢购 - 支付宝 - 自动送达时间`](https://github.com/universeindream/MaiCaiAssistant/wiki/%E6%96%B9%E6%A1%88---%E7%BE%8E%E5%9B%A2#%E7%BE%8E%E5%9B%A2%E6%8A%A2%E8%B4%AD---%E6%94%AF%E4%BB%98%E5%AE%9D---%E8%87%AA%E5%8A%A8%E9%80%81%E8%BE%BE%E6%97%B6%E9%97%B4)、`美团抢购 - 微信 - 自动送达时间`、`叮咚抢购 - 支付宝 - 自动送达时间`、`叮咚抢购 - 微信 - 自动送达时间`、`盒马正常购买`。
+[买菜助手](https://github.com/universeindream/MaiCaiAssistant) 是一款可以自动执行购买流程的 APP。目前支持方案有：[`美团抢购 - 支付宝 - 自动送达时间`](https://github.com/universeindream/MaiCaiAssistant/wiki/%E6%96%B9%E6%A1%88---%E7%BE%8E%E5%9B%A2#%E7%BE%8E%E5%9B%A2%E6%8A%A2%E8%B4%AD---%E6%94%AF%E4%BB%98%E5%AE%9D---%E8%87%AA%E5%8A%A8%E9%80%81%E8%BE%BE%E6%97%B6%E9%97%B4)、[`美团抢购 - 微信 - 自动送达时间`](https://github.com/universeindream/MaiCaiAssistant/wiki/%E6%96%B9%E6%A1%88---%E7%BE%8E%E5%9B%A2#%E7%BE%8E%E5%9B%A2%E6%8A%A2%E8%B4%AD---%E5%BE%AE%E4%BF%A1---%E8%87%AA%E5%8A%A8%E9%80%81%E8%BE%BE%E6%97%B6%E9%97%B4)、`叮咚抢购 - 支付宝 - 自动送达时间`、`叮咚抢购 - 微信 - 自动送达时间`、`盒马正常购买`。
 
 **ps:**
 
