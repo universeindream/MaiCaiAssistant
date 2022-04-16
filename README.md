@@ -10,6 +10,7 @@
 
 - 起因：`拒绝早起抢菜，抢到了起床支付` :rofl: , 结果：`往自动化助手的方向跑了` :zany_face:
 - 如果闪退，记得点击 `ERROR DETAILS` 截图反馈
+- 点击 [下载](https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk)
 
 ### 互助
 
