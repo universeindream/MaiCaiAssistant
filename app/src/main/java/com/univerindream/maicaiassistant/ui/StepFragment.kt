@@ -80,6 +80,15 @@ class StepFragment : Fragment() {
                 )
             )
         }
+        binding.stepAlarm.setOnCheckedChangeListener { compoundButton, b ->
+            if (!compoundButton.isPressed) return@setOnCheckedChangeListener
+            mStep.isAlarm = b
+        }
+        binding.stepManual.setOnCheckedChangeListener { compoundButton, b ->
+            if (!compoundButton.isPressed) return@setOnCheckedChangeListener
+            mStep.isManual = b
+        }
+
         binding.floatingActionButton.setOnClickListener {
             saveData()
         }
@@ -105,6 +114,9 @@ class StepFragment : Fragment() {
         val step: MCStep = mStep
         binding.stepName.text = step.name
 
+        binding.stepAlarm.isChecked = step.isAlarm
+        binding.stepManual.isChecked = step.isManual
+
         var handleContent = "类型：${step.handle.type}"
         handleContent += "\n节点："
         handleContent += "\n   - 类型：${step.handle.node.nodeType}"
@@ -123,6 +135,8 @@ class StepFragment : Fragment() {
     }
 
     fun saveData() {
+
+
         val stepJson = GsonUtils.toJson(mStep)
 
         setFragmentResult("updateStep", bundleOf("stepJson" to stepJson, "stepIndex" to args.stepIndex))

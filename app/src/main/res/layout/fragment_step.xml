@@ -33,6 +33,47 @@
             tools:text="打开 app" />
 
         <TextView
+            android:id="@+id/step_alarm_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="响铃："
+            android:textColor="@color/black"
+            android:textSize="19sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step_name_label" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/step_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/step_alarm_label"
+            app:layout_constraintStart_toEndOf="@+id/step_alarm_label"
+            app:layout_constraintTop_toTopOf="@+id/step_alarm_label" />
+
+
+        <TextView
+            android:id="@+id/step_manual_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="人工："
+            android:textColor="@color/black"
+            android:textSize="19sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step_alarm_label" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/step_manual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/step_manual_label"
+            app:layout_constraintStart_toEndOf="@+id/step_manual_label"
+            app:layout_constraintTop_toTopOf="@+id/step_manual_label" />
+
+        <TextView
             android:id="@+id/step_handle_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +83,7 @@
             android:textColor="@color/black"
             android:textSize="19sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/step_name_label" />
+            app:layout_constraintTop_toBottomOf="@+id/step_manual_label" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/step_handle_card"
