@@ -78,16 +78,14 @@ object MHUtil {
     ): Boolean {
         val type = handle.type
         val node = handle.node
-        val delay = handle.delay
+        val delayRunBefore = handle.delayRunBefore
+        val delayRunAfter = handle.delayRunAfter
+
+        if (delayRunBefore > 0) delay(delayRunBefore)
 
         val result: Boolean = when (type) {
             EMCHandle.LAUNCH -> {
-                node ?: return false
-                delay(100)
-                service.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS)
-                delay(100)
-                service.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK)
-                delay(100)
+                AppUtils.launchApp(Utils.getApp().packageName)
                 AppUtils.launchApp(node.packageName)
                 true
             }
@@ -98,18 +96,21 @@ object MHUtil {
                 service.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS)
             }
             EMCHandle.CLICK_NODE -> {
-                node ?: return false
-                NodeUtil.clickFirstNode(rootInActiveWindow, node, EMCMatch.CLICKABLE_SELF_OR_PARENT)
+                NodeUtil.clickNode(rootInActiveWindow, node)
+            }
+            EMCHandle.CLICK_NODE_JUST_SELF -> {
+                NodeUtil.clickNode(rootInActiveWindow, node, true)
             }
             EMCHandle.CLICK_RANDOM_NODE -> {
-                node ?: return false
-                NodeUtil.clickRandomNode(rootInActiveWindow, node, EMCMatch.CLICKABLE_SELF_OR_PARENT)
+                NodeUtil.clickRandomNode(rootInActiveWindow, node)
+            }
+            EMCHandle.CLICK_RANDOM_NODE_JUST_SELF -> {
+                NodeUtil.clickRandomNode(rootInActiveWindow, node, true)
             }
             EMCHandle.NONE -> true
-            else -> false
         }
 
-        if (result) delay(delay)
+        if (delayRunAfter > 0) delay(delayRunAfter)
 
         return result
     }

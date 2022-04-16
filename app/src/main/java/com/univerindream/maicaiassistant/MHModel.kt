@@ -58,11 +58,13 @@ enum class EMCCond {
  * 处理
  */
 enum class EMCHandle {
-    BACK,//返回上一页
-    RECENTS,//打开最近
-    LAUNCH,//运行 APP
-    CLICK_NODE,//点击节点
-    CLICK_RANDOM_NODE, //随机点击
+    BACK,
+    RECENTS,
+    LAUNCH,
+    CLICK_NODE,
+    CLICK_NODE_JUST_SELF,
+    CLICK_RANDOM_NODE,
+    CLICK_RANDOM_NODE_JUST_SELF,
     NONE;
 
     fun to2String(): String {
@@ -71,7 +73,9 @@ enum class EMCHandle {
             RECENTS -> "最近健"
             LAUNCH -> "运行软件"
             CLICK_NODE -> "点击控件"
+            CLICK_NODE_JUST_SELF -> "点击控件自身"
             CLICK_RANDOM_NODE -> "点击随机控件"
+            CLICK_RANDOM_NODE_JUST_SELF -> "点击随机控件自身"
             NONE -> "无动作"
         }
     }
@@ -108,6 +112,7 @@ enum class EMCMatch {
 data class MCNode(
     val nodeType: EMCNodeType,
     val nodeKey: String = "",
+    val nodeIndex: Int = 0,
     val className: String = "",
     val packageName: String = "",
 )
@@ -146,8 +151,9 @@ data class MCCond(
  */
 data class MCHandle(
     val type: EMCHandle,
-    val delay: Long = 0,
-    val node: MCNode
+    val node: MCNode,
+    val delayRunAfter: Long = 0,
+    val delayRunBefore: Long = 0,
 )
 
 /**

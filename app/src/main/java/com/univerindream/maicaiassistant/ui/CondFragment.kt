@@ -66,6 +66,7 @@ class CondFragment : Fragment() {
         binding.fragmentCondType.setText(cond.type.toString(), false)
         binding.fragmentCondNodeType.setText(cond.node.nodeType.toString(), false)
         binding.fragmentCondNodeKey.editText?.setText(cond.node.nodeKey)
+        binding.fragmentCondNodeIndex.editText?.setText(cond.node.nodeIndex.toString())
         binding.fragmentCondNodePackageName.editText?.setText(cond.node.packageName)
         binding.fragmentCondNodeClassName.editText?.setText(cond.node.className)
 
@@ -76,6 +77,7 @@ class CondFragment : Fragment() {
         val type = EMCCond.valueOf(binding.fragmentCondType.text.toString())
         val nodeType = EMCNodeType.valueOf(binding.fragmentCondNodeType.text.toString())
         val nodeKey = binding.fragmentCondNodeKey.editText?.text.toString()
+        val nodeIndex = binding.fragmentCondNodeIndex.editText?.text?.toString()?.toInt() ?: 0
         val nodePackageName = binding.fragmentCondNodePackageName.editText?.text.toString()
         val nodeClassName = binding.fragmentCondNodeClassName.editText?.text.toString()
 
@@ -85,6 +87,7 @@ class CondFragment : Fragment() {
                 node = MCNode(
                     nodeType = nodeType,
                     nodeKey = nodeKey,
+                    nodeIndex = nodeIndex,
                     className = nodeClassName,
                     packageName = nodePackageName
                 )

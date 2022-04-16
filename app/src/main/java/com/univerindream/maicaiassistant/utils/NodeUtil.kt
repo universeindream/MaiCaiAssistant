@@ -1,5 +1,9 @@
 package com.univerindream.maicaiassistant.utils
 
+import android.accessibilityservice.AccessibilityService
+import android.accessibilityservice.GestureDescription
+import android.graphics.Path
+import android.graphics.Rect
 import android.os.Build
 import android.view.accessibility.AccessibilityNodeInfo
 import com.elvishew.xlog.XLog
@@ -91,61 +95,38 @@ object NodeUtil {
 
     fun searchAllNode(
         root: AccessibilityNodeInfo?,
-        node: MCNode,
-        match: EMCMatch = EMCMatch.ALL
+        node: MCNode
     ): List<AccessibilityNodeInfo> {
         root ?: return emptyList()
-
-        val result = arrayListOf<AccessibilityNodeInfo>()
 
         val nodeType = node.nodeType
         val nodeKey = node.nodeKey
         val className = node.className
         val packageName = node.packageName
 
-        if (nodeType == EMCNodeType.PACKAGE_NAME) {
-            if (root.packageName == packageName) {
-                result.add(root)
-            }
-            return result
-        }
-
-        if (nodeType == EMCNodeType.CLASSNAME) {
-            if (root.className == className) {
-                result.add(root)
-            }
-            return result
-        }
-
         var data = when (nodeType) {
             EMCNodeType.ID -> root.findAccessibilityNodeInfosByViewId(nodeKey)
             EMCNodeType.TXT -> root.findAccessibilityNodeInfosByText(nodeKey)
-            else -> arrayListOf<AccessibilityNodeInfo>()
+            EMCNodeType.PACKAGE_NAME -> return if (root.packageName == packageName) arrayListOf(root) else arrayListOf()
+            EMCNodeType.CLASSNAME -> return if (root.className == className) arrayListOf(root) else arrayListOf()
         }
 
         if (className.isNotBlank()) {
             data = data.filter { it.className == className }
         }
 
-        if (match != EMCMatch.ALL) {
-            data = data.filter { isMatch(it, match) }
-        }
-
         return data
     }
 
-    fun searchFirstNode(
-        root: AccessibilityNodeInfo?,
-        node: MCNode,
-        match: EMCMatch = EMCMatch.ALL
-    ): AccessibilityNodeInfo? =
-        searchAllNode(root, node, match).firstOrNull()
+    fun isExist(root: AccessibilityNodeInfo?, node: MCNode, match: EMCMatch = EMCMatch.ALL): Boolean {
+        val nodeInfo = searchAllNode(root, node).getOrNull(node.nodeIndex)
+        return isMatch(nodeInfo, match)
+    }
 
-    fun isExist(root: AccessibilityNodeInfo?, node: MCNode, match: EMCMatch = EMCMatch.ALL): Boolean =
-        searchAllNode(root, node, match).isNotEmpty()
-
-    fun click(root: AccessibilityNodeInfo?): Boolean {
+    fun click(root: AccessibilityNodeInfo?, justSelf: Boolean = false): Boolean {
         root ?: return false
+
+        if (justSelf) return root.performAction(AccessibilityNodeInfo.ACTION_CLICK)
 
         val queue = ArrayDeque<AccessibilityNodeInfo>()
         queue.add(root)
@@ -166,12 +147,41 @@ object NodeUtil {
         return false
     }
 
-    fun clickFirstNode(root: AccessibilityNodeInfo?, node: MCNode, match: EMCMatch = EMCMatch.ALL): Boolean {
-        return click(searchFirstNode(root, node, match))
+    fun clickByGesture(service: AccessibilityService, nodeInfo: AccessibilityNodeInfo?): Boolean {
+        nodeInfo ?: return false
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val rect = Rect()
+            nodeInfo.getBoundsInScreen(rect)
+            val x = rect.exactCenterX()
+            val y = rect.exactCenterY()
+
+            val builder = GestureDescription.Builder()
+            val path = Path()
+            path.moveTo(x, y)
+            path.lineTo(x, y)
+            builder.addStroke(GestureDescription.StrokeDescription(path, 1, 1))
+            service.dispatchGesture(builder.build(), object : AccessibilityService.GestureResultCallback() {
+                override fun onCancelled(gestureDescription: GestureDescription) {
+                    super.onCancelled(gestureDescription)
+                }
+
+                override fun onCompleted(gestureDescription: GestureDescription) {
+                    super.onCompleted(gestureDescription)
+                }
+            }, null)
+        } else {
+            click(nodeInfo)
+        }
     }
 
-    fun clickRandomNode(root: AccessibilityNodeInfo?, node: MCNode, match: EMCMatch = EMCMatch.ALL): Boolean {
-        return click(searchAllNode(root, node, match).randomOrNull())
+    fun clickNode(root: AccessibilityNodeInfo?, node: MCNode, isSelf: Boolean = false): Boolean {
+        val nodeInfo = searchAllNode(root, node).getOrNull(node.nodeIndex) ?: return false
+        return click(nodeInfo, isSelf)
+    }
+
+    fun clickRandomNode(root: AccessibilityNodeInfo?, node: MCNode, isSelf: Boolean = false): Boolean {
+        val nodeInfo = searchAllNode(root, node).randomOrNull()
+        return click(nodeInfo, isSelf)
     }
 
     fun log(nodeInfo: AccessibilityNodeInfo?, filterGone: Boolean = false) {

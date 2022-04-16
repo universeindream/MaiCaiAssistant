@@ -1,6 +1,10 @@
 package com.univerindream.maicaiassistant.service
 
 import android.accessibilityservice.AccessibilityService
+import android.accessibilityservice.GestureDescription
+import android.accessibilityservice.GestureDescription.StrokeDescription
+import android.annotation.TargetApi
+import android.graphics.Path
 import android.graphics.PixelFormat
 import android.os.Build
 import android.view.Gravity
@@ -11,7 +15,6 @@ import android.view.accessibility.AccessibilityEvent
 import android.widget.Button
 import android.widget.FrameLayout
 import com.blankj.utilcode.util.AppUtils
-import com.blankj.utilcode.util.TimeUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.elvishew.xlog.XLog
 import com.univerindream.maicaiassistant.*
@@ -19,9 +22,9 @@ import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
+
 
 class GlobalActionBarService : AccessibilityService() {
 
@@ -154,7 +157,7 @@ class GlobalActionBarService : AccessibilityService() {
                                 it.node
                             )
                         }
-                        XLog.v("steps - ${step.name} - $condResult")
+                        XLog.v("steps - ${step.name} - condResult - $condResult")
 
                         if (condResult) {
                             mHandleLog = mHandleLog ?: MCHandleLog(step.name, System.currentTimeMillis())
@@ -240,9 +243,43 @@ class GlobalActionBarService : AccessibilityService() {
         val openAppButton = mLayout.findViewById<View>(R.id.open_app) as Button
         if (BuildConfig.DEBUG) openAppButton.visibility = View.VISIBLE
         openAppButton.setOnClickListener {
-            //throw RuntimeException("Boom!")
-            MHUtil.notify("teest", TimeUtils.date2String(Date()))
+            XLog.v("test")
         }
+    }
+
+    suspend fun test() = withContext(Dispatchers.Main) {
+        XLog.v("循环中")
+        if (rootInActiveWindow?.findAccessibilityNodeInfosByText("结算")?.isNotEmpty() == true) {
+            XLog.i("test - 点击 结算")
+            click(820f, 2090f)
+            delay(200)
+        } else if (rootInActiveWindow?.findAccessibilityNodeInfosByText("我知道了")?.isNotEmpty() == true) {
+            XLog.i("test - 点击 我知道了")
+            click(556f, 1314f)
+            delay(200)
+        } else if (rootInActiveWindow?.findAccessibilityNodeInfosByText("返回购物车")?.isNotEmpty() == true) {
+            XLog.i("test - 点击 返回购物车")
+            click(533f, 1300f)
+            delay(200)
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    fun click(x: Float, y: Float) {
+        val builder = GestureDescription.Builder()
+        val path = Path()
+        path.moveTo(x, y)
+        path.lineTo(x, y)
+        builder.addStroke(StrokeDescription(path, 1, 1))
+        dispatchGesture(builder.build(), object : GestureResultCallback() {
+            override fun onCancelled(gestureDescription: GestureDescription) {
+                super.onCancelled(gestureDescription)
+            }
+
+            override fun onCompleted(gestureDescription: GestureDescription) {
+                super.onCompleted(gestureDescription)
+            }
+        }, null)
     }
 
     class SubAlarm

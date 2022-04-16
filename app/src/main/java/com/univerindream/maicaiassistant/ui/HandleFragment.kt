@@ -61,9 +61,11 @@ class HandleFragment : Fragment() {
         val mcHandle = GsonUtils.fromJson(args.handleJson, MCHandle::class.java)
 
         binding.fragmentHandleType.setText(mcHandle.type.toString(), false)
-        binding.fragmentHandleDelay.editText?.setText(mcHandle.delay.toString())
+        binding.fragmentHandleDelay.editText?.setText(mcHandle.delayRunAfter.toString())
+        binding.fragmentHandleDelayBefore.editText?.setText(mcHandle.delayRunBefore.toString())
         binding.fragmentHandleNodeType.setText(mcHandle.node.nodeType.toString(), false)
         binding.fragmentHandleNodeKey.editText?.setText(mcHandle.node.nodeKey)
+        binding.fragmentHandleNodeIndex.editText?.setText(mcHandle.node.nodeIndex.toString())
         binding.fragmentHandleNodePackageName.editText?.setText(mcHandle.node.packageName)
         binding.fragmentHandleNodeClassName.editText?.setText(mcHandle.node.className)
 
@@ -71,19 +73,23 @@ class HandleFragment : Fragment() {
 
     fun saveData() {
         val type = EMCHandle.valueOf(binding.fragmentHandleType.text.toString())
-        val delay = binding.fragmentHandleDelay.editText?.text.toString().toLong()
+        val delay = binding.fragmentHandleDelay.editText?.text?.toString()?.toLong() ?: 0L
+        val delayBefore = binding.fragmentHandleDelayBefore.editText?.text?.toString()?.toLong() ?: 0L
         val nodeType = EMCNodeType.valueOf(binding.fragmentHandleNodeType.text.toString())
         val nodeKey = binding.fragmentHandleNodeKey.editText?.text.toString()
+        val nodeIndex = binding.fragmentHandleNodeIndex.editText?.text?.toString()?.toInt() ?: 0
         val nodePackageName = binding.fragmentHandleNodePackageName.editText?.text.toString()
         val nodeClassName = binding.fragmentHandleNodeClassName.editText?.text.toString()
 
         val handleJson = GsonUtils.toJson(
             MCHandle(
                 type = type,
-                delay = delay,
+                delayRunAfter = delay,
+                delayRunBefore = delayBefore,
                 node = MCNode(
                     nodeType = nodeType,
                     nodeKey = nodeKey,
+                    nodeIndex = nodeIndex,
                     className = nodeClassName,
                     packageName = nodePackageName
                 )

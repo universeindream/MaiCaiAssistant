@@ -123,7 +123,8 @@ class StepFragment : Fragment() {
         handleContent += "\n   - key：${step.handle.node.nodeKey}"
         handleContent += "\n   - packageName：${step.handle.node.packageName}"
         handleContent += "\n   - className：${step.handle.node.className}"
-        handleContent += "\n执行后延迟(ms)：${step.handle.delay}"
+        handleContent += "\n执行前延迟(ms)：${step.handle.delayRunBefore}"
+        handleContent += "\n执行后延迟(ms)：${step.handle.delayRunAfter}"
         binding.stepHandleValue.text = handleContent
 
         itemAdapter.clear()
