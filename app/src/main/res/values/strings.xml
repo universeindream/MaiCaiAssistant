@@ -11,6 +11,8 @@
     <!-- Strings used for fragments for navigation -->
     <string name="config_fragment_label">常规配置</string>
     <string name="help_fragment_label">流程配置</string>
+    <string name="solution_fragment_label">方案配置</string>
+    <string name="step_fragment_label">步骤配置</string>
 
     <string name="dialog_choose_solution">方案选择</string>
 

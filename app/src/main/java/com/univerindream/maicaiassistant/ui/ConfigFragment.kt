@@ -12,10 +12,7 @@ import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.TimeUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.elvishew.xlog.XLog
-import com.univerindream.maicaiassistant.MHConfig
-import com.univerindream.maicaiassistant.MHData
-import com.univerindream.maicaiassistant.MHUtil
-import com.univerindream.maicaiassistant.R
+import com.univerindream.maicaiassistant.*
 import com.univerindream.maicaiassistant.databinding.FragmentConfigBinding
 import com.univerindream.maicaiassistant.widget.TimePickerFragment
 import org.greenrobot.eventbus.EventBus
@@ -36,9 +33,6 @@ class ConfigFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentConfigBinding.inflate(inflater, container, false)
-
-
-
         return binding.root
     }
 
@@ -54,16 +48,21 @@ class ConfigFragment : Fragment() {
         }
 
         binding.settingAutoInfo.setOnClickListener {
+            findNavController().navigate(R.id.action_ConfigFragment_to_SolutionFragment)
+        }
+
+        binding.settingAutoInfo.setOnLongClickListener {
             findNavController().navigate(R.id.action_ConfigFragment_to_HelpFragment)
+            return@setOnLongClickListener false
         }
 
         binding.settingChooseAuto.setOnClickListener {
             val builder = AlertDialog.Builder(this@ConfigFragment.requireContext())
             builder.setTitle(R.string.dialog_choose_solution)
                 .setItems(
-                    MHConfig.allMHSolution.map { it.name }.toTypedArray()
+                    MHDefault.defaultMCSolutions.map { it.name }.toTypedArray()
                 ) { _, which ->
-                    MHConfig.curMHSolution = MHConfig.allMHSolution[which]
+                    MHConfig.curMCSolution = MHDefault.defaultMCSolutions[which]
                     loadData()
                 }
             builder.create().show()
@@ -147,7 +146,7 @@ class ConfigFragment : Fragment() {
     private fun loadData() {
         binding.settingPermission.isChecked = MHUtil.hasServicePermission()
 
-        binding.settingAutoInfo.text = MHConfig.curMHSolution.name
+        binding.settingAutoInfo.text = MHConfig.curMCSolution.name
 
         binding.settingBuyTimeValue.setText(MHData.buyMinTime.toString())
 

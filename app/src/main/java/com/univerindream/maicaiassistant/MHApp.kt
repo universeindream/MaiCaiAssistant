@@ -24,11 +24,6 @@ class MHApp : Application() {
 
         initCrash()
         initXLog()
-
-        if (BuildConfig.DEBUG) {
-            MHData.curJsonMHSolution = ""
-            MHData.allJsonMHSolution = ""
-        }
     }
 
     private fun initCrash() {

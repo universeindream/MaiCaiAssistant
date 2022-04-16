@@ -8,20 +8,11 @@ object MHData {
     /**
      * 当前方案
      */
-    var curJsonMHSolution: String
+    var curMCSolutionJSON: String
         get() = SPUtils.getInstance()
-            .getString("curJsonMHSolution", Gson().toJson(MHDefault.defaultMHSolutions.first()))
-        set(value) = if (value.isBlank()) SPUtils.getInstance().remove("curJsonMHSolution") else SPUtils.getInstance()
-            .put("curJsonMHSolution", value)
-
-    /**
-     * 所有方案
-     */
-    var allJsonMHSolution: String
-        get() = SPUtils.getInstance()
-            .getString("allJsonMHSolution", Gson().toJson(MHDefault.defaultMHSolutions))
-        set(value) = if (value.isBlank()) SPUtils.getInstance().remove("allJsonMHSolution") else SPUtils.getInstance()
-            .put("allJsonMHSolution", value)
+            .getString("curMCSolutionJSON", Gson().toJson(MHDefault.defaultMCSolutions.first()))
+        set(value) = if (value.isBlank()) SPUtils.getInstance().remove("curMCSolutionJSON") else SPUtils.getInstance()
+            .put("curMCSolutionJSON", value)
 
     /**
      * 抢购时长

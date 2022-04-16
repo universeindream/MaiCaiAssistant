@@ -1,10 +1,20 @@
 package com.univerindream.maicaiassistant
 
-enum class EMCSearch {
+enum class EMCNodeType {
     ID, //ID 节点
     TXT, //内容节点
     CLASSNAME,
-    PACKAGE_NAME,
+    PACKAGE_NAME, ;
+
+    fun to2String(): String {
+
+        return when (this) {
+            ID -> "ID"
+            TXT -> "文本"
+            CLASSNAME -> "类名"
+            PACKAGE_NAME -> "包名"
+        }
+    }
 }
 
 /**
@@ -19,10 +29,28 @@ enum class EMCCond {
     NODE_NO_VISIBLE, //节点不可见
     NODE_CAN_CLICK, //节点可点击
     NODE_NOT_CLICK, //节点不可点击
-    NODE_SELECTED, //节点必须已选择
-    NODE_NOT_SELECTED, //节点必须已选择
+    NODE_SELECTED, //节点已选择
+    NODE_NOT_SELECTED, //节点未选择
     NODE_CHECKED, //节点必须已选择
-    NODE_NOT_CHECKED, //节点必须已选择
+    NODE_NOT_CHECKED; //节点必须已选择
+
+    fun to2String(): String {
+
+        return when (this) {
+            APP_IS_BACKGROUND -> "App 在后台"
+            EQ_CLASS_NAME -> "类名一致"
+            NODE_EXIST -> "节点存在"
+            NODE_NO_EXIST -> "节点不存在"
+            NODE_VISIBLE -> "节点可见"
+            NODE_NO_VISIBLE -> "节点不可见"
+            NODE_CAN_CLICK -> "节点可点击"
+            NODE_NOT_CLICK -> "节点不可点击"
+            NODE_SELECTED -> "节点已选择"
+            NODE_NOT_SELECTED -> "节点未选择"
+            NODE_CHECKED -> "节点已选中"
+            NODE_NOT_CHECKED -> "节点未选中"
+        }
+    }
 }
 
 
@@ -34,10 +62,19 @@ enum class EMCHandle {
     RECENTS,//打开最近
     LAUNCH,//运行 APP
     CLICK_NODE,//点击节点
-    CLICK_MULTIPLE_NODE,//点击多节点
-    CLICK_SCOPE_RANDOM_NODE, //指定多个节点，随机运行
     CLICK_RANDOM_NODE, //随机点击
-    NONE
+    NONE;
+
+    fun to2String(): String {
+        return when (this) {
+            BACK -> "返回健"
+            RECENTS -> "最近健"
+            LAUNCH -> "运行软件"
+            CLICK_NODE -> "点击控件"
+            CLICK_RANDOM_NODE -> "点击随机控件"
+            NONE -> "无动作"
+        }
+    }
 }
 
 /**
@@ -69,7 +106,7 @@ enum class EMCMatch {
  * 节点
  */
 data class MCNode(
-    val search: EMCSearch,
+    val nodeType: EMCNodeType,
     val nodeKey: String = "",
     val className: String = "",
     val packageName: String = "",
@@ -78,22 +115,22 @@ data class MCNode(
 /**
  * 解决方案
  */
-data class MHSolution(
+data class MCSolution(
     val name: String,
-    val steps: List<MCStep>
+    val steps: MutableList<MCStep>
 )
 
 /**
  * 步骤
  */
 data class MCStep(
-    val name: String,
-    val condList: List<MCCond> = arrayListOf(),
-    val handle: MCHandle,
+    var name: String,
+    var condList: MutableList<MCCond> = arrayListOf(),
+    var handle: MCHandle,
     /** 是否警报 **/
-    val isAlarm: Boolean = false,
+    var isAlarm: Boolean = false,
     /** 是否手动 **/
-    val isManual: Boolean = false
+    var isManual: Boolean = false
 )
 
 /**
@@ -110,7 +147,7 @@ data class MCCond(
 data class MCHandle(
     val type: EMCHandle,
     val delay: Long = 0,
-    val nodes: List<MCNode>
+    val node: MCNode
 )
 
 /**
