@@ -11,10 +11,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.blankj.utilcode.util.GsonUtils
-import com.univerindream.maicaiassistant.EMCHandle
-import com.univerindream.maicaiassistant.EMCSearch
-import com.univerindream.maicaiassistant.MCHandle
-import com.univerindream.maicaiassistant.R
+import com.univerindream.maicaiassistant.*
 import com.univerindream.maicaiassistant.databinding.FragmentHandleBinding
 
 class HandleFragment : Fragment() {
@@ -49,13 +46,12 @@ class HandleFragment : Fragment() {
             ArrayAdapter(
                 requireContext(),
                 R.layout.list_popup_window_item,
-                EMCSearch.values().map { it.toString() }.toList()
+                EMCNodeType.values().map { it.toString() }.toList()
             )
         )
 
         binding.floatingActionButton.setOnClickListener {
-            setFragmentResult("updateHandle", bundleOf("kim" to "test"))
-            findNavController().navigateUp()
+            saveData()
         }
 
         loadData()
@@ -66,11 +62,35 @@ class HandleFragment : Fragment() {
 
         binding.fragmentHandleType.setText(mcHandle.type.toString(), false)
         binding.fragmentHandleDelay.editText?.setText(mcHandle.delay.toString())
-        binding.fragmentHandleNodeType.setText(mcHandle.node.search.toString(), false)
+        binding.fragmentHandleNodeType.setText(mcHandle.node.nodeType.toString(), false)
         binding.fragmentHandleNodeKey.editText?.setText(mcHandle.node.nodeKey)
         binding.fragmentHandleNodePackageName.editText?.setText(mcHandle.node.packageName)
         binding.fragmentHandleNodeClassName.editText?.setText(mcHandle.node.className)
 
     }
 
+    fun saveData() {
+        val type = EMCHandle.valueOf(binding.fragmentHandleType.text.toString())
+        val delay = binding.fragmentHandleDelay.editText?.text.toString().toLong()
+        val nodeType = EMCNodeType.valueOf(binding.fragmentHandleNodeType.text.toString())
+        val nodeKey = binding.fragmentHandleNodeKey.editText?.text.toString()
+        val nodePackageName = binding.fragmentHandleNodePackageName.editText?.text.toString()
+        val nodeClassName = binding.fragmentHandleNodeClassName.editText?.text.toString()
+
+        val handleJson = GsonUtils.toJson(
+            MCHandle(
+                type = type,
+                delay = delay,
+                node = MCNode(
+                    nodeType = nodeType,
+                    nodeKey = nodeKey,
+                    className = nodeClassName,
+                    packageName = nodePackageName
+                )
+            )
+        )
+
+        setFragmentResult("updateHandle", bundleOf("handleJson" to handleJson))
+        findNavController().navigateUp()
+    }
 }

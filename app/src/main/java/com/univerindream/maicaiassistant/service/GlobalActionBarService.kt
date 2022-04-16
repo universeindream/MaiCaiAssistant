@@ -143,7 +143,7 @@ class GlobalActionBarService : AccessibilityService() {
                     }
 
                     //操作流程
-                    for (step in MHConfig.curMHSolution.steps) {
+                    for (step in MHConfig.curMCSolution.steps) {
                         val condResult = step.condList.all {
                             MHUtil.stepCond(
                                 rootInActiveWindow,

@@ -47,13 +47,14 @@
         android:label="@string/step_fragment_label"
         tools:layout="@layout/fragment_step">
 
+
         <argument
             android:name="stepIndex"
             android:defaultValue="0"
             app:argType="integer" />
 
         <argument
-            android:name="handleJson"
+            android:name="stepJson"
             android:defaultValue="{}"
             app:argType="string" />
 
@@ -74,7 +75,13 @@
         tools:layout="@layout/fragment_cond">
 
         <argument
+            android:name="condIndex"
+            android:defaultValue="0"
+            app:argType="integer" />
+
+        <argument
             android:name="condJson"
+            android:defaultValue="{}"
             app:argType="string" />
 
         <action
@@ -88,6 +95,7 @@
         android:label="HandleFragment">
         <argument
             android:name="handleJson"
+            android:defaultValue="{}"
             app:argType="string" />
 
         <action

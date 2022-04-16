@@ -1,17 +1,17 @@
 package com.univerindream.maicaiassistant
 
-enum class EMCSearch {
+enum class EMCNodeType {
     ID, //ID 节点
     TXT, //内容节点
     CLASSNAME,
     PACKAGE_NAME, ;
 
-    override fun toString(): String {
+    fun to2String(): String {
 
         return when (this) {
             ID -> "ID"
             TXT -> "文本"
-            CLASSNAME -> "类目"
+            CLASSNAME -> "类名"
             PACKAGE_NAME -> "包名"
         }
     }
@@ -34,7 +34,7 @@ enum class EMCCond {
     NODE_CHECKED, //节点必须已选择
     NODE_NOT_CHECKED; //节点必须已选择
 
-    override fun toString(): String {
+    fun to2String(): String {
 
         return when (this) {
             APP_IS_BACKGROUND -> "App 在后台"
@@ -65,7 +65,7 @@ enum class EMCHandle {
     CLICK_RANDOM_NODE, //随机点击
     NONE;
 
-    override fun toString(): String {
+    fun to2String(): String {
         return when (this) {
             BACK -> "返回健"
             RECENTS -> "最近健"
@@ -106,7 +106,7 @@ enum class EMCMatch {
  * 节点
  */
 data class MCNode(
-    val search: EMCSearch,
+    val nodeType: EMCNodeType,
     val nodeKey: String = "",
     val className: String = "",
     val packageName: String = "",
@@ -115,22 +115,22 @@ data class MCNode(
 /**
  * 解决方案
  */
-data class MHSolution(
+data class MCSolution(
     val name: String,
-    val steps: List<MCStep>
+    val steps: MutableList<MCStep>
 )
 
 /**
  * 步骤
  */
 data class MCStep(
-    val name: String,
-    val condList: List<MCCond> = arrayListOf(),
-    val handle: MCHandle,
+    var name: String,
+    var condList: MutableList<MCCond> = arrayListOf(),
+    var handle: MCHandle,
     /** 是否警报 **/
-    val isAlarm: Boolean = false,
+    var isAlarm: Boolean = false,
     /** 是否手动 **/
-    val isManual: Boolean = false
+    var isManual: Boolean = false
 )
 
 /**

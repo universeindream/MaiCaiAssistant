@@ -5,7 +5,7 @@ import android.view.accessibility.AccessibilityNodeInfo
 import com.elvishew.xlog.XLog
 import com.google.gson.Gson
 import com.univerindream.maicaiassistant.EMCMatch
-import com.univerindream.maicaiassistant.EMCSearch
+import com.univerindream.maicaiassistant.EMCNodeType
 import com.univerindream.maicaiassistant.MCNode
 
 object NodeUtil {
@@ -98,19 +98,19 @@ object NodeUtil {
 
         val result = arrayListOf<AccessibilityNodeInfo>()
 
-        val nodeType = node.search
+        val nodeType = node.nodeType
         val nodeKey = node.nodeKey
         val className = node.className
         val packageName = node.packageName
 
-        if (nodeType == EMCSearch.PACKAGE_NAME) {
+        if (nodeType == EMCNodeType.PACKAGE_NAME) {
             if (root.packageName == packageName) {
                 result.add(root)
             }
             return result
         }
 
-        if (nodeType == EMCSearch.CLASSNAME) {
+        if (nodeType == EMCNodeType.CLASSNAME) {
             if (root.className == className) {
                 result.add(root)
             }
@@ -118,8 +118,8 @@ object NodeUtil {
         }
 
         var data = when (nodeType) {
-            EMCSearch.ID -> root.findAccessibilityNodeInfosByViewId(nodeKey)
-            EMCSearch.TXT -> root.findAccessibilityNodeInfosByText(nodeKey)
+            EMCNodeType.ID -> root.findAccessibilityNodeInfosByViewId(nodeKey)
+            EMCNodeType.TXT -> root.findAccessibilityNodeInfosByText(nodeKey)
             else -> arrayListOf<AccessibilityNodeInfo>()
         }
 

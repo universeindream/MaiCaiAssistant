@@ -11,10 +11,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.blankj.utilcode.util.GsonUtils
-import com.univerindream.maicaiassistant.EMCCond
-import com.univerindream.maicaiassistant.EMCSearch
-import com.univerindream.maicaiassistant.MCCond
-import com.univerindream.maicaiassistant.R
+import com.univerindream.maicaiassistant.*
 import com.univerindream.maicaiassistant.databinding.FragmentCondBinding
 
 class CondFragment : Fragment() {
@@ -22,8 +19,11 @@ class CondFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-
     private val args: CondFragmentArgs by navArgs()
+
+    private val mcCond: MCCond by lazy {
+        GsonUtils.fromJson(args.condJson, MCCond::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,26 +49,51 @@ class CondFragment : Fragment() {
             ArrayAdapter(
                 requireContext(),
                 R.layout.list_popup_window_item,
-                EMCSearch.values().map { it.toString() }.toList()
+                EMCNodeType.values().map { it.toString() }.toList()
             )
         )
         binding.floatingActionButton.setOnClickListener {
-            setFragmentResult("updateCond", bundleOf("kim" to "test"))
-            findNavController().navigateUp()
+
+            saveData()
         }
 
         loadData()
     }
 
     fun loadData() {
-        val cond = GsonUtils.fromJson(args.condJson, MCCond::class.java)
+        val cond = mcCond
 
         binding.fragmentCondType.setText(cond.type.toString(), false)
-        binding.fragmentCondNodeType.setText(cond.node.search.toString(), false)
+        binding.fragmentCondNodeType.setText(cond.node.nodeType.toString(), false)
         binding.fragmentCondNodeKey.editText?.setText(cond.node.nodeKey)
         binding.fragmentCondNodePackageName.editText?.setText(cond.node.packageName)
         binding.fragmentCondNodeClassName.editText?.setText(cond.node.className)
 
+    }
+
+    fun saveData() {
+
+        val type = EMCCond.valueOf(binding.fragmentCondType.text.toString())
+        val nodeType = EMCNodeType.valueOf(binding.fragmentCondNodeType.text.toString())
+        val nodeKey = binding.fragmentCondNodeKey.editText?.text.toString()
+        val nodePackageName = binding.fragmentCondNodePackageName.editText?.text.toString()
+        val nodeClassName = binding.fragmentCondNodeClassName.editText?.text.toString()
+
+        val condJson = GsonUtils.toJson(
+            MCCond(
+                type = type,
+                node = MCNode(
+                    nodeType = nodeType,
+                    nodeKey = nodeKey,
+                    className = nodeClassName,
+                    packageName = nodePackageName
+                )
+            )
+        )
+
+
+        setFragmentResult("updateCond", bundleOf("condJson" to condJson, "condIndex" to args.condIndex))
+        findNavController().navigateUp()
     }
 
 }
