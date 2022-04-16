@@ -10,7 +10,7 @@
 
 - 起因：`拒绝早起抢菜，抢到了起床支付` :rofl: , 结果：`往自动化助手的方向跑了` :zany_face:
 - 如果闪退，记得点击 `ERROR DETAILS` 截图反馈
-- 如果流程异常，尝试设置流程运行延迟时间 - [视频教程](https://user-images.githubusercontent.com/7286154/163680965-a64f13ea-9bd7-4033-9c2e-e8f69e288831.mp4)
+- 如果执行几次就停止，尝试设置问题步骤的延迟时间 - [视频教程](https://user-images.githubusercontent.com/7286154/163680965-a64f13ea-9bd7-4033-9c2e-e8f69e288831.mp4)
 
 ### 互助
 
