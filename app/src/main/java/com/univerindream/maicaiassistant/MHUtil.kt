@@ -276,21 +276,30 @@ object MHUtil {
 
     fun notify(title: String, content: String) {
         val id = mNotifyId.incrementAndGet()
+
+        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.getActivity(
+                Utils.getApp(),
+                0, Intent(
+                    Utils.getApp(),
+                    MainActivity::class.java
+                ).putExtra("id", id), PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+            )
+        } else {
+            PendingIntent.getActivity(
+                Utils.getApp(),
+                0, Intent(
+                    Utils.getApp(),
+                    MainActivity::class.java
+                ).putExtra("id", id), PendingIntent.FLAG_ONE_SHOT
+            )
+        }
+
         NotificationUtils.notify(id) { param ->
             param.setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(title)
                 .setContentText(content)
-                .setContentIntent(
-                    PendingIntent.getActivity(
-                        Utils.getApp(),
-                        0,
-                        Intent(
-                            Utils.getApp(),
-                            MainActivity::class.java
-                        ).putExtra("id", id),
-                        0
-                    )
-                )
+                .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
             null
         }
