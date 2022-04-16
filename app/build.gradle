@@ -11,8 +11,8 @@ android {
         applicationId "com.univerindream.maicaiassistant"
         minSdk 21
         targetSdk 32
-        versionCode 14
-        versionName "2.2.4"
+        versionCode 15
+        versionName "2.2.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
