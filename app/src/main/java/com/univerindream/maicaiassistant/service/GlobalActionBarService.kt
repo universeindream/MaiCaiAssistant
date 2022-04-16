@@ -11,6 +11,7 @@ import android.view.accessibility.AccessibilityEvent
 import android.widget.Button
 import android.widget.FrameLayout
 import com.blankj.utilcode.util.AppUtils
+import com.blankj.utilcode.util.TimeUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.elvishew.xlog.XLog
 import com.univerindream.maicaiassistant.*
@@ -18,6 +19,7 @@ import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 
@@ -202,7 +204,6 @@ class GlobalActionBarService : AccessibilityService() {
 
     private fun cancelTask() {
         mSnapUpStatus.set(false)
-        mLoopStartTime.set(-1)
         updateSnapUpButton()
     }
 
@@ -240,6 +241,7 @@ class GlobalActionBarService : AccessibilityService() {
         if (BuildConfig.DEBUG) openAppButton.visibility = View.VISIBLE
         openAppButton.setOnClickListener {
             //throw RuntimeException("Boom!")
+            MHUtil.notify("teest", TimeUtils.date2String(Date()))
         }
     }
 
