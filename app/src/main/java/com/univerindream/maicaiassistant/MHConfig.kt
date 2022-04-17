@@ -5,7 +5,6 @@ import com.google.gson.Gson
 object MHConfig {
 
     const val MAI_CAI_ASSISTANT_CHANNEL_ID = "MaiCaiAssistant_fixed"
-    const val MAI_CAI_ASSISTANT_TIP_CHANNEL_ID = "MaiCaiAssistant_tip"
 
     var curMCSolution: MCSolution = MCSolution("", arrayListOf())
         get() {

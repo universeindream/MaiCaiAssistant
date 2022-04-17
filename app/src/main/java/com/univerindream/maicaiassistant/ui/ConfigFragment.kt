@@ -56,20 +56,13 @@ class ConfigFragment : Fragment() {
         }
 
         binding.settingChooseAuto.setOnClickListener {
+            val solutions = arrayListOf<MCSolution>()
+            solutions.addAll(MHDefault.githubSolutions)
+            solutions.addAll(MHDefault.defaultMCSolutions)
             MaterialAlertDialogBuilder(requireContext())
-                .setTitle("默认方案")
-                .setItems(MHDefault.defaultMCSolutions.map { it.name }.toTypedArray()) { _, which ->
-                    MHConfig.curMCSolution = MHDefault.defaultMCSolutions[which]
-                    loadData()
-                }
-                .show()
-        }
-        binding.settingChooseAutoGithub.setOnClickListener {
-            checkConfig()
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle("远程方案")
-                .setItems(MHDefault.githubSolutions.map { it.name }.toTypedArray()) { _, which ->
-                    MHConfig.curMCSolution = MHDefault.githubSolutions[which]
+                .setTitle("选择其他方案")
+                .setItems(solutions.map { it.name }.toTypedArray()) { _, which ->
+                    MHConfig.curMCSolution = solutions[which]
                     loadData()
                 }
                 .show()

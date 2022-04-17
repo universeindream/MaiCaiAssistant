@@ -7,13 +7,55 @@
     android:layout_height="match_parent"
     tools:context=".ui.ConfigFragment">
 
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:minHeight="40dp"
+        android:text="当前方案："
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/setting_auto_info"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center|start"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView"
+        tools:text="美团抢购 - 支付宝 - 自动送达时间" />
+
+    <Button
+        android:id="@+id/setting_choose_auto"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="选择其他方案"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setting_auto_info" />
+
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/settingPermission"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="辅助权限开关: "
+        android:text="无障碍开关: "
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/setting_wrong_alarm_status" />
 
@@ -36,7 +78,6 @@
         style="@style/Widget.MaterialComponents.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:inputType="number"
         android:minHeight="48dp"
@@ -55,7 +96,7 @@
         android:layout_marginTop="16dp"
         android:text="定时抢购开关: "
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/setting_puy_time" />
+        app:layout_constraintTop_toBottomOf="@+id/setting_buy_time_value" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/setting_wrong_alarm_status"
@@ -72,63 +113,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="铃声开关: "
-        app:layout_constraintBottom_toBottomOf="@+id/settingPermission"
-        app:layout_constraintStart_toEndOf="@+id/settingPermission"
-        app:layout_constraintTop_toTopOf="@+id/settingPermission" />
-
-    <Button
-        android:id="@+id/setting_auto_info"
-        style="?attr/materialButtonOutlinedStyle"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:gravity="center|start"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="@+id/textView"
-        tools:text="美团抢购 - 支付宝 - 自动送达时间" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:gravity="center_vertical"
-        android:minHeight="60dp"
-        android:text="购买方案："
-        android:textColor="@color/black"
+        android:text="响铃开关: "
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/setting_puy_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:gravity="center_vertical"
-        android:minHeight="60dp"
-        android:text="抢购时长："
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/setting_choose_auto" />
+        app:layout_constraintTop_toBottomOf="@+id/settingPermission" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/setting_buy_time_value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:hint="执行时长(min):"
         app:endIconMode="clear_text"
-        app:layout_constraintBottom_toBottomOf="@+id/setting_puy_time"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/setting_puy_time"
-        app:layout_constraintTop_toTopOf="@+id/setting_puy_time">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setting_choose_auto">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -136,33 +137,5 @@
             android:inputType="number" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-        android:id="@+id/setting_choose_auto"
-        style="@style/Widget.MaterialComponents.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:inputType="number"
-        android:minHeight="48dp"
-        android:text="默认方案"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <Button
-        android:id="@+id/setting_choose_auto_github"
-        style="@style/Widget.MaterialComponents.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:inputType="number"
-        android:minHeight="48dp"
-        android:text="远程方案"
-        app:layout_constraintBottom_toBottomOf="@+id/setting_choose_auto"
-        app:layout_constraintStart_toEndOf="@+id/setting_choose_auto"
-        app:layout_constraintTop_toTopOf="@+id/setting_choose_auto"
-        tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
