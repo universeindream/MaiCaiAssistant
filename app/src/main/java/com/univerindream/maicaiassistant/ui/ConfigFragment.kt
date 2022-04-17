@@ -4,11 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.TimeUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.elvishew.xlog.XLog
@@ -47,12 +46,6 @@ class ConfigFragment : Fragment() {
 
         EventBus.getDefault().register(this)
 
-        binding.settingPanel.setOnTouchListener { view, motionEvent ->
-            KeyboardUtils.hideSoftInput(view)
-            view.requestFocus()
-            return@setOnTouchListener false
-        }
-
         binding.settingAutoInfo.setOnClickListener {
             findNavController().navigate(R.id.action_ConfigFragment_to_SolutionFragment)
         }
@@ -82,12 +75,10 @@ class ConfigFragment : Fragment() {
                 .show()
         }
 
-        binding.settingBuyTimeValue.addTextChangedListener({ _, _, _, _ -> }, { _, _, _, _ -> }) { s ->
-            s?.toString()?.let {
-                if (it.isNotBlank()) MHData.buyMinTime = it.toInt() else MHData.buyMinTime = 25
-            }
+        binding.settingBuyTimeValue.editText?.doAfterTextChanged { inputText ->
+            val time = if (inputText.isNullOrBlank()) 25 else inputText.toString().toInt()
+            MHData.buyMinTime = time
         }
-
 
         binding.settingTimerTriggerStatus.setOnCheckedChangeListener { compoundButton, b ->
             if (!compoundButton.isPressed) return@setOnCheckedChangeListener
@@ -182,7 +173,7 @@ class ConfigFragment : Fragment() {
 
         binding.settingAutoInfo.text = MHConfig.curMCSolution.name
 
-        binding.settingBuyTimeValue.setText(MHData.buyMinTime.toString())
+        binding.settingBuyTimeValue.editText?.setText(MHData.buyMinTime.toString())
 
         binding.settingTimerTriggerStatus.isChecked = MHData.timerTriggerStatus
         binding.settingWrongAlarmStatus.isChecked = MHData.wrongAlarmStatus
