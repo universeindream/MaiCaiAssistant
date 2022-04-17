@@ -99,9 +99,10 @@ class MainActivity : AppCompatActivity() {
                     .downloadFileWithDynamicUrlSync("https://raw.githubusercontent.com/universeindream/MaiCaiAssistant/main/config.json")
                     .string()
                 val solution =
-                    Gson().fromJson<List<MCSolution>>(json, object : TypeToken<ArrayList<MCSolution>>() {}.rawType)
+                    Gson().fromJson<List<MCSolution>>(json, object : TypeToken<ArrayList<MCSolution>>() {}.type)
                 MHDefault.defaultMCSolutions.clear()
                 MHDefault.defaultMCSolutions.addAll(solution)
+                XLog.i("远程方案更新成功")
             } catch (e: Exception) {
                 XLog.e(e)
             }
