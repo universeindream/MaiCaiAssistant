@@ -106,7 +106,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         node = MCNode(EMCNodeType.TXT, "立即支付"),
-                        delayRunAfter = 100,
+                        delayRunBefore = 500,
                     ),
                 ),
                 MCStep(
@@ -305,7 +305,7 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         node = MCNode(EMCNodeType.TXT, "立即支付"),
-                        delayRunAfter = 100,
+                        delayRunBefore = 500,
                     ),
                 ),
                 MCStep(
