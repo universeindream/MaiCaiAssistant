@@ -63,14 +63,7 @@ dependencies {
 
     implementation "com.mikepenz:fastadapter:5.6.0"
     implementation "com.mikepenz:fastadapter-extensions-expandable:5.6.0"
-    implementation "com.mikepenz:fastadapter-extensions-binding:5.6.0" // view binding helpers
-    implementation "com.mikepenz:fastadapter-extensions-diff:5.6.0" // diff util helpers
-    implementation "com.mikepenz:fastadapter-extensions-drag:5.6.0" // drag support
-    implementation "com.mikepenz:fastadapter-extensions-paged:5.6.0" // paging support
-    implementation "com.mikepenz:fastadapter-extensions-scroll:5.6.0" // scroll helpers
-    implementation "com.mikepenz:fastadapter-extensions-swipe:5.6.0" // swipe support
-    implementation "com.mikepenz:fastadapter-extensions-ui:5.6.0" // pre-defined ui components
-    implementation "com.mikepenz:fastadapter-extensions-utils:5.6.0" // needs the `expandable`, `drag` and `scroll` extension.
+    implementation "com.mikepenz:fastadapter-extensions-binding:5.6.0"
 
 
     testImplementation 'junit:junit:'

@@ -6,10 +6,6 @@ object MHDefault {
 
     val defaultMCSolutions = arrayListOf(
         MCSolution(
-            name = "自定义",
-            steps = arrayListOf()
-        ),
-        MCSolution(
             name = "美团抢购 - 支付宝 - 自动送达时间",
             steps = arrayListOf(
                 MCStep(
@@ -842,6 +838,10 @@ object MHDefault {
                     isManual = true
                 ),
             )
+        ),
+        MCSolution(
+            name = "自定义",
+            steps = arrayListOf()
         ),
     )
 
