@@ -43,7 +43,11 @@ class SolutionFragment : Fragment() {
             XLog.i("handle -> $requestKey $bundle")
             val mcStep = GsonUtils.fromJson(bundle.getString("stepJson"), MCStep::class.java)
             val index = bundle.getInt("stepIndex")
-            mcSolution.steps[index] = mcStep
+            if (index == -1) {
+                mcSolution.steps.add(mcStep)
+            } else {
+                mcSolution.steps[index] = mcStep
+            }
         }
     }
 
@@ -71,8 +75,15 @@ class SolutionFragment : Fragment() {
             false
         }
 
-        binding.floatingActionButton.setOnClickListener {
+        binding.floatingSaveButton.setOnClickListener {
             saveData()
+        }
+        binding.floatingAddButton.setOnClickListener {
+            val action = SolutionFragmentDirections.actionSolutionFragmentToStepFragment(
+                stepJson = "{}",
+                stepIndex = -1
+            )
+            findNavController().navigate(action)
         }
 
         loadData()

@@ -110,7 +110,7 @@ enum class EMCMatch {
  * 节点
  */
 data class MCNode(
-    val nodeType: EMCNodeType,
+    val nodeType: EMCNodeType = EMCNodeType.TXT,
     val nodeKey: String = "",
     val nodeIndex: Int = 0,
     val className: String = "",
@@ -129,9 +129,9 @@ data class MCSolution(
  * 步骤
  */
 data class MCStep(
-    var name: String,
+    var name: String = " 默认",
     var condList: MutableList<MCCond> = arrayListOf(),
-    var handle: MCHandle,
+    var handle: MCHandle = MCHandle(),
     /** 是否警报 **/
     var isAlarm: Boolean = false,
     /** 是否手动 **/
@@ -152,8 +152,8 @@ data class MCCond(
  * 处理
  */
 data class MCHandle(
-    val type: EMCHandle,
-    val node: MCNode,
+    val type: EMCHandle = EMCHandle.NONE,
+    val node: MCNode = MCNode(),
     val delayRunAfter: Long = 0,
     val delayRunBefore: Long = 0,
 )
