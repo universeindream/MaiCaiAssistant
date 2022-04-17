@@ -104,17 +104,21 @@ class SolutionFragment : Fragment() {
             get() = R.id.adapter_step_item
 
         override fun bindView(binding: ItemStepBinding, payloads: List<Any>) {
-            val content = "Step$tag: ${model.name}"
+            val content = "步骤$tag: ${model.name}"
             binding.solutionStepName.text = content
 
             var handleContent = "  - 操作:"
             handleContent += "\n      - 类型：${model.handle.type.to2String()}"
+            handleContent += "\n      - 节点类型：${model.handle.node.nodeType.to2String()}"
+            handleContent += "\n      - 运行前延迟：${model.handle.delayRunBefore}"
+            handleContent += "\n      - 运行后延迟：${model.handle.delayRunAfter}"
             binding.solutionStepHandle.text = handleContent
 
-            var condContent = "  - 条件:"
+            var condContent = "  - 条件列表:"
             model.condList.forEachIndexed { i, s ->
                 condContent += "\n      - 条件${i + 1}:"
-                condContent += "\n         - 类型: " + s.type.to2String()
+                condContent += "\n          - 类型: " + s.type.to2String()
+                condContent += "\n          - 节点类型: " + s.node.nodeType.to2String()
             }
             binding.solutionStepCondList.text = condContent
         }

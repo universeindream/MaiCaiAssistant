@@ -19,7 +19,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:text="名称：" />
+            android:text="名称："
+            android:textColor="@color/black"
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/solution_step_handle"
@@ -28,7 +30,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:text="操作：" />
+            android:text="操作："
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/solution_step_condList"
@@ -37,7 +40,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:text="条件：" />
+            android:text="条件："
+            android:textSize="16sp" />
 
     </LinearLayout>
 
