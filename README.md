@@ -11,6 +11,7 @@
 - 起因：`拒绝早起抢菜，抢到了起床支付` :rofl: , 结果：`往自动化助手的方向跑了` :zany_face:
 - 如果闪退，记得点击 `ERROR DETAILS` 截图反馈
 - 如果执行几次就停止，尝试设置问题步骤的延迟时间 - [视频教程](https://user-images.githubusercontent.com/7286154/163680965-a64f13ea-9bd7-4033-9c2e-e8f69e288831.mp4)
+- 如果提示 `异常提示 - 流程 - xxx 已重复执行 10s 未执行`，请尝试设置未执行步骤的延迟时间 - [视频教程](https://user-images.githubusercontent.com/7286154/163680965-a64f13ea-9bd7-4033-9c2e-e8f69e288831.mp4)
 
 ### 互助
 
@@ -31,6 +32,16 @@
 - 可自定义购买方案
    - 流程有问题，自己也可以尝试处理了 
    - 长按 -  打开 JSON 修改 - [doc](https://github.com/universeindream/MaiCaiAssistant/wiki/%E6%B5%81%E7%A8%8B%E9%85%8D%E7%BD%AE)
+
+### 常见问题
+
+1. 提示 `异常提示 - 流程 - xxx 已重复执行 10s 未执行` ？
+
+- 将未成功执行步骤的延迟时间调久一点 - [视频教程](https://user-images.githubusercontent.com/7286154/163680965-a64f13ea-9bd7-4033-9c2e-e8f69e288831.mp4)
+
+2. 
+
+
 
 ### 预览
 
