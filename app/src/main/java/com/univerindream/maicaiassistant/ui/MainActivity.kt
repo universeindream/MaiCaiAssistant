@@ -100,8 +100,8 @@ class MainActivity : AppCompatActivity() {
                     .string()
                 val solution =
                     Gson().fromJson<List<MCSolution>>(json, object : TypeToken<ArrayList<MCSolution>>() {}.type)
-                MHDefault.defaultMCSolutions.clear()
-                MHDefault.defaultMCSolutions.addAll(solution)
+                MHDefault.githubSolutions.clear()
+                MHDefault.githubSolutions.addAll(solution)
                 XLog.i("远程方案更新成功")
             } catch (e: Exception) {
                 XLog.e(e)

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -59,17 +58,24 @@ class ConfigFragment : Fragment() {
         }
 
         binding.settingChooseAuto.setOnClickListener {
-            val builder = AlertDialog.Builder(this@ConfigFragment.requireContext())
-            builder.setTitle(R.string.dialog_choose_solution)
-                .setItems(
-                    MHDefault.defaultMCSolutions.map { it.name }.toTypedArray()
-                ) { _, which ->
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("默认方案")
+                .setItems(MHDefault.defaultMCSolutions.map { it.name }.toTypedArray()) { _, which ->
                     MHConfig.curMCSolution = MHDefault.defaultMCSolutions[which]
                     loadData()
                 }
-            builder.create().show()
-
+                .show()
         }
+        binding.settingChooseAutoGithub.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("远程方案")
+                .setItems(MHDefault.githubSolutions.map { it.name }.toTypedArray()) { _, which ->
+                    MHConfig.curMCSolution = MHDefault.githubSolutions[which]
+                    loadData()
+                }
+                .show()
+        }
+
         binding.settingBuyTimeValue.addTextChangedListener({ _, _, _, _ -> }, { _, _, _, _ -> }) { s ->
             s?.toString()?.let {
                 if (it.isNotBlank()) MHData.buyMinTime = it.toInt() else MHData.buyMinTime = 25

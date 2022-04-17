@@ -2,6 +2,8 @@ package com.univerindream.maicaiassistant
 
 object MHDefault {
 
+    val githubSolutions = arrayListOf<MCSolution>()
+
     val defaultMCSolutions = arrayListOf(
         MCSolution(
             name = "美团抢购 - 支付宝 - 自动送达时间",

@@ -83,12 +83,12 @@
         android:id="@+id/setting_auto_info"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:orientation="horizontal"
         android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView"
-        app:layout_constraintEnd_toStartOf="@+id/setting_choose_auto"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toTopOf="@+id/textView" />
 
@@ -116,7 +116,7 @@
         android:text="抢购时长："
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/setting_choose_auto" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/setting_buy_time_value"
@@ -137,13 +137,26 @@
         android:id="@+id/setting_choose_auto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:inputType="number"
         android:minHeight="48dp"
-        android:text="选择方案"
-        app:layout_constraintBottom_toBottomOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView"
+        android:text="默认方案"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/setting_choose_auto_github"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:inputType="number"
+        android:minHeight="48dp"
+        android:text="远程方案"
+        app:layout_constraintBottom_toBottomOf="@+id/setting_choose_auto"
+        app:layout_constraintStart_toEndOf="@+id/setting_choose_auto"
+        app:layout_constraintTop_toTopOf="@+id/setting_choose_auto"
         tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
