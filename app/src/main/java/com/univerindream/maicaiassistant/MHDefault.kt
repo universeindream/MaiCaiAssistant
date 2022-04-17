@@ -537,7 +537,7 @@ object MHDefault {
                     ),
                 ),
                 MCStep(
-                    "立即支付",
+                    "立即支付 - 可重复",
                     arrayListOf(
                         MCCond(
                             EMCCond.NODE_CAN_CLICK,
@@ -547,7 +547,21 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_NODE,
                         node = MCNode(EMCNodeType.TXT, "立即支付"),
-                        delayRunAfter = 100,
+                        delayRunBefore = 500,
+                    ),
+                    isRepeat = true,
+                ),
+                MCStep(
+                    "应用处于后台 - 已打开支付宝",
+                    arrayListOf(
+                        MCCond(
+                            EMCCond.APP_IS_BACKGROUND,
+                            MCNode(EMCNodeType.PACKAGE_NAME, packageName = "com.yaya.zone")
+                        )
+                    ),
+                    handle = MCHandle(
+                        type = EMCHandle.NONE,
+                        node = MCNode(EMCNodeType.PACKAGE_NAME, packageName = "com.yaya.zone"),
                     ),
                     isAlarm = true,
                     isManual = true
@@ -688,7 +702,7 @@ object MHDefault {
                     ),
                 ),
                 MCStep(
-                    "立即支付",
+                    "立即支付 - 可重复",
                     arrayListOf(
                         MCCond(
                             EMCCond.NODE_CAN_CLICK,
@@ -699,6 +713,20 @@ object MHDefault {
                         type = EMCHandle.CLICK_NODE,
                         node = MCNode(EMCNodeType.TXT, "立即支付"),
                         delayRunAfter = 100,
+                    ),
+                    isRepeat = true,
+                ),
+                MCStep(
+                    "应用处于后台 - 已打开微信",
+                    arrayListOf(
+                        MCCond(
+                            EMCCond.APP_IS_BACKGROUND,
+                            MCNode(EMCNodeType.PACKAGE_NAME, packageName = "com.yaya.zone")
+                        )
+                    ),
+                    handle = MCHandle(
+                        type = EMCHandle.NONE,
+                        node = MCNode(EMCNodeType.PACKAGE_NAME, packageName = "com.yaya.zone"),
                     ),
                     isAlarm = true,
                     isManual = true
