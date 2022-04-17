@@ -404,7 +404,7 @@ object MHDefault {
             )
         ),
         MCSolution(
-            name = "叮咚抢购 - 支付宝 - 自动送达时间",
+            name = "叮咚抢购0417 - 支付宝 - 自动送达时间",
             steps = arrayListOf(
                 MCStep(
                     "打开 app",
@@ -569,7 +569,7 @@ object MHDefault {
             )
         ),
         MCSolution(
-            name = "叮咚抢购 - 微信 - 自动送达时间",
+            name = "叮咚抢购0417 - 微信 - 自动送达时间",
             steps = arrayListOf(
                 MCStep(
                     "打开 app",
