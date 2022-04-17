@@ -26,7 +26,7 @@ interface GithubApi {
         @Path("path") path: String,
     ): List<GithubContents>
 
-    @Headers("User-Agent: MaiCaiAssistant")
+    @Headers("User-Agent: MaiCaiAssistant", "Cache-Control: private")
     @GET
     suspend fun downloadFileWithDynamicUrlSync(@Url fileUrl: String): ResponseBody
 

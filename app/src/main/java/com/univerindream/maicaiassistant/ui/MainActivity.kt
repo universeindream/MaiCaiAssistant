@@ -13,10 +13,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.blankj.utilcode.util.AppUtils
 import com.elvishew.xlog.XLog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.univerindream.maicaiassistant.MCSolution
-import com.univerindream.maicaiassistant.MHDefault
 import com.univerindream.maicaiassistant.R
 import com.univerindream.maicaiassistant.api.GithubApi
 import com.univerindream.maicaiassistant.databinding.ActivityMainBinding
@@ -50,7 +46,6 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         checkAppVersion()
-        checkConfig()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -86,23 +81,6 @@ class MainActivity : AppCompatActivity() {
                             .show()
                     }
                 }
-            } catch (e: Exception) {
-                XLog.e(e)
-            }
-        }
-    }
-
-    fun checkConfig() {
-        lifecycleScope.launch {
-            try {
-                val json = GithubApi.get()
-                    .downloadFileWithDynamicUrlSync("https://raw.githubusercontent.com/universeindream/MaiCaiAssistant/main/config.json")
-                    .string()
-                val solution =
-                    Gson().fromJson<List<MCSolution>>(json, object : TypeToken<ArrayList<MCSolution>>() {}.type)
-                MHDefault.githubSolutions.clear()
-                MHDefault.githubSolutions.addAll(solution)
-                XLog.i("远程方案更新成功")
             } catch (e: Exception) {
                 XLog.e(e)
             }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.TimeUtils
@@ -14,8 +15,12 @@ import com.elvishew.xlog.XLog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.univerindream.maicaiassistant.*
+import com.univerindream.maicaiassistant.api.GithubApi
 import com.univerindream.maicaiassistant.databinding.FragmentConfigBinding
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -67,6 +72,7 @@ class ConfigFragment : Fragment() {
                 .show()
         }
         binding.settingChooseAutoGithub.setOnClickListener {
+            checkConfig()
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle("远程方案")
                 .setItems(MHDefault.githubSolutions.map { it.name }.toTypedArray()) { _, which ->
@@ -168,6 +174,7 @@ class ConfigFragment : Fragment() {
 
         loadData()
         checkTimerTrigger()
+        checkConfig()
     }
 
     private fun loadData() {
@@ -186,6 +193,23 @@ class ConfigFragment : Fragment() {
     private fun checkTimerTrigger() {
         if (MHData.timerTriggerStatus && MHData.timerTriggerTime < System.currentTimeMillis()) {
             MHUtil.cancelAlarm()
+        }
+    }
+
+    private fun checkConfig() {
+        lifecycleScope.launch {
+            try {
+                val json = GithubApi.get()
+                    .downloadFileWithDynamicUrlSync("https://raw.githubusercontent.com/universeindream/MaiCaiAssistant/main/config.json")
+                    .string()
+                val solution =
+                    Gson().fromJson<List<MCSolution>>(json, object : TypeToken<ArrayList<MCSolution>>() {}.type)
+                MHDefault.githubSolutions.clear()
+                MHDefault.githubSolutions.addAll(solution)
+                XLog.i("远程方案更新成功")
+            } catch (e: Exception) {
+                XLog.e(e)
+            }
         }
     }
 
