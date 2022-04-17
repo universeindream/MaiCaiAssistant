@@ -34,7 +34,7 @@
         app:layout_constraintTop_toTopOf="@+id/setting_timer_trigger_status"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/settingTimerTriggerChange"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -43,6 +43,7 @@
         android:inputType="number"
         android:minHeight="48dp"
         android:text="设置时间"
+        style="@style/Widget.MaterialComponents.Button"
         app:layout_constraintBottom_toBottomOf="@+id/settingTimerTriggerValue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/settingTimerTriggerValue"
@@ -79,18 +80,20 @@
         app:layout_constraintStart_toEndOf="@+id/settingPermission"
         app:layout_constraintTop_toTopOf="@+id/settingPermission" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <Button
         android:id="@+id/setting_auto_info"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center|start"
         android:orientation="horizontal"
-        android:padding="8dp"
+        style="?attr/materialButtonOutlinedStyle"
         app:layout_constraintBottom_toBottomOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="@+id/textView" />
+        app:layout_constraintTop_toTopOf="@+id/textView"
+        tools:text="美团抢购 - 支付宝 - 自动送达时间" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textView"
@@ -133,7 +136,7 @@
         app:layout_constraintTop_toTopOf="@+id/setting_puy_time"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/setting_choose_auto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -142,11 +145,12 @@
         android:inputType="number"
         android:minHeight="48dp"
         android:text="默认方案"
+        style="@style/Widget.MaterialComponents.Button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/setting_choose_auto_github"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -154,6 +158,7 @@
         android:inputType="number"
         android:minHeight="48dp"
         android:text="远程方案"
+        style="@style/Widget.MaterialComponents.Button"
         app:layout_constraintBottom_toBottomOf="@+id/setting_choose_auto"
         app:layout_constraintStart_toEndOf="@+id/setting_choose_auto"
         app:layout_constraintTop_toTopOf="@+id/setting_choose_auto"
