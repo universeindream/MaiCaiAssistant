@@ -18,9 +18,9 @@
 由于本人所有购物平台都停运了，所以合适的方案很难给到大家！！！
 为了方便大家讨论出合适的抢购方案，建个微信群，大家互相帮助！！！
 
-| 微信群 | TG 群 |
-| ------------- | ------------- |
-| <img src="https://user-images.githubusercontent.com/7286154/163676248-d7a02cf3-cc34-49ae-af50-b3da30b4d76e.png" width="150"> | todo |
+| 微信群 | TG 频道 | TG 群 |
+| ------------- | ------------- | ------------- |
+| <img src="https://user-images.githubusercontent.com/7286154/163676248-d7a02cf3-cc34-49ae-af50-b3da30b4d76e.png" width="150"> | <img width="150" src="https://user-images.githubusercontent.com/7286154/163721131-3aa6da8d-44ab-48d3-98a5-3ccfc083fae0.png"> |                   TODO                |
 
 
 ### 特性
