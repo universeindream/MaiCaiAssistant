@@ -23,27 +23,26 @@
         android:id="@+id/settingTimerTriggerValue"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:gravity="center_vertical"
         android:minHeight="48dp"
-        android:text="--"
         app:layout_constraintBottom_toBottomOf="@+id/setting_timer_trigger_status"
         app:layout_constraintEnd_toStartOf="@+id/settingTimerTriggerChange"
         app:layout_constraintStart_toEndOf="@+id/setting_timer_trigger_status"
         app:layout_constraintTop_toTopOf="@+id/setting_timer_trigger_status"
-        tools:ignore="SpeakableTextPresentCheck" />
+        tools:text="--" />
 
     <Button
         android:id="@+id/settingTimerTriggerChange"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:inputType="number"
         android:minHeight="48dp"
-        android:text="设置时间"
-        style="@style/Widget.MaterialComponents.Button"
+        android:text="改时间"
         app:layout_constraintBottom_toBottomOf="@+id/settingTimerTriggerValue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/settingTimerTriggerValue"
@@ -82,13 +81,13 @@
 
     <Button
         android:id="@+id/setting_auto_info"
+        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:gravity="center|start"
         android:orientation="horizontal"
-        style="?attr/materialButtonOutlinedStyle"
         app:layout_constraintBottom_toBottomOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView"
@@ -138,6 +137,7 @@
 
     <Button
         android:id="@+id/setting_choose_auto"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -145,20 +145,19 @@
         android:inputType="number"
         android:minHeight="48dp"
         android:text="默认方案"
-        style="@style/Widget.MaterialComponents.Button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
         android:id="@+id/setting_choose_auto_github"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:inputType="number"
         android:minHeight="48dp"
         android:text="远程方案"
-        style="@style/Widget.MaterialComponents.Button"
         app:layout_constraintBottom_toBottomOf="@+id/setting_choose_auto"
         app:layout_constraintStart_toEndOf="@+id/setting_choose_auto"
         app:layout_constraintTop_toTopOf="@+id/setting_choose_auto"
