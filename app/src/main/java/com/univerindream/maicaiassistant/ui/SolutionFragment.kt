@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.GsonUtils
 import com.elvishew.xlog.XLog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.binding.ModelAbstractBindingItem
@@ -72,6 +73,21 @@ class SolutionFragment : Fragment() {
                 stepIndex = position
             )
             findNavController().navigate(action)
+            false
+        }
+        fastAdapter.onLongClickListener = { _, _, _, position ->
+            MaterialAlertDialogBuilder(requireContext())
+                .setMessage("删除该步骤？")
+                .setNegativeButton("取消") { dialog, which ->
+                    // Respond to negative button press
+                    dialog.cancel()
+                }
+                .setPositiveButton("确定") { dialog, which ->
+                    // Respond to positive button press
+                    mcSolution.steps.removeAt(position)
+                    loadData()
+                }
+                .show()
             false
         }
 
