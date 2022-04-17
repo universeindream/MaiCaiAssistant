@@ -4,7 +4,7 @@
 
 ### 概述
 
-[买菜助手](https://github.com/universeindream/MaiCaiAssistant) 是一款可以自动执行购买流程的 APP。目前支持方案有：[`美团买菜抢购 - 支付宝 - 自动送达时间`](https://github.com/universeindream/MaiCaiAssistant/wiki/%E7%BE%8E%E5%9B%A2%E4%B9%B0%E8%8F%9C#%E7%BE%8E%E5%9B%A2%E6%8A%A2%E8%B4%AD---%E6%94%AF%E4%BB%98%E5%AE%9D---%E8%87%AA%E5%8A%A8%E9%80%81%E8%BE%BE%E6%97%B6%E9%97%B4)、[`美团买菜抢购 - 微信 - 自动送达时间`](https://github.com/universeindream/MaiCaiAssistant/wiki/%E7%BE%8E%E5%9B%A2%E4%B9%B0%E8%8F%9C#%E7%BE%8E%E5%9B%A2%E6%8A%A2%E8%B4%AD---%E5%BE%AE%E4%BF%A1---%E8%87%AA%E5%8A%A8%E9%80%81%E8%BE%BE%E6%97%B6%E9%97%B4)、[`叮咚抢购 - 支付宝 - 自动送达时间`](https://github.com/universeindream/MaiCaiAssistant/wiki/%E5%8F%AE%E5%92%9A%E4%B9%B0%E8%8F%9C#%E5%8F%AE%E5%92%9A%E6%8A%A2%E8%B4%AD---%E6%94%AF%E4%BB%98%E5%AE%9D---%E8%87%AA%E5%8A%A8%E9%80%81%E8%BE%BE%E6%97%B6%E9%97%B4)、[`叮咚抢购 - 微信 - 自动送达时间`](https://github.com/universeindream/MaiCaiAssistant/wiki/%E5%8F%AE%E5%92%9A%E4%B9%B0%E8%8F%9C#%E5%8F%AE%E5%92%9A%E6%8A%A2%E8%B4%AD---%E5%BE%AE%E4%BF%A1---%E8%87%AA%E5%8A%A8%E9%80%81%E8%BE%BE%E6%97%B6%E9%97%B4)、[`盒马正常购买`](https://github.com/universeindream/MaiCaiAssistant/wiki/%E7%9B%92%E9%A9%AC#%E7%9B%92%E9%A9%AC%E6%AD%A3%E5%B8%B8%E8%B4%AD%E4%B9%B0)。
+[买菜助手](https://github.com/universeindream/MaiCaiAssistant) 是一款可以自动执行购买流程的 APP。目前支持方案有：[`美团买菜APP抢购 - 支付宝 - 自动送达时间`](https://github.com/universeindream/MaiCaiAssistant/wiki/%E7%BE%8E%E5%9B%A2%E4%B9%B0%E8%8F%9C#%E7%BE%8E%E5%9B%A2%E6%8A%A2%E8%B4%AD---%E6%94%AF%E4%BB%98%E5%AE%9D---%E8%87%AA%E5%8A%A8%E9%80%81%E8%BE%BE%E6%97%B6%E9%97%B4)、[`美团买菜APP抢购 - 微信 - 自动送达时间`](https://github.com/universeindream/MaiCaiAssistant/wiki/%E7%BE%8E%E5%9B%A2%E4%B9%B0%E8%8F%9C#%E7%BE%8E%E5%9B%A2%E6%8A%A2%E8%B4%AD---%E5%BE%AE%E4%BF%A1---%E8%87%AA%E5%8A%A8%E9%80%81%E8%BE%BE%E6%97%B6%E9%97%B4)、[`叮咚APP抢购 - 支付宝 - 自动送达时间`](https://github.com/universeindream/MaiCaiAssistant/wiki/%E5%8F%AE%E5%92%9A%E4%B9%B0%E8%8F%9C#%E5%8F%AE%E5%92%9A%E6%8A%A2%E8%B4%AD---%E6%94%AF%E4%BB%98%E5%AE%9D---%E8%87%AA%E5%8A%A8%E9%80%81%E8%BE%BE%E6%97%B6%E9%97%B4)、[`叮咚APP抢购 - 微信 - 自动送达时间`](https://github.com/universeindream/MaiCaiAssistant/wiki/%E5%8F%AE%E5%92%9A%E4%B9%B0%E8%8F%9C#%E5%8F%AE%E5%92%9A%E6%8A%A2%E8%B4%AD---%E5%BE%AE%E4%BF%A1---%E8%87%AA%E5%8A%A8%E9%80%81%E8%BE%BE%E6%97%B6%E9%97%B4)、[`盒马正常购买`](https://github.com/universeindream/MaiCaiAssistant/wiki/%E7%9B%92%E9%A9%AC#%E7%9B%92%E9%A9%AC%E6%AD%A3%E5%B8%B8%E8%B4%AD%E4%B9%B0)。
 
 **ps:**
 
@@ -25,6 +25,7 @@ ps:
 - 微信号被封 :rofl: 
 - App 功能暂时就不做扩展了，就买菜来说，目前功能够用了，修改方案其实就可以达到大家的目标
 - 接下来，我会抽空尝试新增或优化方案，当然前提还是要靠大家的录屏反馈以及测试
+- 祝疫情早日结束
 
 ### 特性
 
@@ -37,16 +38,6 @@ ps:
 - 可自定义购买方案
    - 流程有问题，自己也可以尝试处理了 
    - 长按 -  打开 JSON 修改 - [doc](https://github.com/universeindream/MaiCaiAssistant/wiki/%E6%B5%81%E7%A8%8B%E9%85%8D%E7%BD%AE)
-
-### 常见问题
-
-1. 提示 `异常提示 - 流程 - xxx 已重复执行 10s 未执行` ？
-
-- 将未成功执行步骤的延迟时间调久一点 - [视频教程](https://user-images.githubusercontent.com/7286154/163680965-a64f13ea-9bd7-4033-9c2e-e8f69e288831.mp4)
-
-2. 
-
-
 
 ### 预览
 
