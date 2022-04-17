@@ -12,6 +12,7 @@ import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.TimeUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.elvishew.xlog.XLog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.univerindream.maicaiassistant.*
 import com.univerindream.maicaiassistant.databinding.FragmentConfigBinding
 import com.univerindream.maicaiassistant.widget.TimePickerFragment
@@ -135,6 +136,20 @@ class ConfigFragment : Fragment() {
         }
 
         loadData()
+
+        if (!MHUtil.hasServicePermission()) {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("提示")
+                .setMessage("请先开启无障碍权限")
+                .setNegativeButton("取消") { dialog, which ->
+                    dialog.cancel()
+                }
+                .setPositiveButton("去开启") { dialog, which ->
+                    MHUtil.toAccessibilitySetting()
+                }
+                .setCancelable(false)
+                .show()
+        }
     }
 
     override fun onResume() {
