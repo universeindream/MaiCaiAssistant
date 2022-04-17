@@ -18,7 +18,9 @@
 由于本人所有购物平台都停运了，所以合适的方案很难给到大家！！！
 为了方便大家讨论出合适的抢购方案，建个微信群，大家互相帮助！！！
 
-<img src="https://user-images.githubusercontent.com/7286154/163676248-d7a02cf3-cc34-49ae-af50-b3da30b4d76e.png" width="150">
+| 大群  | 群二 | 助手拉群 |
+| ------------- | ------------- | ------------- |
+| <img src="https://user-images.githubusercontent.com/7286154/163676248-d7a02cf3-cc34-49ae-af50-b3da30b4d76e.png" width="150"> | <img width="150" alt="image" src="https://user-images.githubusercontent.com/7286154/163713829-8592098e-9f7d-4a95-b460-97ce3586d845.png"> | <img width="150" src="https://user-images.githubusercontent.com/7286154/163713908-56c6936b-777a-436d-b504-16f3d14645cd.png"> |
 
 
 ### 特性
