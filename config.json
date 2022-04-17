@@ -1,6 +1,6 @@
 [
   {
-    "name": "美团抢购 - 支付宝 - 自动送达时间",
+    "name": "美团抢购0417 - 慢1s抢 - 支付宝 - 自动送达时间",
     "steps": [
       {
         "condList": [
@@ -172,7 +172,7 @@
         ],
         "handle": {
           "delayRunAfter": 0,
-          "delayRunBefore": 500,
+          "delayRunBefore": 1000,
           "node": {
             "className": "",
             "nodeIndex": 0,
@@ -200,8 +200,8 @@
           }
         ],
         "handle": {
-          "delayRunAfter": 100,
-          "delayRunBefore": 0,
+          "delayRunAfter": 0,
+          "delayRunBefore": 1000,
           "node": {
             "className": "",
             "nodeIndex": 0,
