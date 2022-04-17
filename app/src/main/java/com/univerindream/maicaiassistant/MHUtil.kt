@@ -243,33 +243,30 @@ object MHUtil {
 
     /// 定时相关
 
-    private val alarmPendingIntent: PendingIntent by lazy {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            PendingIntent.getBroadcast(
-                Utils.getApp(),
-                0,
-                Intent(Utils.getApp(), AlarmReceiver::class.java),
-                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-            )
-        } else {
-            PendingIntent.getBroadcast(
-                Utils.getApp(),
-                0,
-                Intent(Utils.getApp(), AlarmReceiver::class.java),
-                PendingIntent.FLAG_UPDATE_CURRENT
-            )
-        }
+    private val alarmManager: AlarmManager by lazy {
+        Utils.getApp().getSystemService(AccessibilityService.ALARM_SERVICE) as AlarmManager
     }
 
-    private fun getAlarmManager() =
-        Utils.getApp().getSystemService(AccessibilityService.ALARM_SERVICE) as AlarmManager
+    private val alarmPendingIntent: PendingIntent by lazy {
+        PendingIntent.getBroadcast(
+            Utils.getApp(),
+            0,
+            Intent(Utils.getApp(), AlarmReceiver::class.java),
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            } else {
+                PendingIntent.FLAG_CANCEL_CURRENT
+            }
+        )
+    }
 
     fun enableAlarm(triggerAtMillis: Long): String {
         val friendlyTime = TimeUtils.millis2String(triggerAtMillis)
         XLog.v("enableAlarm - %s", friendlyTime)
 
-        getAlarmManager().cancel(alarmPendingIntent)
-        getAlarmManager().set(
+        MHData.timerTriggerStatus = true
+        alarmManager.cancel(alarmPendingIntent)
+        alarmManager.set(
             AlarmManager.RTC_WAKEUP,
             triggerAtMillis,
             alarmPendingIntent
@@ -280,7 +277,8 @@ object MHUtil {
 
     fun cancelAlarm() {
         XLog.v("cancelAlarm")
-        getAlarmManager().cancel(alarmPendingIntent)
+        MHData.timerTriggerStatus = false
+        alarmManager.cancel(alarmPendingIntent)
     }
 
     fun calcNextTime(hour: Int, min: Int): Long {

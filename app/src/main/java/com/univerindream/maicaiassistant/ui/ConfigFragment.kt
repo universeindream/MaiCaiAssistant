@@ -13,9 +13,10 @@ import com.blankj.utilcode.util.TimeUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.elvishew.xlog.XLog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.univerindream.maicaiassistant.*
 import com.univerindream.maicaiassistant.databinding.FragmentConfigBinding
-import com.univerindream.maicaiassistant.widget.TimePickerFragment
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -79,8 +80,6 @@ class ConfigFragment : Fragment() {
         binding.settingTimerTriggerStatus.setOnCheckedChangeListener { compoundButton, b ->
             if (!compoundButton.isPressed) return@setOnCheckedChangeListener
 
-            MHData.timerTriggerStatus = b
-
             if (b) {
                 val timerTime = MHData.timerTriggerTime
                 if (timerTime > System.currentTimeMillis()) {
@@ -98,15 +97,21 @@ class ConfigFragment : Fragment() {
         }
         binding.settingTimerTriggerValue.text = TimeUtils.millis2String(MHData.timerTriggerTime)
         binding.settingTimerTriggerChange.setOnClickListener {
-            TimePickerFragment { _, h, m ->
-                val nextTime = MHUtil.calcNextTime(h, m)
+            val picker = MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_12H)
+                .setHour(5)
+                .setMinute(50)
+                .build()
+            picker.addOnPositiveButtonClickListener {
+                val nextTime = MHUtil.calcNextTime(picker.hour, picker.minute)
                 MHData.timerTriggerTime = nextTime
                 binding.settingTimerTriggerValue.text = TimeUtils.millis2String(nextTime)
                 if (MHData.timerTriggerStatus) {
                     MHUtil.enableAlarm(nextTime)
-                    ToastUtils.showShort("将于 ${TimeUtils.millis2String(MHData.timerTriggerTime)} 开启定时抢购")
+                    ToastUtils.showLong("将于 ${TimeUtils.millis2String(MHData.timerTriggerTime)} 开启定时抢购")
                 }
-            }.show(parentFragmentManager, "timePicker")
+            }
+            picker.show(parentFragmentManager, "timePicker")
         }
 
         binding.settingWrongAlarmStatus.setOnCheckedChangeListener { compoundButton, b ->
@@ -156,6 +161,7 @@ class ConfigFragment : Fragment() {
         super.onResume()
 
         loadData()
+        checkTimerTrigger()
     }
 
     private fun loadData() {
@@ -169,6 +175,12 @@ class ConfigFragment : Fragment() {
         binding.settingWrongAlarmStatus.isChecked = MHData.wrongAlarmStatus
 
         binding.settingRingtoneStatus.isChecked = MHUtil.ringtone.isPlaying
+    }
+
+    private fun checkTimerTrigger() {
+        if (MHData.timerTriggerStatus && MHData.timerTriggerTime < System.currentTimeMillis()) {
+            MHUtil.cancelAlarm()
+        }
     }
 
     override fun onDestroyView() {
