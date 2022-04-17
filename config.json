@@ -1,6 +1,6 @@
 [
   {
-    "name": "美团买菜APP抢购 - 1s延迟 - 支付宝 - 自动送达时间",
+    "name": "美团抢购 - 极速支付(测试) - 自动送达时间",
     "steps": [
       {
         "condList": [
@@ -172,7 +172,7 @@
         ],
         "handle": {
           "delayRunAfter": 0,
-          "delayRunBefore": 1000,
+          "delayRunBefore": 500,
           "node": {
             "className": "",
             "nodeIndex": 0,
@@ -192,7 +192,7 @@
             "node": {
               "className": "",
               "nodeIndex": 0,
-              "nodeKey": "立即支付",
+              "nodeKey": "极速支付",
               "nodeType": "TXT",
               "packageName": ""
             },
@@ -200,12 +200,12 @@
           }
         ],
         "handle": {
-          "delayRunAfter": 0,
-          "delayRunBefore": 1000,
+          "delayRunAfter": 100,
+          "delayRunBefore": 0,
           "node": {
             "className": "",
             "nodeIndex": 0,
-            "nodeKey": "立即支付",
+            "nodeKey": "极速支付",
             "nodeType": "TXT",
             "packageName": ""
           },
@@ -213,7 +213,7 @@
         },
         "isAlarm": false,
         "isManual": false,
-        "name": "立即支付"
+        "name": "极速支付"
       },
       {
         "condList": [
@@ -282,94 +282,6 @@
         "isAlarm": false,
         "isManual": false,
         "name": "确认支付"
-      },
-      {
-        "condList": [
-          {
-            "node": {
-              "className": "",
-              "nodeIndex": 0,
-              "nodeKey": "支付订单",
-              "nodeType": "TXT",
-              "packageName": ""
-            },
-            "type": "NODE_EXIST"
-          },
-          {
-            "node": {
-              "className": "",
-              "nodeIndex": 0,
-              "nodeKey": "展开更多支付方式",
-              "nodeType": "TXT",
-              "packageName": ""
-            },
-            "type": "NODE_CAN_CLICK"
-          }
-        ],
-        "handle": {
-          "delayRunAfter": 100,
-          "delayRunBefore": 0,
-          "node": {
-            "className": "",
-            "nodeIndex": 0,
-            "nodeKey": "展开更多支付方式",
-            "nodeType": "TXT",
-            "packageName": ""
-          },
-          "type": "CLICK_NODE"
-        },
-        "isAlarm": false,
-        "isManual": false,
-        "name": "展开更多支付方式"
-      },
-      {
-        "condList": [
-          {
-            "node": {
-              "className": "",
-              "nodeIndex": 0,
-              "nodeKey": "支付订单",
-              "nodeType": "TXT",
-              "packageName": ""
-            },
-            "type": "NODE_EXIST"
-          },
-          {
-            "node": {
-              "className": "",
-              "nodeIndex": 0,
-              "nodeKey": "支付宝支付",
-              "nodeType": "TXT",
-              "packageName": ""
-            },
-            "type": "NODE_EXIST"
-          },
-          {
-            "node": {
-              "className": "",
-              "nodeIndex": 0,
-              "nodeKey": "支付宝支付",
-              "nodeType": "TXT",
-              "packageName": ""
-            },
-            "type": "NODE_NOT_CHECKED"
-          }
-        ],
-        "handle": {
-          "delayRunAfter": 100,
-          "delayRunBefore": 0,
-          "node": {
-            "className": "",
-            "nodeIndex": 0,
-            "nodeKey": "支付宝支付",
-            "nodeType": "TXT",
-            "packageName": ""
-          },
-          "type": "CLICK_NODE"
-        },
-        "isAlarm": false,
-        "isManual": false,
-        "name": "选择支付宝支付"
       },
       {
         "condList": [
