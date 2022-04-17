@@ -13,6 +13,10 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.blankj.utilcode.util.AppUtils
 import com.elvishew.xlog.XLog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.univerindream.maicaiassistant.MCSolution
+import com.univerindream.maicaiassistant.MHDefault
 import com.univerindream.maicaiassistant.R
 import com.univerindream.maicaiassistant.api.GithubApi
 import com.univerindream.maicaiassistant.databinding.ActivityMainBinding
@@ -46,6 +50,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         checkAppVersion()
+        checkConfig()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -56,31 +61,50 @@ class MainActivity : AppCompatActivity() {
 
     fun checkAppVersion() {
         lifecycleScope.launch {
-            val releases =
-                GithubApi.get().searchRepos("universeindream", "MaiCaiAssistant").firstOrNull() ?: return@launch
-            val githubVersion = releases.tag_name
-            val curVersion = "v" + AppUtils.getAppVersionName()
-            XLog.v("$curVersion %s", githubVersion)
+            try {
+                val releases =
+                    GithubApi.get().searchRepos("universeindream", "MaiCaiAssistant").firstOrNull() ?: return@launch
+                val githubVersion = releases.tag_name
+                val curVersion = "v" + AppUtils.getAppVersionName()
+                XLog.v("$curVersion %s", githubVersion)
 
-            if (VersionComparator.INSTANCE.compare(curVersion, githubVersion) < 0) {
-                withContext(Dispatchers.Main) {
-                    MaterialAlertDialogBuilder(this@MainActivity)
-                        .setTitle("新版本提示")
-                        .setMessage("$githubVersion 已发布，请及时更新")
-                        .setPositiveButton("下载") { _, _ ->
-                            val uri: Uri =
-                                Uri.parse("https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk")
-                            val intent = Intent(Intent.ACTION_VIEW, uri)
-                            startActivity(intent)
-                        }
-                        .setNegativeButton("放弃") { a, _ ->
-                            a.cancel()
-                        }
-                        .setCancelable(false)
-                        .show()
+                if (VersionComparator.INSTANCE.compare(curVersion, githubVersion) < 0) {
+                    withContext(Dispatchers.Main) {
+                        MaterialAlertDialogBuilder(this@MainActivity)
+                            .setTitle("新版本提示")
+                            .setMessage("$githubVersion 已发布，请及时更新")
+                            .setPositiveButton("下载") { _, _ ->
+                                val uri: Uri =
+                                    Uri.parse("https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk")
+                                val intent = Intent(Intent.ACTION_VIEW, uri)
+                                startActivity(intent)
+                            }
+                            .setNegativeButton("放弃") { a, _ ->
+                                a.cancel()
+                            }
+                            .setCancelable(false)
+                            .show()
+                    }
                 }
+            } catch (e: Exception) {
+                XLog.e(e)
             }
         }
     }
 
+    fun checkConfig() {
+        lifecycleScope.launch {
+            try {
+                val json = GithubApi.get()
+                    .downloadFileWithDynamicUrlSync("https://raw.githubusercontent.com/universeindream/MaiCaiAssistant/main/config.json")
+                    .string()
+                val solution =
+                    Gson().fromJson<List<MCSolution>>(json, object : TypeToken<ArrayList<MCSolution>>() {}.rawType)
+                MHDefault.defaultMCSolutions.clear()
+                MHDefault.defaultMCSolutions.addAll(solution)
+            } catch (e: Exception) {
+                XLog.e(e)
+            }
+        }
+    }
 }
