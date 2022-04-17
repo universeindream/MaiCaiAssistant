@@ -39,6 +39,8 @@ class GlobalActionBarService : AccessibilityService() {
     private var mForegroundClassName: String = ""
     private var mForegroundWindowId: Int = -1
 
+    private val mServiceScope = CoroutineScope(Dispatchers.Main + Job())
+
     private var mClassNameByWindowId = mutableMapOf<Int, String>()
     private val mCurClassNameByRootWindow: String
         get() = mClassNameByWindowId[rootInActiveWindow?.windowId] ?: ""
@@ -114,7 +116,7 @@ class GlobalActionBarService : AccessibilityService() {
     override fun onInterrupt() {}
 
     private fun runLoop() {
-        GlobalScope.launch {
+        mServiceScope.launch {
             while (true) {
                 if (mSnapUpStatus.get()) {
                     XLog.v("loop - curWindowClassName - $mCurClassNameByRootWindow")
@@ -130,25 +132,28 @@ class GlobalActionBarService : AccessibilityService() {
                         continue
                     }
 
-                    //异常检查
-                    val now = System.currentTimeMillis()
-                    val handleTime = mHandleLog?.handleTime ?: now
-                    when {
-                        now - handleTime > 10000 -> {
-                            XLog.e("流程 - ${mHandleLog?.stepName} 已超过 10s 未执行")
-                            cancelTask()
-                            MHUtil.notify(
-                                "异常提示",
-                                "流程 - ${mHandleLog?.stepName} 已重复执行 10s 未执行"
-                            )
-                            ToastUtils.showLong("异常提示 - 流程 - ${mHandleLog?.stepName} 已重复执行 10s 未执行")
-                            if (MHData.wrongAlarmStatus) MHUtil.playRingTone()
-                            continue
-                        }
-                    }
-
-                    //操作流程
+                    //循环执行步骤
                     for (step in MHConfig.curMCSolution.steps) {
+                        //错误提示
+                        if (!step.isRepeat) {
+                            val now = System.currentTimeMillis()
+                            val handleTime = mHandleLog?.handleTime ?: now
+                            when {
+                                now - handleTime > 10000 -> {
+                                    val message = "步骤：${mHandleLog?.stepName} - 已重复执行了 10s，已自动关闭"
+                                    XLog.e(message)
+                                    cancelTask()
+                                    MHUtil.notify(
+                                        "异常提示",
+                                        message
+                                    )
+                                    ToastUtils.showLong("异常提示 - $message，可尝试设置该步骤的延迟执行时间")
+                                    if (MHData.wrongAlarmStatus) MHUtil.playRingTone()
+                                    break
+                                }
+                            }
+                        }
+
                         val condResult = step.condList.all {
                             MHUtil.stepCond(
                                 rootInActiveWindow,
@@ -161,7 +166,7 @@ class GlobalActionBarService : AccessibilityService() {
 
                         if (condResult) {
                             mHandleLog = mHandleLog ?: MCHandleLog(step.name, System.currentTimeMillis())
-                            if (step.name != mHandleLog!!.stepName) {
+                            if (step.name != mHandleLog!!.stepName || step.isRepeat) {
                                 mHandleLog!!.stepName = step.name
                                 mHandleLog!!.handleTime = System.currentTimeMillis()
                             }

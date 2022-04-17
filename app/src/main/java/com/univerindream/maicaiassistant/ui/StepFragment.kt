@@ -88,6 +88,10 @@ class StepFragment : Fragment() {
             if (!compoundButton.isPressed) return@setOnCheckedChangeListener
             mStep.isManual = b
         }
+        binding.stepRepeat.setOnCheckedChangeListener { compoundButton, b ->
+            if (!compoundButton.isPressed) return@setOnCheckedChangeListener
+            mStep.isRepeat = b
+        }
 
         binding.floatingActionButton.setOnClickListener {
             saveData()
@@ -116,6 +120,7 @@ class StepFragment : Fragment() {
 
         binding.stepAlarm.isChecked = step.isAlarm
         binding.stepManual.isChecked = step.isManual
+        binding.stepRepeat.isChecked = step.isRepeat
 
         var handleContent = "类型：${step.handle.type}"
         handleContent += "\n节点："

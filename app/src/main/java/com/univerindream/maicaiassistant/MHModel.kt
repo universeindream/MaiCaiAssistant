@@ -135,7 +135,9 @@ data class MCStep(
     /** 是否警报 **/
     var isAlarm: Boolean = false,
     /** 是否手动 **/
-    var isManual: Boolean = false
+    var isManual: Boolean = false,
+    /** 是否重复 **/
+    var isRepeat: Boolean = false,
 )
 
 /**
