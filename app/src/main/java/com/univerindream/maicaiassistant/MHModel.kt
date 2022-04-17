@@ -144,8 +144,8 @@ data class MCStep(
  * 条件
  */
 data class MCCond(
-    val type: EMCCond,
-    val node: MCNode
+    val type: EMCCond = EMCCond.NODE_EXIST,
+    val node: MCNode = MCNode()
 )
 
 /**

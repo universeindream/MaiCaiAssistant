@@ -54,7 +54,12 @@ class StepFragment : Fragment() {
             XLog.i("handle -> $requestKey $bundle")
             val mcCond = GsonUtils.fromJson(bundle.getString("condJson"), MCCond::class.java)
             val index = bundle.getInt("condIndex")
-            mStep.condList[index] = mcCond
+
+            if (index == -1) {
+                mStep.condList.add(mcCond)
+            } else {
+                mStep.condList[index] = mcCond
+            }
         }
     }
 
@@ -93,7 +98,14 @@ class StepFragment : Fragment() {
             mStep.isRepeat = b
         }
 
-        binding.floatingActionButton.setOnClickListener {
+        binding.floatingAddButton.setOnClickListener {
+            val action = StepFragmentDirections.actionStepFragmentToCondFragment(
+                condIndex = -1,
+                condJson = "{}"
+            )
+            findNavController().navigate(action)
+        }
+        binding.floatingSaveButton.setOnClickListener {
             saveData()
         }
 
