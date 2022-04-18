@@ -47,15 +47,6 @@ class ConfigFragment : Fragment() {
         EventBus.getDefault().register(this)
 
         binding.settingAutoInfo.setOnClickListener {
-            findNavController().navigate(R.id.action_ConfigFragment_to_SolutionFragment)
-        }
-
-        binding.settingAutoInfo.setOnLongClickListener {
-            findNavController().navigate(R.id.action_ConfigFragment_to_HelpFragment)
-            return@setOnLongClickListener false
-        }
-
-        binding.settingChooseAuto.setOnClickListener {
             val solutions = arrayListOf<MCSolution>()
             solutions.addAll(MHDefault.githubSolutions)
             solutions.addAll(MHDefault.defaultMCSolutions)
@@ -66,6 +57,12 @@ class ConfigFragment : Fragment() {
                     loadData()
                 }
                 .show()
+        }
+        binding.settingEdit.setOnClickListener {
+            findNavController().navigate(R.id.action_ConfigFragment_to_SolutionFragment)
+        }
+        binding.settingEditJson.setOnClickListener {
+            findNavController().navigate(R.id.action_ConfigFragment_to_JsonFragment)
         }
 
         binding.settingBuyTimeValue.editText?.doAfterTextChanged { inputText ->

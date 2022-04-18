@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.HelpFragment">
+    tools:context=".ui.JsonFragment">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/help_save"
+    <Button
+        android:id="@+id/jsonSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -16,18 +16,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/help_set_default"
+    <Button
+        android:id="@+id/jsonExport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="恢复默认"
-        app:layout_constraintBottom_toBottomOf="@+id/help_save"
-        app:layout_constraintStart_toEndOf="@+id/help_save"
-        app:layout_constraintTop_toTopOf="@+id/help_save" />
+        android:text="导出"
+        app:layout_constraintBottom_toBottomOf="@+id/jsonSave"
+        app:layout_constraintStart_toEndOf="@+id/jsonSave"
+        app:layout_constraintTop_toTopOf="@+id/jsonSave" />
+
+    <Button
+        android:id="@+id/jsonImport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="导入"
+        app:layout_constraintBottom_toBottomOf="@+id/jsonExport"
+        app:layout_constraintStart_toEndOf="@+id/jsonExport"
+        app:layout_constraintTop_toTopOf="@+id/jsonExport" />
 
     <EditText
-        android:id="@+id/help_steps"
+        android:id="@+id/jsonContent"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -37,7 +47,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/help_save"
+        app:layout_constraintTop_toBottomOf="@+id/jsonSave"
         tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

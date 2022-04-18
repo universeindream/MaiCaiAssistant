@@ -10,7 +10,7 @@
 
     <!-- Strings used for fragments for navigation -->
     <string name="config_fragment_label">@string/app_name</string>
-    <string name="help_fragment_label">流程配置</string>
+    <string name="json_fragment_label">JSON 配置</string>
     <string name="solution_fragment_label">方案配置</string>
     <string name="step_fragment_label">步骤配置</string>
 
