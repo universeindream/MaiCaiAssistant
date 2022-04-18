@@ -1,5 +1,5 @@
 {
-  "name": "盒马APP购买",
+  "name": "盒马APP - 正常购买",
   "steps": [
     {
       "condList": [
@@ -48,6 +48,16 @@
           "node": {
             "className": "android.widget.TextView",
             "nodeIndex": 0,
+            "nodeKey": "搜索",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_EXIST"
+        },
+        {
+          "node": {
+            "className": "android.widget.TextView",
+            "nodeIndex": 0,
             "nodeKey": "购物车",
             "nodeType": "TXT",
             "packageName": ""
@@ -87,7 +97,7 @@
         }
       ],
       "handle": {
-        "delayRunAfter": 100,
+        "delayRunAfter": 0,
         "delayRunBefore": 500,
         "node": {
           "className": "",

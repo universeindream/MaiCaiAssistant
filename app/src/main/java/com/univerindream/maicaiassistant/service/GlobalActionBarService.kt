@@ -174,7 +174,9 @@ class GlobalActionBarService : AccessibilityService() {
 
                             val handleResult =
                                 MHUtil.stepHandle(this@GlobalActionBarService, rootInActiveWindow, step.handle)
-                            XLog.d("steps - ${step.name} - ${step.isFailBack} - handleResult - $handleResult")
+                            XLog.v("steps - ${step.name} - handleResult - $handleResult")
+
+                            //失败返回
                             if (step.isFailBack && !handleResult) {
                                 performGlobalAction(GLOBAL_ACTION_BACK)
                                 delay(200)
