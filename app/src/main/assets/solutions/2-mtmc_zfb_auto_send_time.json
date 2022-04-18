@@ -1,0 +1,437 @@
+{
+  "name": "美团买菜APP抢购 - 支付宝 - 自动送达时间",
+  "steps": [
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "",
+            "nodeType": "PACKAGE_NAME",
+            "packageName": "com.meituan.retail.v.android"
+          },
+          "type": "APP_IS_BACKGROUND"
+        }
+      ],
+      "handle": {
+        "delayRunAfter": 500,
+        "delayRunBefore": 0,
+        "node": {
+          "className": "",
+          "nodeIndex": 0,
+          "nodeKey": "",
+          "nodeType": "PACKAGE_NAME",
+          "packageName": "com.meituan.retail.v.android"
+        },
+        "type": "LAUNCH"
+      },
+      "isAlarm": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": false,
+      "name": "打开 app"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "com.meituan.retail.c.android.splash.SplashActivity",
+            "nodeIndex": 0,
+            "nodeKey": "",
+            "nodeType": "CLASSNAME",
+            "packageName": ""
+          },
+          "type": "EQ_CLASS_NAME"
+        }
+      ],
+      "handle": {
+        "delayRunAfter": 500,
+        "delayRunBefore": 0,
+        "node": {
+          "className": "",
+          "nodeIndex": 0,
+          "nodeKey": "跳过",
+          "nodeType": "TXT",
+          "packageName": ""
+        },
+        "type": "CLICK_NODE"
+      },
+      "isAlarm": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": false,
+      "name": "点击跳过"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "com.meituan.retail.v.android:id/img_shopping_cart",
+            "nodeType": "ID",
+            "packageName": ""
+          },
+          "type": "NODE_EXIST"
+        },
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "com.meituan.retail.v.android:id/img_shopping_cart",
+            "nodeType": "ID",
+            "packageName": ""
+          },
+          "type": "NODE_NOT_SELECTED"
+        }
+      ],
+      "handle": {
+        "delayRunAfter": 500,
+        "delayRunBefore": 0,
+        "node": {
+          "className": "",
+          "nodeIndex": 0,
+          "nodeKey": "com.meituan.retail.v.android:id/img_shopping_cart",
+          "nodeType": "ID",
+          "packageName": ""
+        },
+        "type": "CLICK_NODE"
+      },
+      "isAlarm": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": false,
+      "name": "点击购物车"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "我知道了",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_CAN_CLICK"
+        }
+      ],
+      "handle": {
+        "delayRunAfter": 0,
+        "delayRunBefore": 0,
+        "node": {
+          "className": "",
+          "nodeIndex": 0,
+          "nodeKey": "我知道了",
+          "nodeType": "TXT",
+          "packageName": ""
+        },
+        "type": "CLICK_NODE"
+      },
+      "isAlarm": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": false,
+      "name": "点击我知道了"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "返回购物车",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_CAN_CLICK"
+        }
+      ],
+      "handle": {
+        "delayRunAfter": 0,
+        "delayRunBefore": 0,
+        "node": {
+          "className": "",
+          "nodeIndex": 0,
+          "nodeKey": "返回购物车",
+          "nodeType": "TXT",
+          "packageName": ""
+        },
+        "type": "CLICK_NODE"
+      },
+      "isAlarm": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": false,
+      "name": "点击返回购物车"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "结算",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_CAN_CLICK"
+        }
+      ],
+      "handle": {
+        "delayRunAfter": 0,
+        "delayRunBefore": 500,
+        "node": {
+          "className": "",
+          "nodeIndex": 0,
+          "nodeKey": "结算",
+          "nodeType": "TXT",
+          "packageName": ""
+        },
+        "type": "CLICK_NODE"
+      },
+      "isAlarm": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": false,
+      "name": "点击结算"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "立即支付",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_CAN_CLICK"
+        }
+      ],
+      "handle": {
+        "delayRunAfter": 0,
+        "delayRunBefore": 500,
+        "node": {
+          "className": "",
+          "nodeIndex": 0,
+          "nodeKey": "立即支付",
+          "nodeType": "TXT",
+          "packageName": ""
+        },
+        "type": "CLICK_NODE"
+      },
+      "isAlarm": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": false,
+      "name": "立即支付"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "选择送达时间",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_EXIST"
+        }
+      ],
+      "handle": {
+        "delayRunAfter": 0,
+        "delayRunBefore": 0,
+        "node": {
+          "className": "",
+          "nodeIndex": 0,
+          "nodeKey": "-",
+          "nodeType": "TXT",
+          "packageName": ""
+        },
+        "type": "CLICK_RANDOM_NODE"
+      },
+      "isAlarm": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": false,
+      "name": "自动选择送达时间"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "提交订单",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_EXIST"
+        },
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "立即支付",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_CAN_CLICK"
+        }
+      ],
+      "handle": {
+        "delayRunAfter": 100,
+        "delayRunBefore": 0,
+        "node": {
+          "className": "",
+          "nodeIndex": 0,
+          "nodeKey": "确认支付",
+          "nodeType": "TXT",
+          "packageName": ""
+        },
+        "type": "CLICK_NODE"
+      },
+      "isAlarm": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": false,
+      "name": "确认支付"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "支付订单",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_EXIST"
+        },
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "展开更多支付方式",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_CAN_CLICK"
+        }
+      ],
+      "handle": {
+        "delayRunAfter": 100,
+        "delayRunBefore": 0,
+        "node": {
+          "className": "",
+          "nodeIndex": 0,
+          "nodeKey": "展开更多支付方式",
+          "nodeType": "TXT",
+          "packageName": ""
+        },
+        "type": "CLICK_NODE"
+      },
+      "isAlarm": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": false,
+      "name": "展开更多支付方式"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "支付订单",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_EXIST"
+        },
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "支付宝支付",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_EXIST"
+        },
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "支付宝支付",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_NOT_CHECKED"
+        }
+      ],
+      "handle": {
+        "delayRunAfter": 100,
+        "delayRunBefore": 0,
+        "node": {
+          "className": "",
+          "nodeIndex": 0,
+          "nodeKey": "支付宝支付",
+          "nodeType": "TXT",
+          "packageName": ""
+        },
+        "type": "CLICK_NODE"
+      },
+      "isAlarm": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": false,
+      "name": "选择支付宝支付"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "支付订单",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_EXIST"
+        },
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "确认支付",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_CAN_CLICK"
+        }
+      ],
+      "handle": {
+        "delayRunAfter": 100,
+        "delayRunBefore": 0,
+        "node": {
+          "className": "",
+          "nodeIndex": 0,
+          "nodeKey": "确认支付",
+          "nodeType": "TXT",
+          "packageName": ""
+        },
+        "type": "CLICK_NODE"
+      },
+      "isAlarm": true,
+      "isFailBack": false,
+      "isManual": true,
+      "isRepeat": false,
+      "name": "确认支付"
+    }
+  ]
+}

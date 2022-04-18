@@ -1,0 +1,231 @@
+{
+  "name": "盒马APP购买",
+  "steps": [
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "",
+            "nodeType": "PACKAGE_NAME",
+            "packageName": "com.wudaokou.hippo"
+          },
+          "type": "APP_IS_BACKGROUND"
+        }
+      ],
+      "handle": {
+        "delayRunAfter": 500,
+        "delayRunBefore": 0,
+        "node": {
+          "className": "",
+          "nodeIndex": 0,
+          "nodeKey": "",
+          "nodeType": "PACKAGE_NAME",
+          "packageName": "com.wudaokou.hippo"
+        },
+        "type": "LAUNCH"
+      },
+      "isAlarm": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": false,
+      "name": "打开 app"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "android.widget.TextView",
+            "nodeIndex": 0,
+            "nodeKey": "购物车",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_EXIST"
+        },
+        {
+          "node": {
+            "className": "android.widget.TextView",
+            "nodeIndex": 0,
+            "nodeKey": "购物车",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_NOT_SELECTED"
+        }
+      ],
+      "handle": {
+        "delayRunAfter": 500,
+        "delayRunBefore": 0,
+        "node": {
+          "className": "android.widget.TextView",
+          "nodeIndex": 0,
+          "nodeKey": "购物车",
+          "nodeType": "TXT",
+          "packageName": ""
+        },
+        "type": "CLICK_NODE"
+      },
+      "isAlarm": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": false,
+      "name": "点击购物车"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "结算",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_CAN_CLICK"
+        }
+      ],
+      "handle": {
+        "delayRunAfter": 100,
+        "delayRunBefore": 500,
+        "node": {
+          "className": "",
+          "nodeIndex": 0,
+          "nodeKey": "结算",
+          "nodeType": "TXT",
+          "packageName": ""
+        },
+        "type": "CLICK_NODE"
+      },
+      "isAlarm": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": false,
+      "name": "结算"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "android.widget.TextView",
+            "nodeIndex": 0,
+            "nodeKey": "选择时间",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_EXIST"
+        },
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "送达",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_NO_EXIST"
+        }
+      ],
+      "handle": {
+        "delayRunAfter": 0,
+        "delayRunBefore": 0,
+        "node": {
+          "className": "android.widget.LinearLayout",
+          "nodeIndex": 0,
+          "nodeKey": "选择时间",
+          "nodeType": "TXT",
+          "packageName": ""
+        },
+        "type": "CLICK_NODE_JUST_SELF"
+      },
+      "isAlarm": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": false,
+      "name": "唤起选择时间"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "android.widget.TextView",
+            "nodeIndex": 0,
+            "nodeKey": "选择时间",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_EXIST"
+        },
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "送达",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_EXIST"
+        },
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "确认",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_EXIST"
+        }
+      ],
+      "handle": {
+        "delayRunAfter": 0,
+        "delayRunBefore": 0,
+        "node": {
+          "className": "",
+          "nodeIndex": 1,
+          "nodeKey": "确认",
+          "nodeType": "TXT",
+          "packageName": ""
+        },
+        "type": "CLICK_NODE"
+      },
+      "isAlarm": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": false,
+      "name": "确认选择时间"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "提交订单",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_CAN_CLICK"
+        }
+      ],
+      "handle": {
+        "delayRunAfter": 100,
+        "delayRunBefore": 0,
+        "node": {
+          "className": "",
+          "nodeIndex": 0,
+          "nodeKey": "提交订单",
+          "nodeType": "TXT",
+          "packageName": ""
+        },
+        "type": "CLICK_NODE"
+      },
+      "isAlarm": true,
+      "isFailBack": false,
+      "isManual": true,
+      "isRepeat": false,
+      "name": "提交订单"
+    }
+  ]
+}
