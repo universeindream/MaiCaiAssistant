@@ -222,14 +222,14 @@ class GlobalActionBarService : AccessibilityService() {
     }
 
     private fun configureConfigButton() {
-        val openConfigButton = mLayout.findViewById<View>(R.id.config) as Button
+        val openConfigButton = mLayout.findViewById<View>(R.id.btn_config) as Button
         openConfigButton.setOnClickListener {
             AppUtils.launchApp(AppUtils.getAppPackageName())
         }
     }
 
     private fun updateSnapUpButton() {
-        val snapUpButton = mLayout.findViewById<View>(R.id.snapUp) as Button
+        val snapUpButton = mLayout.findViewById<View>(R.id.btn_snap_up) as Button
         val targetTxt = if (mSnapUpStatus.get()) "取消" else "抢购"
         if (targetTxt == snapUpButton.text) return
         GlobalScope.launch {
@@ -240,7 +240,7 @@ class GlobalActionBarService : AccessibilityService() {
     }
 
     private fun configureSnapUpButton() {
-        val snapUpButton = mLayout.findViewById<View>(R.id.snapUp) as Button
+        val snapUpButton = mLayout.findViewById<View>(R.id.btn_snap_up) as Button
         snapUpButton.setOnClickListener {
             if (mSnapUpStatus.get()) {
                 cancelTask()
@@ -251,10 +251,14 @@ class GlobalActionBarService : AccessibilityService() {
     }
 
     private fun configureOpenAppButton() {
-        val openAppButton = mLayout.findViewById<View>(R.id.open_app) as Button
+        val openAppButton = mLayout.findViewById<View>(R.id.btn_test) as Button
         if (BuildConfig.DEBUG) openAppButton.visibility = View.VISIBLE
         openAppButton.setOnClickListener {
-            XLog.v("test")
+            AppUtils.launchApp("com.yaya.zone")
+        }
+        openAppButton.setOnLongClickListener {
+            startActivity(packageManager.getLaunchIntentForPackage("com.yaya.zone"))
+            return@setOnLongClickListener false
         }
     }
 

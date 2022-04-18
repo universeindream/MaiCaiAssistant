@@ -4,9 +4,9 @@
     <string name="accessibility_service_label">买菜助手</string>
     <string name="accessibility_service_description">买菜助手</string>
 
-    <string name="openConfig">配置</string>
-    <string name="startSnapUp">抢购</string>
-    <string name="openApp">打开</string>
+    <string name="btn_config">配置</string>
+    <string name="btn_snap_up">抢购</string>
+    <string name="btn_test">测试</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="config_fragment_label">@string/app_name</string>

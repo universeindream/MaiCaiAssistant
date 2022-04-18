@@ -19,29 +19,29 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/config"
+        android:id="@+id/btn_config"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:background="#60B0C4DE"
         android:padding="8dp"
         android:paddingStart="1dp"
         android:paddingEnd="1dp"
-        android:text="@string/openConfig" />
+        android:text="@string/btn_config" />
 
     <Button
-        android:id="@+id/snapUp"
+        android:id="@+id/btn_snap_up"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:background="#60B0C4DE"
         android:padding="8dp"
-        android:text="@string/startSnapUp" />
+        android:text="@string/btn_snap_up" />
 
     <Button
-        android:id="@+id/open_app"
+        android:id="@+id/btn_test"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:background="#40B0C4DE"
-        android:text="@string/openApp"
+        android:text="@string/btn_test"
         android:visibility="gone" />
 
 </LinearLayout>
