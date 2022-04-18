@@ -4,7 +4,9 @@
 
 ### 概述
 
-[买菜助手](https://github.com/universeindream/MaiCaiAssistant) 是一款可以自动执行购买流程的 APP。
+[买菜助手](https://github.com/universeindream/MaiCaiAssistant) 是一款可以自动执行 `购买方案` 的 APP。 购买方案由多个步骤构成，而每个步骤由条件与操作两个模块组成，条件用来指定系统当前处于哪一步骤，操作用来执行当前步骤的目标任务。
+
+> 截止 20220418，美团买菜 - 可抢购、可捡漏，叮咚 - 待测试，盒马 - 待反馈
 
 ### 特性
 
