@@ -9,8 +9,8 @@
 **ps:**
 
 - 起因：`拒绝早起抢菜，抢到了起床支付` :rofl: , 结果：`往自动化助手的方向跑了` :zany_face:
+- **如果提示 `异常提示 - 步骤: xxx - 已重复执行了 10s，已自动关闭`，尝试设置问题步骤的延迟时间** - [视频教程](https://user-images.githubusercontent.com/7286154/163680965-a64f13ea-9bd7-4033-9c2e-e8f69e288831.mp4)
 - 如果闪退，记得点击 `ERROR DETAILS` 截图反馈 - [案例图片](https://user-images.githubusercontent.com/20157750/163066496-df9dafe9-bbbb-4bfd-8acb-1f7254475147.jpg)
-- 如果提示 `异常提示 - 流程 - xxx 已重复执行 10s 未执行`，尝试设置问题步骤的延迟时间 - [视频教程](https://user-images.githubusercontent.com/7286154/163680965-a64f13ea-9bd7-4033-9c2e-e8f69e288831.mp4)
 
 ### 互助
 
@@ -36,10 +36,8 @@ ps:
 - 可定时执行
    - 注意：需设置屏幕常亮
 - 可设置异常响铃 - `防止出现 BUG，导致错过抢购时间`
-   - 10 s, 执行同一流程会被标志为异常
-- 可自定义购买方案
-   - 流程有问题，自己也可以尝试处理了 
-   - 长按 -  打开 JSON 修改 - [doc](https://github.com/universeindream/MaiCaiAssistant/wiki/%E6%B5%81%E7%A8%8B%E9%85%8D%E7%BD%AE)
+   - 10 s, 执行同一步骤会被标志为异常
+- 可修改购买方案
 
 ### 预览
 
