@@ -1,6 +1,6 @@
 [
   {
-    "name": "美团买菜APP抢购 - 极速支付(测试) - 自动送达时间",
+    "name": "美团买菜APP抢购 - 极速支付(测试2) - 自动送达时间",
     "steps": [
       {
         "condList": [
@@ -204,7 +204,7 @@
           "delayRunBefore": 0,
           "node": {
             "className": "",
-            "nodeIndex": 0,
+            "nodeIndex": 1,
             "nodeKey": "极速支付",
             "nodeType": "TXT",
             "packageName": ""
