@@ -512,7 +512,9 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_RANDOM_NODE,
                         node = MCNode(EMCNodeType.TXT, "-"),
+                        delayRunAfter = 100
                     ),
+                    isRepeat = true,
                     isFailBack = true
                 ),
                 MCStep(
@@ -678,7 +680,9 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_RANDOM_NODE,
                         node = MCNode(EMCNodeType.TXT, "-"),
+                        delayRunAfter = 100
                     ),
+                    isRepeat = true,
                     isFailBack = true
                 ),
                 MCStep(
