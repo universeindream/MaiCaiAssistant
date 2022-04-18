@@ -8,9 +8,9 @@
 
 **ps:**
 
-- 起因：`拒绝早起抢菜，抢到了起床支付` :rofl: , 结果：`往自动化助手的方向跑了` :zany_face:
 - **如果提示 `异常提示 - 步骤: xxx - 已重复执行了 10s，已自动关闭`，尝试设置问题步骤的延迟时间** - [视频教程](https://user-images.githubusercontent.com/7286154/163680965-a64f13ea-9bd7-4033-9c2e-e8f69e288831.mp4)
 - 如果闪退，记得点击 `ERROR DETAILS` 截图反馈 - [案例图片](https://user-images.githubusercontent.com/20157750/163066496-df9dafe9-bbbb-4bfd-8acb-1f7254475147.jpg)
+- 起因：`拒绝早起抢菜，抢到了起床支付` :rofl: , 结果：`往自动化助手的方向跑了` :zany_face:
 
 ### 互助
 
@@ -20,9 +20,7 @@
 | ------------- | ------------- | ------------- |
 | <img src="https://user-images.githubusercontent.com/7286154/163676248-d7a02cf3-cc34-49ae-af50-b3da30b4d76e.png" width="150"> | <img width="150" src="https://user-images.githubusercontent.com/7286154/163721131-3aa6da8d-44ab-48d3-98a5-3ccfc083fae0.png"> |     <img width="150" src="https://user-images.githubusercontent.com/7286154/163738276-3460fdd0-930b-493a-a899-d8aa8a4e03be.png">     |
 
-
-
-ps:
+**ps:**
 
 - 微信号被封 :rofl: 
 - App 功能暂时就不做扩展了，就买菜来说，目前功能够用了，修改方案其实就可以达到大家的目标
