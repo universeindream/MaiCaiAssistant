@@ -404,7 +404,7 @@ object MHDefault {
             )
         ),
         MCSolution(
-            name = "叮咚APP抢购 - 支付宝 - 自动送达时间",
+            name = "叮咚APP抢购 - 支付宝 - 自动送达时间(可重复尝试)",
             steps = arrayListOf(
                 MCStep(
                     "打开 app",
@@ -512,7 +512,8 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_RANDOM_NODE,
                         node = MCNode(EMCNodeType.TXT, "-"),
-                    )
+                    ),
+                    isFailBack = true
                 ),
                 MCStep(
                     "选择支付宝支付",
@@ -569,7 +570,7 @@ object MHDefault {
             )
         ),
         MCSolution(
-            name = "叮咚APP抢购 - 微信 - 自动送达时间",
+            name = "叮咚APP抢购 - 微信 - 自动送达时间(可重复尝试)",
             steps = arrayListOf(
                 MCStep(
                     "打开 app",
@@ -677,7 +678,8 @@ object MHDefault {
                     handle = MCHandle(
                         type = EMCHandle.CLICK_RANDOM_NODE,
                         node = MCNode(EMCNodeType.TXT, "-"),
-                    )
+                    ),
+                    isFailBack = true
                 ),
                 MCStep(
                     "选择微信支付",
