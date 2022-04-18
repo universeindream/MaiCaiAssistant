@@ -176,7 +176,7 @@ class GlobalActionBarService : AccessibilityService() {
                             XLog.d("steps - ${step.name} - ${step.isFailBack} - handleResult - $handleResult")
                             if (step.isFailBack && !handleResult) {
                                 performGlobalAction(GLOBAL_ACTION_BACK)
-                                delay(100)
+                                delay(200)
                             }
 
                             if (step.isAlarm) {
