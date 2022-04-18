@@ -1,5 +1,5 @@
 {
-  "name": "叮咚APP抢购 - 微信 - 自动送达时间",
+  "name": "叮咚APP - 抢购 - 微信 - 自动送达时间",
   "steps": [
     {
       "condList": [
@@ -313,8 +313,8 @@
         }
       ],
       "handle": {
-        "delayRunAfter": 100,
-        "delayRunBefore": 0,
+        "delayRunAfter": 0,
+        "delayRunBefore": 500,
         "node": {
           "className": "",
           "nodeIndex": 0,
