@@ -85,7 +85,6 @@ object MHUtil {
 
         val result: Boolean = when (type) {
             EMCHandle.LAUNCH -> {
-                AppUtils.launchApp(Utils.getApp().packageName)
                 AppUtils.launchApp(node.packageName)
                 true
             }

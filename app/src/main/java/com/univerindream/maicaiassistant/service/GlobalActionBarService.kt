@@ -171,7 +171,13 @@ class GlobalActionBarService : AccessibilityService() {
                                 mHandleLog!!.handleTime = System.currentTimeMillis()
                             }
 
-                            MHUtil.stepHandle(this@GlobalActionBarService, rootInActiveWindow, step.handle)
+                            val handleResult =
+                                MHUtil.stepHandle(this@GlobalActionBarService, rootInActiveWindow, step.handle)
+                            XLog.d("steps - ${step.name} - ${step.isFailBack} - handleResult - $handleResult")
+                            if (step.isFailBack && !handleResult) {
+                                performGlobalAction(GLOBAL_ACTION_BACK)
+                                delay(100)
+                            }
 
                             if (step.isAlarm) {
                                 MHUtil.notify(

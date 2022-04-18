@@ -138,6 +138,8 @@ data class MCStep(
     var isManual: Boolean = false,
     /** 是否重复 **/
     var isRepeat: Boolean = false,
+    /** 是否失败后返回健 **/
+    var isFailBack: Boolean = false,
 )
 
 /**

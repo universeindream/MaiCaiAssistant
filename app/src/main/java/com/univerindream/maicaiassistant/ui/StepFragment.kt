@@ -98,6 +98,10 @@ class StepFragment : Fragment() {
             if (!compoundButton.isPressed) return@setOnCheckedChangeListener
             mStep.isRepeat = b
         }
+        binding.stepFailBack.setOnCheckedChangeListener { compoundButton, b ->
+            if (!compoundButton.isPressed) return@setOnCheckedChangeListener
+            mStep.isFailBack = b
+        }
 
         binding.floatingAddButton.setOnClickListener {
             val action = StepFragmentDirections.actionStepFragmentToCondFragment(
@@ -149,6 +153,7 @@ class StepFragment : Fragment() {
         binding.stepAlarm.isChecked = step.isAlarm
         binding.stepManual.isChecked = step.isManual
         binding.stepRepeat.isChecked = step.isRepeat
+        binding.stepFailBack.isChecked = step.isFailBack
 
         var handleContent = "类型：${step.handle.type}"
         handleContent += "\n节点："
