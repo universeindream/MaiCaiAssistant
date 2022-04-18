@@ -211,9 +211,6 @@ class GlobalActionBarService : AccessibilityService() {
     }
 
     private fun enableTask() {
-        //防止唤起不了其他 APP - 临时解决方案
-        AppUtils.launchApp(Utils.getApp().packageName)
-
         mSnapUpStatus.set(true)
         mLoopStartTime.set(System.currentTimeMillis())
         mHandleLog = null
