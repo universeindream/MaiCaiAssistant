@@ -16,6 +16,7 @@ import android.widget.Button
 import android.widget.FrameLayout
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.blankj.utilcode.util.Utils
 import com.elvishew.xlog.XLog
 import com.univerindream.maicaiassistant.*
 import kotlinx.coroutines.*
@@ -208,6 +209,9 @@ class GlobalActionBarService : AccessibilityService() {
     }
 
     private fun enableTask() {
+        //防止唤起不了其他 APP - 临时解决方案
+        AppUtils.launchApp(Utils.getApp().packageName)
+
         mSnapUpStatus.set(true)
         mLoopStartTime.set(System.currentTimeMillis())
         mHandleLog = null
