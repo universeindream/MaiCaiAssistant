@@ -158,6 +158,7 @@ class GlobalActionBarService : AccessibilityService() {
                         val condResult = step.condList.all {
                             MHUtil.stepCond(
                                 rootInActiveWindow,
+                                mForegroundPackageName,
                                 mForegroundClassName,
                                 it.type,
                                 it.node

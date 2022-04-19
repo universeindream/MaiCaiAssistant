@@ -22,6 +22,7 @@ enum class EMCNodeType {
  */
 enum class EMCCond {
     APP_IS_BACKGROUND, //应用后台
+    EQ_PACKAGE_NAME, //包名一致
     EQ_CLASS_NAME, //类名一致
     NODE_EXIST, //节点存在
     NODE_NO_EXIST, //节点不存在
@@ -38,6 +39,7 @@ enum class EMCCond {
 
         return when (this) {
             APP_IS_BACKGROUND -> "App 在后台"
+            EQ_PACKAGE_NAME -> "包名一致"
             EQ_CLASS_NAME -> "类名一致"
             NODE_EXIST -> "节点存在"
             NODE_NO_EXIST -> "节点不存在"
