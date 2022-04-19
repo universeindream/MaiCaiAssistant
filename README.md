@@ -53,14 +53,9 @@
 | ------------- | ------------- | ------------- |
 | <img src="https://user-images.githubusercontent.com/7286154/163836844-2da6ad5c-ed9d-4ea4-a94e-d333d595c7a5.png" width="200" >  | <img src="https://user-images.githubusercontent.com/7286154/163836887-54f8d547-8bc2-48b3-b929-a4781db31ce7.png" width="200" > | <img src="https://user-images.githubusercontent.com/7286154/163836949-e480da1c-0bbf-41c7-a6ad-02f5fa0fa7c2.png" width="200" > |
 
+**实战**
 
-
-
-**录像**
-
-
-https://user-images.githubusercontent.com/7286154/162630474-3c3460d4-a01f-4556-bec9-6f88fd14dade.mp4
-
+<img src="https://user-images.githubusercontent.com/7286154/163914983-4d1e7b58-4abe-4d1f-aa9d-af9d38093f32.gif" width="300">
 
 ### TODO
 
