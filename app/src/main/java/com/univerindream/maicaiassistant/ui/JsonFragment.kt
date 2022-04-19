@@ -11,7 +11,6 @@ import com.blankj.utilcode.util.JsonUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.univerindream.maicaiassistant.MCSolution
 import com.univerindream.maicaiassistant.MHConfig
-import com.univerindream.maicaiassistant.MHData
 import com.univerindream.maicaiassistant.databinding.FragmentJsonBinding
 
 /**
@@ -42,8 +41,7 @@ class JsonFragment : Fragment() {
             val data = binding.jsonContent.text.toString()
 
             try {
-                GsonUtils.fromJson(data, MCSolution::class.java)
-                MHData.curMCSolutionJSON = data
+                MHConfig.curMCSolution = GsonUtils.fromJson(data, MCSolution::class.java)
                 ToastUtils.showLong("保存成功")
             } catch (e: Exception) {
                 ToastUtils.showLong("JSON 数据非法")
