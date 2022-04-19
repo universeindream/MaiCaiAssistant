@@ -1,4 +1,4 @@
-## 买菜助手 - [APK 点击下载](https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk)
+## 买菜助手
 
 [![GitHub release](https://img.shields.io/github/v/release/universeindream/MaiCaiAssistant.svg)](https://github.com/universeindream/MaiCaiAssistant/releases) [![Total Downloads](https://img.shields.io/github/downloads/universeindream/MaiCaiAssistant/total.svg)](https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk) ![Support Platforms](https://img.shields.io/badge/platform-android-blue)
 
@@ -22,9 +22,11 @@
 
 ### 使用
 
+1. [安装 APK](https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk)
 1. 开启无障碍权限
 2. 选择适合的方案 - 比如：美团买菜APP - 抢购 - 极速支付 - 自动送达时间
 3. 点击抢购按钮
+4. 点 Star ，送好运 🐶
 
 > 因每个人的手机性能和网络环境不同，请大家自行设置运行步骤的延迟时间
 
@@ -66,7 +68,7 @@
    - [x] 编辑
    - [x] 新增
    - [x] 删除
-- [ ] JSON 导入导出
+- [x] 文件导出
 - [ ] 方案社区
 
 ### License
