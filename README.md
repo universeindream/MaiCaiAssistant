@@ -3,7 +3,7 @@
 [![GitHub release](https://img.shields.io/github/v/release/universeindream/MaiCaiAssistant.svg)](https://github.com/universeindream/MaiCaiAssistant/releases) [![Total Downloads](https://img.shields.io/github/downloads/universeindream/MaiCaiAssistant/total.svg)](https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk) ![Support Platforms](https://img.shields.io/badge/platform-android-blue)
 
 
-> 本项目，适用于任何购物平台, 前提是你会编辑方案
+> 本项目，适用于任何购物平台, 其实就是一个自动化程序，前提是你会编辑方案
 
 ### 概述
 
