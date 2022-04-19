@@ -135,17 +135,17 @@ class SolutionFragment : Fragment() {
             binding.solutionStepName.text = content
 
             var handleContent = "  - 操作:"
-            handleContent += "\n      - 类型：${model.handle.type.to2String()}"
-            handleContent += "\n      - 节点类型：${model.handle.node.nodeType.to2String()}"
+            handleContent += "\n      - 类型：${model.handle.type.toStr()}"
+            handleContent += "\n      - 节点类型：${model.handle.node.nodeType.toStr()}"
             handleContent += "\n      - 运行前延迟：${model.handle.delayRunBefore}"
             handleContent += "\n      - 运行后延迟：${model.handle.delayRunAfter}"
             binding.solutionStepHandle.text = handleContent
 
             var condContent = "  - 条件列表:"
             model.condList.forEachIndexed { i, s ->
-                condContent += "\n      - 条件${i + 1}:"
-                condContent += "\n          - 类型: " + s.type.to2String()
-                condContent += "\n          - 节点类型: " + s.node.nodeType.to2String()
+                condContent += "\n      - No${i + 1}:"
+                condContent += "\n          - 类型: " + s.type.toStr()
+                condContent += "\n          - 节点类型: " + s.node.nodeType.toStr()
             }
             binding.solutionStepCondList.text = condContent
         }

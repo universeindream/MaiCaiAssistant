@@ -41,7 +41,7 @@ class CondFragment : Fragment() {
             ArrayAdapter(
                 requireContext(),
                 R.layout.list_popup_window_item,
-                EMCCond.values().map { it.toString() }.toList()
+                EMCCond.values().map { it.toStr() }.toList()
             )
         )
 
@@ -63,8 +63,8 @@ class CondFragment : Fragment() {
     fun loadData() {
         val cond = mcCond
 
-        binding.fragmentCondType.setText(cond.type.toString(), false)
-        binding.fragmentCondNodeType.setText(cond.node.nodeType.toString(), false)
+        binding.fragmentCondType.setText(cond.type.toStr(), false)
+        binding.fragmentCondNodeType.setText(cond.node.nodeType.toStr(), false)
         binding.fragmentCondNodeKey.editText?.setText(cond.node.nodeKey)
         binding.fragmentCondNodeIndex.editText?.setText(cond.node.nodeIndex.toString())
         binding.fragmentCondNodePackageName.editText?.setText(cond.node.packageName)
@@ -74,8 +74,8 @@ class CondFragment : Fragment() {
 
     fun saveData() {
 
-        val type = EMCCond.valueOf(binding.fragmentCondType.text.toString())
-        val nodeType = EMCNodeType.valueOf(binding.fragmentCondNodeType.text.toString())
+        val type = EMCCond.strOf(binding.fragmentCondType.text.toString())
+        val nodeType = EMCNodeType.strOf(binding.fragmentCondNodeType.text.toString())
         val nodeKey = binding.fragmentCondNodeKey.editText?.text.toString()
         val nodeIndex = binding.fragmentCondNodeIndex.editText?.text?.toString()?.toInt() ?: 0
         val nodePackageName = binding.fragmentCondNodePackageName.editText?.text.toString()

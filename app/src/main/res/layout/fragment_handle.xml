@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:hint="节点 key:"
+                android:hint="节点值:"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -66,7 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:hint="节点 Index:"
+                android:hint="节点索引:"
                 app:endIconMode="clear_text"
                 app:helperText="节点重复时，取第几个，从 0 开始">
 
@@ -82,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:hint="节点 packageName:"
+                android:hint="节点包名:"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -96,7 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:hint="节点 className:"
+                android:hint="节点类名:"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText

@@ -38,7 +38,7 @@ class HandleFragment : Fragment() {
             ArrayAdapter(
                 requireContext(),
                 R.layout.list_popup_window_item,
-                EMCHandle.values().map { it.toString() }.toList()
+                EMCHandle.values().map { it.toStr() }.toList()
             )
         )
 
@@ -46,7 +46,7 @@ class HandleFragment : Fragment() {
             ArrayAdapter(
                 requireContext(),
                 R.layout.list_popup_window_item,
-                EMCNodeType.values().map { it.toString() }.toList()
+                EMCNodeType.values().map { it.toStr() }.toList()
             )
         )
 
@@ -60,10 +60,10 @@ class HandleFragment : Fragment() {
     fun loadData() {
         val mcHandle = GsonUtils.fromJson(args.handleJson, MCHandle::class.java)
 
-        binding.fragmentHandleType.setText(mcHandle.type.toString(), false)
+        binding.fragmentHandleType.setText(mcHandle.type.toStr(), false)
         binding.fragmentHandleDelay.editText?.setText(mcHandle.delayRunAfter.toString())
         binding.fragmentHandleDelayBefore.editText?.setText(mcHandle.delayRunBefore.toString())
-        binding.fragmentHandleNodeType.setText(mcHandle.node.nodeType.toString(), false)
+        binding.fragmentHandleNodeType.setText(mcHandle.node.nodeType.toStr(), false)
         binding.fragmentHandleNodeKey.editText?.setText(mcHandle.node.nodeKey)
         binding.fragmentHandleNodeIndex.editText?.setText(mcHandle.node.nodeIndex.toString())
         binding.fragmentHandleNodePackageName.editText?.setText(mcHandle.node.packageName)
@@ -72,10 +72,10 @@ class HandleFragment : Fragment() {
     }
 
     fun saveData() {
-        val type = EMCHandle.valueOf(binding.fragmentHandleType.text.toString())
+        val type = EMCHandle.strOf(binding.fragmentHandleType.text.toString())
         val delay = binding.fragmentHandleDelay.editText?.text?.toString()?.toLong() ?: 0L
         val delayBefore = binding.fragmentHandleDelayBefore.editText?.text?.toString()?.toLong() ?: 0L
-        val nodeType = EMCNodeType.valueOf(binding.fragmentHandleNodeType.text.toString())
+        val nodeType = EMCNodeType.strOf(binding.fragmentHandleNodeType.text.toString())
         val nodeKey = binding.fragmentHandleNodeKey.editText?.text.toString()
         val nodeIndex = binding.fragmentHandleNodeIndex.editText?.text?.toString()?.toInt() ?: 0
         val nodePackageName = binding.fragmentHandleNodePackageName.editText?.text.toString()

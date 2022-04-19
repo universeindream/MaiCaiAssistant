@@ -162,12 +162,12 @@ class StepFragment : Fragment() {
         binding.stepFailBack.isChecked = step.isFailBack
         binding.stepFailBackCount.editText?.setText("${step.failBackCount}")
 
-        var handleContent = "类型：${step.handle.type}"
+        var handleContent = "类型：${step.handle.type.toStr()}"
         handleContent += "\n节点："
-        handleContent += "\n   - 类型：${step.handle.node.nodeType}"
-        handleContent += "\n   - key：${step.handle.node.nodeKey}"
-        handleContent += "\n   - packageName：${step.handle.node.packageName}"
-        handleContent += "\n   - className：${step.handle.node.className}"
+        handleContent += "\n   - 类型：${step.handle.node.nodeType.toStr()}"
+        handleContent += "\n   - 值：${step.handle.node.nodeKey}"
+        handleContent += "\n   - 包名：${step.handle.node.packageName}"
+        handleContent += "\n   - 类名：${step.handle.node.className}"
         handleContent += "\n执行前延迟(ms)：${step.handle.delayRunBefore}"
         handleContent += "\n执行后延迟(ms)：${step.handle.delayRunAfter}"
         binding.stepHandleValue.text = handleContent
@@ -197,12 +197,12 @@ class StepFragment : Fragment() {
         override fun bindView(binding: ItemCondBinding, payloads: List<Any>) {
             binding.adapterCondNo.text = "条件" + tag.toString()
 
-            var condContent = "类型：${model.type}"
+            var condContent = "类型：${model.type.toStr()}"
             condContent += "\n节点："
-            condContent += "\n   - 类型：${model.node.nodeType}"
-            condContent += "\n   - key：${model.node.nodeKey}"
-            condContent += "\n   - packageName：${model.node.packageName}"
-            condContent += "\n   - className：${model.node.className}"
+            condContent += "\n   - 类型：${model.node.nodeType.toStr()}"
+            condContent += "\n   - 值：${model.node.nodeKey}"
+            condContent += "\n   - 包名：${model.node.packageName}"
+            condContent += "\n   - 类名：${model.node.className}"
             binding.adapterCondValue.text = condContent
 
         }
