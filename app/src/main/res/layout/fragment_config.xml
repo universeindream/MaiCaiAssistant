@@ -13,28 +13,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:gravity="center_vertical"
-        android:minHeight="40dp"
         android:text="当前方案："
         android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/setting_auto_info"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/setting_auto_info" />
 
-    <Button
+    <TextView
         android:id="@+id/setting_auto_info"
-        style="?attr/materialButtonOutlinedStyle"
+        style="?attr/titleTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:gravity="center|start"
+        android:maxLines="3"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="@+id/textView"
-        tools:text="美团抢购 - 支付宝 - 自动送达时间" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="美团抢购 - 支付宝 - 自动送达时间美团抢购 - 支付宝 - 自动送达时间美团抢购 - 支付宝 - 自动送达时间美团抢购 - 支付宝 - 自动送达时间" />
 
     <Button
         android:id="@+id/setting_edit"
@@ -43,11 +44,24 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="修改当前方案"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="8dp"
+        android:text="编辑当前方案"
+        app:layout_constraintEnd_toStartOf="@+id/setting_choose"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/setting_auto_info" />
+
+    <Button
+        android:id="@+id/setting_choose"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="选择其他方案"
+        app:layout_constraintBottom_toBottomOf="@+id/setting_edit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/setting_edit"
+        app:layout_constraintTop_toTopOf="@+id/setting_edit" />
 
     <Button
         android:id="@+id/setting_edit_json"
@@ -58,7 +72,6 @@
         android:text="JSON 方案"
         app:layout_constraintBottom_toBottomOf="@+id/setting_export"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/setting_export"
         app:layout_constraintTop_toTopOf="@+id/setting_export" />
 
     <Button
@@ -68,10 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
         android:text="导入方案"
-        app:layout_constraintEnd_toStartOf="@+id/setting_export"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/setting_edit" />
 
@@ -81,7 +91,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:text="导出方案"
         app:layout_constraintBottom_toBottomOf="@+id/setting_import"
         app:layout_constraintEnd_toStartOf="@+id/setting_edit_json"

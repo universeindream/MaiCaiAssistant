@@ -87,7 +87,10 @@ class ConfigFragment : Fragment() {
 
         EventBus.getDefault().register(this)
 
-        binding.settingAutoInfo.setOnClickListener {
+        binding.settingEdit.setOnClickListener {
+            findNavController().navigate(R.id.action_ConfigFragment_to_SolutionFragment)
+        }
+        binding.settingChoose.setOnClickListener {
             val solutions = arrayListOf<MCSolution>()
             solutions.addAll(MHDefault.githubSolutions)
             solutions.addAll(MHDefault.defaultMCSolutions)
@@ -98,9 +101,6 @@ class ConfigFragment : Fragment() {
                     loadData()
                 }
                 .show()
-        }
-        binding.settingEdit.setOnClickListener {
-            findNavController().navigate(R.id.action_ConfigFragment_to_SolutionFragment)
         }
         binding.settingEditJson.setOnClickListener {
             findNavController().navigate(R.id.action_ConfigFragment_to_JsonFragment)
