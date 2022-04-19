@@ -92,7 +92,7 @@ class ConfigFragment : Fragment() {
             solutions.addAll(MHDefault.githubSolutions)
             solutions.addAll(MHDefault.defaultMCSolutions)
             MaterialAlertDialogBuilder(requireContext())
-                .setTitle("选择其他方案")
+                .setTitle("默认方案 - 选后会覆盖当前方案")
                 .setItems(solutions.map { it.name }.toTypedArray()) { _, which ->
                     MHConfig.curMCSolution = solutions[which]
                     loadData()

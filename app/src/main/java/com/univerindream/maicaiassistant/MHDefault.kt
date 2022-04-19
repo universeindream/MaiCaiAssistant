@@ -22,13 +22,6 @@ object MHDefault {
             XLog.e(e)
         }
 
-        res.add(
-            MCSolution(
-                name = "自定义",
-                steps = arrayListOf()
-            ),
-        )
-
         res
     }
 
