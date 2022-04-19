@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
@@ -99,8 +100,13 @@ class StepFragment : Fragment() {
             mStep.isRepeat = b
         }
         binding.stepFailBack.setOnCheckedChangeListener { compoundButton, b ->
+            binding.stepFailBackCount.isEnabled = b
             if (!compoundButton.isPressed) return@setOnCheckedChangeListener
             mStep.isFailBack = b
+        }
+        binding.stepFailBackCount.editText?.doAfterTextChanged { inputText ->
+            val count = if (inputText.isNullOrBlank()) 1 else inputText.toString().toInt()
+            mStep.failBackCount = count
         }
 
         binding.floatingAddButton.setOnClickListener {
@@ -154,6 +160,7 @@ class StepFragment : Fragment() {
         binding.stepManual.isChecked = step.isManual
         binding.stepRepeat.isChecked = step.isRepeat
         binding.stepFailBack.isChecked = step.isFailBack
+        binding.stepFailBackCount.editText?.setText("${step.failBackCount}")
 
         var handleContent = "类型：${step.handle.type}"
         handleContent += "\n节点："

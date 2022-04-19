@@ -16,7 +16,6 @@ import android.widget.Button
 import android.widget.FrameLayout
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.ToastUtils
-import com.blankj.utilcode.util.Utils
 import com.elvishew.xlog.XLog
 import com.univerindream.maicaiassistant.*
 import kotlinx.coroutines.*
@@ -179,8 +178,10 @@ class GlobalActionBarService : AccessibilityService() {
 
                             //失败返回
                             if (step.isFailBack && !handleResult) {
-                                performGlobalAction(GLOBAL_ACTION_BACK)
-                                delay(200)
+                                repeat(step.failBackCount) {
+                                    performGlobalAction(GLOBAL_ACTION_BACK)
+                                    delay(200)
+                                }
                             }
 
                             if (step.isAlarm) {

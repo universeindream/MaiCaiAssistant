@@ -142,6 +142,8 @@ data class MCStep(
     var isRepeat: Boolean = false,
     /** 是否失败后返回健 **/
     var isFailBack: Boolean = false,
+    /** 是否失败后返回次数 **/
+    var failBackCount: Int = 1,
 )
 
 /**

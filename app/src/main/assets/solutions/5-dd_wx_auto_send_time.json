@@ -244,6 +244,7 @@
       },
       "isAlarm": false,
       "isFailBack": true,
+      "failBackCount": 2,
       "isManual": false,
       "isRepeat": true,
       "name": "自动选择送达时间"
@@ -338,9 +339,9 @@
             "nodeIndex": 0,
             "nodeKey": "",
             "nodeType": "PACKAGE_NAME",
-            "packageName": "com.yaya.zone"
+            "packageName": "com.tencent.mm"
           },
-          "type": "APP_IS_BACKGROUND"
+          "type": "EQ_PACKAGE_NAME"
         }
       ],
       "handle": {

@@ -77,6 +77,24 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/step_repeat" />
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/step_fail_back_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:enabled="false"
+                android:hint="执行失败时，执行返回健次数"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/step_fail_back">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
             <TextView
                 android:id="@+id/step_handle_label"
                 android:layout_width="wrap_content"
@@ -86,7 +104,7 @@
                 android:text="操作："
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/step_fail_back" />
+                app:layout_constraintTop_toBottomOf="@+id/step_fail_back_count" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/step_handle_card"
