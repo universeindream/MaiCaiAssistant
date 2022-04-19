@@ -46,10 +46,10 @@
 
 ### 常见问题
 
-- **`异常提示 - 步骤: xxx - 已重复执行了 10s，已自动关闭`，可以尝试修改该步骤 xxx 的配置，比如延迟时间** - [视频教程](https://user-images.githubusercontent.com/7286154/163680965-a64f13ea-9bd7-4033-9c2e-e8f69e288831.mp4)
+- **`异常提示 - 步骤: xxx - 已重复执行了 10s，已自动关闭`**，可以尝试修改该步骤 xxx 的配置，比如延迟时间 - [视频教程](https://user-images.githubusercontent.com/7286154/163680965-a64f13ea-9bd7-4033-9c2e-e8f69e288831.mp4)
 - 如果闪退，记得点击 `ERROR DETAILS` 截图反馈 - [参考图](https://user-images.githubusercontent.com/20157750/163066496-df9dafe9-bbbb-4bfd-8acb-1f7254475147.jpg)
 - 买菜的 APP 未成功启动，可手动打开 APP，再点击抢购
-- 无法定时打开购买 app ，请将买菜助手保证在前台试试
+- **无法定时打开购买 app ，请将买菜助手打开在前台试试**
 
 
 ### 预览
