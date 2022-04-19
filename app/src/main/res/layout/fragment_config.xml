@@ -109,16 +109,6 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/settingPermission"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="无障碍开关: "
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/setting_wrong_alarm_status" />
-
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/settingTimerTriggerValue"
         android:layout_width="0dp"
@@ -136,12 +126,12 @@
     <Button
         android:id="@+id/settingTimerTriggerChange"
         style="@style/Widget.MaterialComponents.Button"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:inputType="number"
         android:minHeight="48dp"
-        android:text="改时间"
+        android:text="设置时间"
         app:layout_constraintBottom_toBottomOf="@+id/settingTimerTriggerValue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/settingTimerTriggerValue"
@@ -154,7 +144,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="定时抢购开关: "
+        android:text="定时抢购: "
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/setting_buy_time_value" />
 
@@ -164,9 +154,20 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="异常响铃开关: "
+        android:text="异常响铃: "
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/setting_timer_trigger_status" />
+
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/settingPermission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="无障碍权限: "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setting_wrong_alarm_status" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/setting_ringtone_status"
@@ -174,7 +175,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="响铃开关: "
+        android:text="系统响铃: "
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settingPermission" />
 
