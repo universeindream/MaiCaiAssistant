@@ -1,15 +1,19 @@
 package com.univerindream.maicaiassistant.ui
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.blankj.utilcode.util.TimeUtils
-import com.blankj.utilcode.util.ToastUtils
+import com.blankj.utilcode.util.*
 import com.elvishew.xlog.XLog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -23,6 +27,7 @@ import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.io.FileOutputStream
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -32,6 +37,42 @@ class ConfigFragment : Fragment() {
     private var _binding: FragmentConfigBinding? = null
 
     private val binding get() = _binding!!
+
+    private val exportARLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+            if (activityResult.resultCode == Activity.RESULT_OK) {
+                val result = activityResult.data?.data.toString()
+                XLog.i(result)
+                try {
+                    val uri = Uri.parse(result)
+                    Utils.getApp().contentResolver.openFileDescriptor(uri, "w")?.use {
+                        FileOutputStream(it.fileDescriptor).use {
+                            it.write(GsonUtils.toJson(MHConfig.curMCSolution).toByteArray())
+                        }
+                    }
+                    ToastUtils.showShort("方案导出成功")
+                } catch (e: Exception) {
+                    ToastUtils.showLong("方案导出失败")
+                }
+            }
+        }
+    private val importARLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+            if (activityResult.resultCode == Activity.RESULT_OK) {
+                val result = activityResult.data?.data.toString()
+                XLog.i(result)
+
+                try {
+                    val json = FileIOUtils.readFile2String(UriUtils.uri2File(Uri.parse(result)))
+                    MHConfig.curMCSolution = GsonUtils.fromJson(json, MCSolution::class.java)
+                    ToastUtils.showLong("方案导入成功")
+                    loadData()
+                } catch (e: Exception) {
+                    ToastUtils.showLong("方案导入失败")
+                }
+
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,6 +104,25 @@ class ConfigFragment : Fragment() {
         }
         binding.settingEditJson.setOnClickListener {
             findNavController().navigate(R.id.action_ConfigFragment_to_JsonFragment)
+        }
+        binding.settingImport.setOnClickListener {
+            importARLauncher.launch(Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                type = "application/json"
+                addCategory(Intent.CATEGORY_OPENABLE)
+            })
+        }
+        binding.settingExport.setOnClickListener {
+            exportARLauncher.launch(Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+                val fileName = "${AppUtils.getAppName()}-${BuildConfig.VERSION_NAME}_${
+                    TimeUtils.millis2String(
+                        System.currentTimeMillis(),
+                        "yyMMddHHmmss"
+                    )
+                }.json"
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "application/json"
+                putExtra(Intent.EXTRA_TITLE, fileName)
+            })
         }
 
         binding.settingBuyTimeValue.editText?.doAfterTextChanged { inputText ->

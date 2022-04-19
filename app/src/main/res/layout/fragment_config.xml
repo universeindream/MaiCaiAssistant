@@ -43,24 +43,71 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:text="编辑当前方案"
-        app:layout_constraintEnd_toStartOf="@+id/setting_edit_json"
+        android:layout_marginEnd="16dp"
+        android:text="修改当前方案"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/setting_auto_info" />
 
     <Button
         android:id="@+id/setting_edit_json"
         style="@style/Widget.MaterialComponents.Button"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="JSON 方案"
+        app:layout_constraintBottom_toBottomOf="@+id/setting_export"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/setting_export"
+        app:layout_constraintTop_toTopOf="@+id/setting_export" />
+
+    <Button
+        android:id="@+id/setting_import"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="导入方案"
+        app:layout_constraintEnd_toStartOf="@+id/setting_export"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setting_edit" />
+
+    <Button
+        android:id="@+id/setting_export"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
-        android:text="Json 编辑导入"
-        app:layout_constraintBottom_toBottomOf="@+id/setting_edit"
+        android:text="导出方案"
+        app:layout_constraintBottom_toBottomOf="@+id/setting_import"
+        app:layout_constraintEnd_toStartOf="@+id/setting_edit_json"
+        app:layout_constraintStart_toEndOf="@+id/setting_import"
+        app:layout_constraintTop_toTopOf="@+id/setting_import" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/setting_buy_time_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="执行时长(min):"
+        app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/setting_edit"
-        app:layout_constraintTop_toTopOf="@+id/setting_edit" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setting_import">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/settingPermission"
@@ -130,25 +177,5 @@
         android:text="响铃开关: "
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settingPermission" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/setting_buy_time_value"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:hint="执行时长(min):"
-        app:endIconMode="clear_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/setting_edit">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number" />
-
-    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

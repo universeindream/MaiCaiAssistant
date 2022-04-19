@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="导出"
+        android:text="复制"
         app:layout_constraintBottom_toBottomOf="@+id/jsonSave"
         app:layout_constraintStart_toEndOf="@+id/jsonSave"
         app:layout_constraintTop_toTopOf="@+id/jsonSave" />
@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="导入"
+        android:text="粘贴"
         app:layout_constraintBottom_toBottomOf="@+id/jsonExport"
         app:layout_constraintStart_toEndOf="@+id/jsonExport"
         app:layout_constraintTop_toTopOf="@+id/jsonExport" />
