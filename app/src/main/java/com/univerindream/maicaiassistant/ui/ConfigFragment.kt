@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doAfterTextChanged
@@ -191,6 +192,15 @@ class ConfigFragment : Fragment() {
         }
         binding.settingRingtoneStatus.setOnClickListener {
             if (MHUtil.ringtone.isPlaying) MHUtil.ringtone.stop() else MHUtil.ringtone.play()
+        }
+        binding.settingKeepScreen.setOnCheckedChangeListener { compoundButton, b ->
+            if (!compoundButton.isPressed) return@setOnCheckedChangeListener
+
+            if (b) {
+                requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            } else {
+                requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            }
         }
 
         loadData()
