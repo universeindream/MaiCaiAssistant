@@ -8,6 +8,8 @@
 
 > 截止 20220419，美团买菜 - 可抢购、可捡漏，叮咚 - 待测试，盒马 - 待反馈
 
+> 本项目，适用于任何购物平台, 前提是你会编辑方案
+
 ### 特性
 
 - 支持多种方案 - [美团买菜](https://github.com/universeindream/MaiCaiAssistant/wiki/%E7%BE%8E%E5%9B%A2%E4%B9%B0%E8%8F%9C)、[叮咚](https://github.com/universeindream/MaiCaiAssistant/wiki/%E5%8F%AE%E5%92%9A%E4%B9%B0%E8%8F%9C)、[盒马](https://github.com/universeindream/MaiCaiAssistant/wiki/%E7%9B%92%E9%A9%AC)
@@ -64,6 +66,7 @@
    - [x] 新增
    - [x] 删除
 - [ ] JSON 导入导出
+- [ ] 方案社区
 
 ### License
 
