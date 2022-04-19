@@ -2,13 +2,14 @@
 
 [![GitHub release](https://img.shields.io/github/v/release/universeindream/MaiCaiAssistant.svg)](https://github.com/universeindream/MaiCaiAssistant/releases) [![Total Downloads](https://img.shields.io/github/downloads/universeindream/MaiCaiAssistant/total.svg)](https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk) ![Support Platforms](https://img.shields.io/badge/platform-android-blue)
 
+
+> 本项目，适用于任何购物平台, 前提是你会编辑方案
+
 ### 概述
 
 [买菜助手](https://github.com/universeindream/MaiCaiAssistant) 是一款可以自动执行 `购买方案` 的 APP。 购买方案由多个步骤构成，而每个步骤由条件与操作两个模块组成，条件用来指定系统当前处于哪一步骤，操作用来执行当前步骤的目标任务。
 
 > 截止 20220419，美团买菜 - 可抢购、可捡漏，叮咚 - 待测试，盒马 - 待反馈
-
-> 本项目，适用于任何购物平台, 前提是你会编辑方案
 
 ### 特性
 
