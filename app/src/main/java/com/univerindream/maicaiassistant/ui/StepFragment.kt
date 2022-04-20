@@ -76,6 +76,10 @@ class StepFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.stepName.editText?.doAfterTextChanged { inputText ->
+            val name = if (inputText.isNullOrBlank()) "" else inputText.toString()
+            mStep.name = name
+        }
         binding.stepCondValue.adapter = fastAdapter
         binding.stepCondValue.layoutManager = LinearLayoutManager(requireContext())
         binding.stepHandleCard.setOnClickListener {
@@ -153,27 +157,26 @@ class StepFragment : Fragment() {
     }
 
     fun loadData() {
-        val step: MCStep = mStep
-        binding.stepName.text = step.name
+        binding.stepName.editText?.setText(mStep.name)
 
-        binding.stepAlarm.isChecked = step.isAlarm
-        binding.stepManual.isChecked = step.isManual
-        binding.stepRepeat.isChecked = step.isRepeat
-        binding.stepFailBack.isChecked = step.isFailBack
-        binding.stepFailBackCount.editText?.setText("${step.failBackCount}")
+        binding.stepAlarm.isChecked = mStep.isAlarm
+        binding.stepManual.isChecked = mStep.isManual
+        binding.stepRepeat.isChecked = mStep.isRepeat
+        binding.stepFailBack.isChecked = mStep.isFailBack
+        binding.stepFailBackCount.editText?.setText("${mStep.failBackCount}")
 
-        var handleContent = "类型：${step.handle.type.toStr()}"
+        var handleContent = "类型：${mStep.handle.type.toStr()}"
         handleContent += "\n节点："
-        handleContent += "\n   - 类型：${step.handle.node.nodeType.toStr()}"
-        handleContent += "\n   - 值：${step.handle.node.nodeKey}"
-        handleContent += "\n   - 包名：${step.handle.node.packageName}"
-        handleContent += "\n   - 类名：${step.handle.node.className}"
-        handleContent += "\n执行前延迟(ms)：${step.handle.delayRunBefore}"
-        handleContent += "\n执行后延迟(ms)：${step.handle.delayRunAfter}"
+        handleContent += "\n   - 类型：${mStep.handle.node.nodeType.toStr()}"
+        handleContent += "\n   - 值：${mStep.handle.node.nodeKey}"
+        handleContent += "\n   - 包名：${mStep.handle.node.packageName}"
+        handleContent += "\n   - 类名：${mStep.handle.node.className}"
+        handleContent += "\n执行前延迟(ms)：${mStep.handle.delayRunBefore}"
+        handleContent += "\n执行后延迟(ms)：${mStep.handle.delayRunAfter}"
         binding.stepHandleValue.text = handleContent
 
         itemAdapter.clear()
-        step.condList.forEachIndexed { index, mcStep ->
+        mStep.condList.forEachIndexed { index, mcStep ->
             itemAdapter.add(BindingCondItem(mcStep).apply {
                 tag = index + 1
             })

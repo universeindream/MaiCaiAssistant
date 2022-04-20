@@ -174,7 +174,7 @@ data class MCNode(
  * 解决方案
  */
 data class MCSolution(
-    val name: String,
+    var name: String = "",
     val steps: MutableList<MCStep>
 )
 
@@ -182,7 +182,7 @@ data class MCSolution(
  * 步骤
  */
 data class MCStep(
-    var name: String = " 默认",
+    var name: String = "",
     var condList: MutableList<MCCond> = arrayListOf(),
     var handle: MCHandle = MCHandle(),
     /** 是否警报 **/

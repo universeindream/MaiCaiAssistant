@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
@@ -63,9 +64,12 @@ class SolutionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.solutionName.editText?.doAfterTextChanged { inputText ->
+            val name = if (inputText.isNullOrBlank()) "" else inputText.toString()
+            mcSolution.name = name
+        }
         binding.solutionSteps.adapter = fastAdapter
         binding.solutionSteps.layoutManager = LinearLayoutManager(requireContext())
-
         fastAdapter.onClickListener = { _, _, _, position ->
             val stepJson = GsonUtils.toJson(mcSolution.steps[position])
             val action = SolutionFragmentDirections.actionSolutionFragmentToStepFragment(
@@ -111,7 +115,7 @@ class SolutionFragment : Fragment() {
     }
 
     fun loadData() {
-        binding.solutionNameValue.text = mcSolution.name
+        binding.solutionName.editText?.setText(mcSolution.name)
         itemAdapter.clear()
         mcSolution.steps.forEachIndexed { index, mcStep ->
             itemAdapter.add(BindingStepItem(mcStep).apply {
@@ -133,21 +137,26 @@ class SolutionFragment : Fragment() {
         override fun bindView(binding: ItemStepBinding, payloads: List<Any>) {
             val content = "步骤$tag: ${model.name}"
             binding.solutionStepName.text = content
-
-            var handleContent = "  - 操作:"
-            handleContent += "\n      - 类型：${model.handle.type.toStr()}"
-            handleContent += "\n      - 节点类型：${model.handle.node.nodeType.toStr()}"
-            handleContent += "\n      - 运行前延迟：${model.handle.delayRunBefore}"
-            handleContent += "\n      - 运行后延迟：${model.handle.delayRunAfter}"
+            val condContent = "条件:${model.condList.size}个"
+            binding.solutionStepCondList.text = condContent
+            val handleContent = "操作:${model.handle.type.toStr()}"
             binding.solutionStepHandle.text = handleContent
 
-            var condContent = "  - 条件列表:"
-            model.condList.forEachIndexed { i, s ->
-                condContent += "\n      - No${i + 1}:"
-                condContent += "\n          - 类型: " + s.type.toStr()
-                condContent += "\n          - 节点类型: " + s.node.nodeType.toStr()
-            }
-            binding.solutionStepCondList.text = condContent
+
+//            var handleContent = "  - 操作:"
+//            handleContent += "\n      - 类型：${model.handle.type.toStr()}"
+//            handleContent += "\n      - 节点类型：${model.handle.node.nodeType.toStr()}"
+//            handleContent += "\n      - 运行前延迟：${model.handle.delayRunBefore}"
+//            handleContent += "\n      - 运行后延迟：${model.handle.delayRunAfter}"
+//            binding.solutionStepHandle.text = handleContent
+//
+//            var condContent = "  - 条件列表:"
+//            model.condList.forEachIndexed { i, s ->
+//                condContent += "\n      - No${i + 1}:"
+//                condContent += "\n          - 类型: " + s.type.toStr()
+//                condContent += "\n          - 节点类型: " + s.node.nodeType.toStr()
+//            }
+//            binding.solutionStepCondList.text = condContent
         }
 
         override fun createBinding(inflater: LayoutInflater, parent: ViewGroup?): ItemStepBinding {

@@ -9,6 +9,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:orientation="vertical"
         tools:context=".ui.SolutionFragment">
 
@@ -16,32 +19,25 @@
             android:id="@+id/solution_step_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="名称："
             android:textColor="@color/black"
-            android:textSize="17sp" />
-
-        <TextView
-            android:id="@+id/solution_step_handle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="操作："
-            android:textSize="16sp" />
+            android:textSize="17sp"
+            tools:text="名称：" />
 
         <TextView
             android:id="@+id/solution_step_condList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="条件："
-            android:textSize="16sp" />
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            tools:text="条件：" />
+
+        <TextView
+            android:id="@+id/solution_step_handle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            tools:text="操作：" />
 
     </LinearLayout>
 

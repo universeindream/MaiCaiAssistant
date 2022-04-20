@@ -14,25 +14,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/step_name_label"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/stepName"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="名称："
-                android:textColor="@color/black"
+                android:layout_margin="16dp"
+                android:hint="步骤名"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/step_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/step_name_label"
-                app:layout_constraintStart_toEndOf="@+id/step_name_label"
-                app:layout_constraintTop_toTopOf="@+id/step_name_label"
-                tools:text="打开 app" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/step_alarm"
@@ -42,7 +38,7 @@
                 android:text="响铃：(开启后，执行到本步骤，响铃提示)"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/step_name_label" />
+                app:layout_constraintTop_toBottomOf="@+id/stepName" />
 
 
             <com.google.android.material.switchmaterial.SwitchMaterial
