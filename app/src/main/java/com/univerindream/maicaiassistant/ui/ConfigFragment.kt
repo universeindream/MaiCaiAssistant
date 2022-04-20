@@ -114,10 +114,10 @@ class ConfigFragment : Fragment() {
         }
         binding.settingExport.setOnClickListener {
             exportARLauncher.launch(Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-                val fileName = "${AppUtils.getAppName()}-${BuildConfig.VERSION_NAME}_${
+                val fileName = "${BuildConfig.VERSION_NAME}_${MHConfig.curMCSolution.name}_${
                     TimeUtils.millis2String(
                         System.currentTimeMillis(),
-                        "yyMMddHHmmss"
+                        "yyyyMMddHHmm"
                     )
                 }.json"
                 addCategory(Intent.CATEGORY_OPENABLE)
