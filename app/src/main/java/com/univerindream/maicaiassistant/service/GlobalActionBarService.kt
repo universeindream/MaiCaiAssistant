@@ -123,7 +123,7 @@ class GlobalActionBarService : AccessibilityService() {
 
                     //任务时长是否达标
                     if (System.currentTimeMillis() > mLoopStartTime.get() + MHData.buyMinTime * 1000 * 60) {
-                        val message = "任务已执行了 ${MHData.buyMinTime} 分钟"
+                        val message = "已执行了 ${MHData.buyMinTime} 分钟"
                         XLog.i("loop - %s", message)
                         MHUtil.notify("完成提示", message)
                         cancelTask()
@@ -150,6 +150,34 @@ class GlobalActionBarService : AccessibilityService() {
                             continue
                         }
 
+                        //步骤警报
+                        if (step.isAlarm) {
+                            MHUtil.notify("响铃提示", "\"${step.name}\" 步骤，触发响铃")
+                            MHUtil.playRingTone()
+                        }
+
+                        //步骤人工
+                        if (step.isManual) {
+                            MHUtil.notify("人工提示", "\"${step.name}\" 步骤，人工操作")
+                            cancelTask()
+                            break
+                        }
+
+                        val handleResult =
+                            MHUtil.stepHandle(this@GlobalActionBarService, rootInActiveWindow, step.handle)
+                        XLog.v("steps - ${step.name} - 执行结果 - $handleResult")
+
+                        //步骤失败返回
+                        if (step.isFailBack && !handleResult) {
+                            mStepExecuteTime.remove(step)
+                            mStepExecuteTime[step] = System.currentTimeMillis()
+                            repeat(step.failBackCount) {
+                                performGlobalAction(GLOBAL_ACTION_BACK)
+                                delay(200)
+                            }
+                            continue
+                        }
+
                         //步骤重复
                         if (step.isRepeat) {
                             mStepExecuteTime[step] = System.currentTimeMillis()
@@ -162,38 +190,18 @@ class GlobalActionBarService : AccessibilityService() {
 
                             val executeTime = mStepExecuteTime[step]!!
                             if (executeTime + 10 * 1000 < System.currentTimeMillis()) {
-                                val message = "\"${step.name}\" 这一步骤执行失败，请删除或修改该步骤"
-                                XLog.e(message)
+                                val message = "\"${step.name}\" 步骤执行失败，请删除或修改该步骤!!!"
+                                XLog.e("${logStep?.name} %s", message)
                                 MHUtil.notify("失败提示", message)
                                 ToastUtils.showLong(message)
                                 if (MHData.wrongAlarmStatus) MHUtil.playRingTone()
                                 cancelTask()
                                 break
                             }
-                        }
 
-                        //步骤警报
-                        if (step.isAlarm) {
-                            MHUtil.notify("响铃提示", "${step.name} 这一步骤，触发响铃")
-                            MHUtil.playRingTone()
-                        }
-
-                        //步骤人工
-                        if (step.isManual) {
-                            MHUtil.notify("人工提示", "${step.name} 这一步骤，需要人工操作")
-                            cancelTask()
-                            break
-                        }
-
-                        val handleResult =
-                            MHUtil.stepHandle(this@GlobalActionBarService, rootInActiveWindow, step.handle)
-                        XLog.v("steps - ${step.name} - 执行结果 - $handleResult")
-
-                        //步骤失败返回
-                        if (step.isFailBack && !handleResult) {
-                            repeat(step.failBackCount) {
-                                performGlobalAction(GLOBAL_ACTION_BACK)
-                                delay(200)
+                            if (step == steps.last()) {
+                                MHUtil.notify("终止提示", "\"${step.name}\" 为最后步骤，终止任务")
+                                cancelTask()
                             }
                         }
                     }

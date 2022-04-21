@@ -1,5 +1,5 @@
 {
-  "name": "美团买菜APP - 抢购 - 极速支付 - 自动送达时间",
+  "name": "美团买菜 - 极速支付 - 自动送达时间",
   "steps": [
     {
       "condList": [
@@ -27,8 +27,11 @@
         "type": "LAUNCH"
       },
       "isAlarm": false,
+      "isFailBack": false,
       "isManual": false,
-      "name": "打开 app"
+      "isRepeat": false,
+      "isExecuteOnce": true,
+      "name": "打开美团买菜"
     },
     {
       "condList": [
@@ -56,7 +59,9 @@
         "type": "CLICK_NODE"
       },
       "isAlarm": false,
+      "isFailBack": false,
       "isManual": false,
+      "isRepeat": false,
       "name": "点击跳过"
     },
     {
@@ -95,7 +100,9 @@
         "type": "CLICK_NODE"
       },
       "isAlarm": false,
+      "isFailBack": false,
       "isManual": false,
+      "isRepeat": false,
       "name": "点击购物车"
     },
     {
@@ -124,7 +131,9 @@
         "type": "CLICK_NODE"
       },
       "isAlarm": false,
+      "isFailBack": false,
       "isManual": false,
+      "isRepeat": false,
       "name": "点击我知道了"
     },
     {
@@ -153,7 +162,9 @@
         "type": "CLICK_NODE"
       },
       "isAlarm": false,
+      "isFailBack": false,
       "isManual": false,
+      "isRepeat": false,
       "name": "点击返回购物车"
     },
     {
@@ -182,7 +193,9 @@
         "type": "CLICK_NODE"
       },
       "isAlarm": false,
+      "isFailBack": false,
       "isManual": false,
+      "isRepeat": false,
       "name": "点击结算"
     },
     {
@@ -211,8 +224,10 @@
         "type": "CLICK_NODE"
       },
       "isAlarm": false,
+      "isFailBack": false,
       "isManual": false,
-      "name": "极速支付"
+      "isRepeat": false,
+      "name": "点击极速支付"
     },
     {
       "condList": [
@@ -240,7 +255,9 @@
         "type": "CLICK_RANDOM_NODE"
       },
       "isAlarm": false,
+      "isFailBack": false,
       "isManual": false,
+      "isRepeat": false,
       "name": "自动选择送达时间"
     },
     {
@@ -279,8 +296,10 @@
         "type": "CLICK_NODE"
       },
       "isAlarm": false,
+      "isFailBack": false,
       "isManual": false,
-      "name": "确认支付"
+      "isRepeat": false,
+      "name": "点击立即支付"
     },
     {
       "condList": [
@@ -318,8 +337,9 @@
         "type": "CLICK_NODE"
       },
       "isAlarm": true,
-      "isManual": true,
-      "name": "确认支付"
+      "isFailBack": false,
+      "isRepeat": false,
+      "name": "点击确认支付"
     }
   ]
 }

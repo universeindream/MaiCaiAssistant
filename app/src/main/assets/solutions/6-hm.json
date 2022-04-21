@@ -1,5 +1,5 @@
 {
-  "name": "盒马APP - 正常购买",
+  "name": "盒马 - 向右滑动验证需人工",
   "steps": [
     {
       "condList": [
@@ -29,8 +29,9 @@
       "isAlarm": false,
       "isFailBack": false,
       "isManual": false,
+      "isExecuteOnce": true,
       "isRepeat": false,
-      "name": "打开 app"
+      "name": "打开盒马"
     },
     {
       "condList": [
@@ -89,6 +90,48 @@
           "node": {
             "className": "",
             "nodeIndex": 0,
+            "nodeKey": "确定",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_EXIST"
+        },
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "温馨提示",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_EXIST"
+        }
+      ],
+      "failBackCount": 1,
+      "handle": {
+        "delayRunAfter": 0,
+        "delayRunBefore": 500,
+        "node": {
+          "className": "",
+          "nodeIndex": 0,
+          "nodeKey": "确定",
+          "nodeType": "TXT",
+          "packageName": ""
+        },
+        "type": "CLICK_NODE"
+      },
+      "isAlarm": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": false,
+      "name": "点击确定"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
             "nodeKey": "结算",
             "nodeType": "TXT",
             "packageName": ""
@@ -97,8 +140,8 @@
         }
       ],
       "handle": {
-        "delayRunAfter": 0,
-        "delayRunBefore": 500,
+        "delayRunAfter": 1500,
+        "delayRunBefore": 0,
         "node": {
           "className": "",
           "nodeIndex": 0,
@@ -137,8 +180,9 @@
           "type": "NODE_NO_EXIST"
         }
       ],
+      "failBackCount": 1,
       "handle": {
-        "delayRunAfter": 0,
+        "delayRunAfter": 500,
         "delayRunBefore": 0,
         "node": {
           "className": "android.widget.LinearLayout",
@@ -188,8 +232,9 @@
           "type": "NODE_EXIST"
         }
       ],
+      "failBackCount": 1,
       "handle": {
-        "delayRunAfter": 0,
+        "delayRunAfter": 500,
         "delayRunBefore": 0,
         "node": {
           "className": "",
@@ -212,6 +257,38 @@
           "node": {
             "className": "",
             "nodeIndex": 0,
+            "nodeKey": "0.00",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_EXIST"
+        }
+      ],
+      "failBackCount": 1,
+      "handle": {
+        "delayRunAfter": 500,
+        "delayRunBefore": 0,
+        "node": {
+          "className": "",
+          "nodeIndex": 0,
+          "nodeKey": "",
+          "nodeType": "TXT",
+          "packageName": ""
+        },
+        "type": "BACK"
+      },
+      "isAlarm": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": false,
+      "name": "无法提交订单时返回"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
             "nodeKey": "提交订单",
             "nodeType": "TXT",
             "packageName": ""
@@ -219,8 +296,9 @@
           "type": "NODE_CAN_CLICK"
         }
       ],
+      "failBackCount": 1,
       "handle": {
-        "delayRunAfter": 100,
+        "delayRunAfter": 500,
         "delayRunBefore": 0,
         "node": {
           "className": "",
@@ -231,11 +309,40 @@
         },
         "type": "CLICK_NODE"
       },
-      "isAlarm": true,
       "isFailBack": false,
-      "isManual": true,
-      "isRepeat": false,
+      "isRepeat": true,
       "name": "提交订单"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "确认付款",
+            "nodeType": "TXT",
+            "packageName": "com.alipay.android.msp.ui.views.MspContainerActivity"
+          },
+          "type": "NODE_EXIST"
+        }
+      ],
+      "handle": {
+        "delayRunAfter": 500,
+        "delayRunBefore": 0,
+        "node": {
+          "className": "",
+          "nodeIndex": 0,
+          "nodeKey": "",
+          "nodeType": "PACKAGE_NAME",
+          "packageName": "com.yaya.zone"
+        },
+        "type": "NONE"
+      },
+      "isAlarm": true,
+      "isManual": true,
+      "isFailBack": false,
+      "isRepeat": false,
+      "name": "确认支付"
     }
   ]
 }

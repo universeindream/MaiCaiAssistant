@@ -1,5 +1,5 @@
 {
-  "name": "叮咚APP - 抢购 - 支付宝 - 自动送达时间",
+  "name": "叮咚买菜 - 支付宝 - 自动送达时间",
   "steps": [
     {
       "condList": [
@@ -30,7 +30,8 @@
       "isFailBack": false,
       "isManual": false,
       "isRepeat": false,
-      "name": "打开 app"
+      "isExecuteOnce": true,
+      "name": "打开叮咚买菜"
     },
     {
       "condList": [
@@ -110,20 +111,31 @@
           "node": {
             "className": "",
             "nodeIndex": 0,
-            "nodeKey": "去结算",
+            "nodeKey": "全选",
             "nodeType": "TXT",
             "packageName": ""
           },
-          "type": "NODE_CAN_CLICK"
+          "type": "NODE_EXIST"
+        },
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "全选",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_NOT_CHECKED"
         }
       ],
+      "failBackCount": 1,
       "handle": {
-        "delayRunAfter": 100,
-        "delayRunBefore": 500,
+        "delayRunAfter": 500,
+        "delayRunBefore": 0,
         "node": {
           "className": "",
           "nodeIndex": 0,
-          "nodeKey": "去结算",
+          "nodeKey": "全选",
           "nodeType": "TXT",
           "packageName": ""
         },
@@ -133,7 +145,7 @@
       "isFailBack": false,
       "isManual": false,
       "isRepeat": false,
-      "name": "去结算"
+      "name": "点击全选"
     },
     {
       "condList": [
@@ -231,7 +243,7 @@
         }
       ],
       "handle": {
-        "delayRunAfter": 100,
+        "delayRunAfter": 0,
         "delayRunBefore": 0,
         "node": {
           "className": "",
@@ -247,7 +259,38 @@
       "failBackCount": 2,
       "isManual": false,
       "isRepeat": true,
-      "name": "自动选择送达时间"
+      "name": "自动选择送达时间 - 失败返回"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "去结算",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_CAN_CLICK"
+        }
+      ],
+      "handle": {
+        "delayRunAfter": 0,
+        "delayRunBefore": 500,
+        "node": {
+          "className": "",
+          "nodeIndex": 0,
+          "nodeKey": "去结算",
+          "nodeType": "TXT",
+          "packageName": ""
+        },
+        "type": "CLICK_NODE"
+      },
+      "isAlarm": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": false,
+      "name": "点击去结算"
     },
     {
       "condList": [
@@ -283,8 +326,8 @@
         }
       ],
       "handle": {
-        "delayRunAfter": 100,
-        "delayRunBefore": 0,
+        "delayRunAfter": 0,
+        "delayRunBefore": 100,
         "node": {
           "className": "",
           "nodeIndex": 0,
@@ -329,7 +372,7 @@
       "isFailBack": false,
       "isManual": false,
       "isRepeat": true,
-      "name": "立即支付 - 可重复"
+      "name": "点击立即支付 - 可重复"
     },
     {
       "condList": [
@@ -358,7 +401,6 @@
       },
       "isAlarm": true,
       "isFailBack": false,
-      "isManual": true,
       "isRepeat": false,
       "name": "已打开支付宝"
     }

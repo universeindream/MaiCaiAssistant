@@ -87,7 +87,6 @@ object MHUtil {
 
         val result: Boolean = when (type) {
             EMCHandle.LAUNCH -> {
-                ToastUtils.showShort("正在打开目标软件")
                 ActivityUtils.startActivity(MainActivity::class.java)
                 AppUtils.launchApp(node.packageName)
                 delay(1000)

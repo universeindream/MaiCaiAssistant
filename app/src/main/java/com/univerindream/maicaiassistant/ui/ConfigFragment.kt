@@ -93,8 +93,8 @@ class ConfigFragment : Fragment() {
         }
         binding.settingChoose.setOnClickListener {
             val solutions = arrayListOf<MCSolution>()
-            solutions.addAll(MHDefault.githubSolutions)
             solutions.addAll(MHDefault.defaultMCSolutions)
+            solutions.addAll(MHDefault.githubSolutions)
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle("默认方案 - 选后会覆盖当前方案")
                 .setItems(solutions.map { it.name }.toTypedArray()) { _, which ->

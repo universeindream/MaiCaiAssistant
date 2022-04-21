@@ -1,5 +1,5 @@
 {
-  "name": "美团买菜APP - 抢购 - 支付宝 - 自动送达时间",
+  "name": "美团买菜 - 支付宝 - 自动送达时间",
   "steps": [
     {
       "condList": [
@@ -30,7 +30,8 @@
       "isFailBack": false,
       "isManual": false,
       "isRepeat": false,
-      "name": "打开 app"
+      "isExecuteOnce": true,
+      "name": "打开美团买菜"
     },
     {
       "condList": [
@@ -226,7 +227,7 @@
       "isFailBack": false,
       "isManual": false,
       "isRepeat": false,
-      "name": "立即支付"
+      "name": "点击立即支付"
     },
     {
       "condList": [
@@ -298,7 +299,7 @@
       "isFailBack": false,
       "isManual": false,
       "isRepeat": false,
-      "name": "确认支付"
+      "name": "点击确认支付"
     },
     {
       "condList": [
@@ -429,9 +430,8 @@
       },
       "isAlarm": true,
       "isFailBack": false,
-      "isManual": true,
       "isRepeat": false,
-      "name": "确认支付"
+      "name": "点击确认支付"
     }
   ]
 }
