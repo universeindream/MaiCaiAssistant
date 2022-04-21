@@ -91,6 +91,14 @@ class StepFragment : Fragment() {
                 )
             )
         }
+        binding.stepEnable.setOnCheckedChangeListener { compoundButton, b ->
+            if (!compoundButton.isPressed) return@setOnCheckedChangeListener
+            mStep.isEnable = b
+        }
+        binding.stepExecuteOnce.setOnCheckedChangeListener { compoundButton, b ->
+            if (!compoundButton.isPressed) return@setOnCheckedChangeListener
+            mStep.isExecuteOnce = b
+        }
         binding.stepAlarm.setOnCheckedChangeListener { compoundButton, b ->
             if (!compoundButton.isPressed) return@setOnCheckedChangeListener
             mStep.isAlarm = b
@@ -159,6 +167,8 @@ class StepFragment : Fragment() {
     fun loadData() {
         binding.stepName.editText?.setText(mStep.name)
 
+        binding.stepEnable.isChecked = mStep.isEnable
+        binding.stepExecuteOnce.isChecked = mStep.isExecuteOnce
         binding.stepAlarm.isChecked = mStep.isAlarm
         binding.stepManual.isChecked = mStep.isManual
         binding.stepRepeat.isChecked = mStep.isRepeat
@@ -184,8 +194,6 @@ class StepFragment : Fragment() {
     }
 
     fun saveData() {
-
-
         val stepJson = GsonUtils.toJson(mStep)
 
         setFragmentResult("updateStep", bundleOf("stepJson" to stepJson, "stepIndex" to args.stepIndex))

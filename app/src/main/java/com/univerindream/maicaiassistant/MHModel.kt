@@ -185,6 +185,8 @@ data class MCStep(
     var name: String = "",
     var condList: MutableList<MCCond> = arrayListOf(),
     var handle: MCHandle = MCHandle(),
+    /** 是否启用 **/
+    var isEnable: Boolean = true,
     /** 是否警报 **/
     var isAlarm: Boolean = false,
     /** 是否手动 **/
@@ -195,6 +197,8 @@ data class MCStep(
     var isFailBack: Boolean = false,
     /** 是否失败后返回次数 **/
     var failBackCount: Int = 1,
+    /** 是否执行一次 **/
+    var isExecuteOnce: Boolean = false,
 )
 
 /**
@@ -213,12 +217,4 @@ data class MCHandle(
     val node: MCNode = MCNode(),
     val delayRunAfter: Long = 0,
     val delayRunBefore: Long = 0,
-)
-
-/**
- * 处理记录
- */
-data class MCHandleLog(
-    var stepName: String,
-    var handleTime: Long
 )
