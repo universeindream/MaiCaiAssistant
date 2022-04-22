@@ -1,8 +1,6 @@
 ## 买菜助手
 
-[![GitHub release](https://img.shields.io/github/v/release/universeindream/MaiCaiAssistant.svg)](https://github.com/universeindream/MaiCaiAssistant/releases) [![Total Downloads](https://img.shields.io/github/downloads/universeindream/MaiCaiAssistant/total.svg)](https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk) ![Support Platforms](https://img.shields.io/badge/platform-android-blue)
-
-> 本项目，适用于任何原生 APP，其实就是一个自动化程序
+[![GitHub release](https://img.shields.io/github/v/release/universeindream/MaiCaiAssistant.svg)](https://github.com/universeindream/MaiCaiAssistant/releases) [![Total Downloads](https://img.shields.io/github/downloads/universeindream/MaiCaiAssistant/total.svg)](https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk) ![Support Platforms](https://img.shields.io/badge/platform-android-blue) 
 
 ### 概述
 
@@ -12,10 +10,11 @@
 
 ### 特性
 
-- 支持多种方案 - [美团买菜](https://github.com/universeindream/MaiCaiAssistant/wiki/%E7%BE%8E%E5%9B%A2%E4%B9%B0%E8%8F%9C)、[叮咚](https://github.com/universeindream/MaiCaiAssistant/wiki/%E5%8F%AE%E5%92%9A%E4%B9%B0%E8%8F%9C)、[盒马](https://github.com/universeindream/MaiCaiAssistant/wiki/%E7%9B%92%E9%A9%AC)
+- 支持多种方案 - [美团买菜](https://github.com/universeindream/MaiCaiAssistant/wiki/%E7%BE%8E%E5%9B%A2%E4%B9%B0%E8%8F%9C)、[叮咚](https://github.com/universeindream/MaiCaiAssistant/wiki/%E5%8F%AE%E5%92%9A%E4%B9%B0%E8%8F%9C)、[盒马](https://github.com/universeindream/MaiCaiAssistant/wiki/%E7%9B%92%E9%A9%AC) 
+   - 可以自定义其他购物 APP 
 - 支持设置抢购时长 - 可以用于捡漏
 - 支持设置定时执行 - 适用于抢到了再起床的人
-   - 注：需设置屏幕常亮
+   - 需设置屏幕常亮
 - 支持设置异常响铃 - 防止错过了抢购的机会
 - 支持手动修改方案 - 自定义适合自己的方案
 
@@ -25,7 +24,6 @@
 1. 开启无障碍权限
 2. 选择适合的方案 - 比如：`美团买菜 - 极速支付 - 自动送达时间`
 3. 点击抢购按钮
-4. 成功点 `Star` :star:
 
 > 因每个人的手机性能和网络环境不同, 如果运行失败，请大家自行设置问题步骤的`延迟时间`
 
@@ -49,6 +47,7 @@
 - app 暂不做扩展了，就买菜来说，目前功能够用了，修改方案其实就可以达到大家的目标
 - 接下来，我抽空帮忙新增或优化方案，当然还要靠大家的录屏测试反馈
 - 望疫情早日结束，也祝大伙也早点结束抢菜的日子
+- 最后点个 :star: 支持下 :ghost:
 
 ### 预览
 
