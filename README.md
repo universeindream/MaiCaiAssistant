@@ -2,8 +2,7 @@
 
 [![GitHub release](https://img.shields.io/github/v/release/universeindream/MaiCaiAssistant.svg)](https://github.com/universeindream/MaiCaiAssistant/releases) [![Total Downloads](https://img.shields.io/github/downloads/universeindream/MaiCaiAssistant/total.svg)](https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk) ![Support Platforms](https://img.shields.io/badge/platform-android-blue)
 
-
-> 本项目，适用于任何原生 APP, 其实就是一个自动化程序，前提是你会编辑方案
+> 本项目，适用于任何原生 APP，其实就是一个自动化程序
 
 ### 概述
 
@@ -27,13 +26,13 @@
 2. 选择适合的方案 - 比如：`美团买菜 - 极速支付 - 自动送达时间`
 3. 点击抢购按钮
 
-> PS: 因每个人的手机性能和网络环境不同, 如果运行失败，请大家自行设置问题步骤的`延迟时间`
+> 因每个人的手机性能和网络环境不同, 如果运行失败，请大家自行设置问题步骤的`延迟时间`
 
 ### 问题
 
 - 如果提示 `xxx 步骤执行失败，请删除或修改该步骤!!!`，可以尝试修改该步骤 xxx 的配置，比如延迟时间 - [视频教程](https://user-images.githubusercontent.com/7286154/163680965-a64f13ea-9bd7-4033-9c2e-e8f69e288831.mp4)
 - 如果闪退，记得点击 `ERROR DETAILS` 截图反馈 - [参考图](https://user-images.githubusercontent.com/20157750/163066496-df9dafe9-bbbb-4bfd-8acb-1f7254475147.jpg)
-- 无法自动打开购物 app 时，可手动打开购物 app，再点击抢购
+- 无法自动打开购物 app，可手动打开购物 app，再点击抢购
 - **无法定时打开购物 app ，请将买菜助手打开在前台试试**
 
 ### 互助
