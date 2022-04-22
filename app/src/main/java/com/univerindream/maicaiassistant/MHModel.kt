@@ -218,3 +218,9 @@ data class MCHandle(
     val delayRunAfter: Long = 0,
     val delayRunBefore: Long = 0,
 )
+
+data class MCStepLog(
+    val index: Int,
+    val step: MCStep,
+    var executionTime: Long = 0L
+)

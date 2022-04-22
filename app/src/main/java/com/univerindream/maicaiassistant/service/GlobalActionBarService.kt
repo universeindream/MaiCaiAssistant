@@ -31,7 +31,7 @@ class GlobalActionBarService : AccessibilityService() {
     private var mSnapUpStatus = AtomicBoolean(false)
     private var mLoopStartTime = AtomicLong(System.currentTimeMillis())
 
-    private var mStepExecuteTime = linkedMapOf<MCStep, Long>()
+    private var mStepLog = ArrayDeque<MCStepLog>()
 
     private var mForegroundPackageName: String = ""
     private var mForegroundClassName: String = ""
@@ -159,11 +159,11 @@ class GlobalActionBarService : AccessibilityService() {
                     }
 
                     //10s 异常捕捉
-                    mStepExecuteTime.keys.lastOrNull()?.let {
-                        val executeTime = mStepExecuteTime[it]
-                        if (executeTime != null && executeTime + 10 * 1000 < System.currentTimeMillis()) {
-                            val message = "\"${it.name}\" 步骤执行失败!!!"
-                            XLog.e("${it.name} %s", message)
+                    mStepLog.firstOrNull()?.let {
+                        val executeTime = it.executionTime
+                        if (executeTime + 10 * 1000 < System.currentTimeMillis()) {
+                            val message = "\"${it.step.name}\" 步骤执行失败!!!"
+                            XLog.e("${it.step.name} %s", message)
                             MHUtil.notify("失败提示", message)
                             ToastUtils.showLong(message)
                             if (MHData.wrongAlarmStatus) MHUtil.playRingTone()
@@ -173,7 +173,7 @@ class GlobalActionBarService : AccessibilityService() {
 
                     //循环执行步骤
                     val steps = MHConfig.curMCSolution.steps.filter { it.isEnable }
-                    for (step in steps) {
+                    for ((index, step) in steps.withIndex()) {
                         val isMatchCond = step.condList.all {
                             MHUtil.stepCond(
                                 rootInActiveWindow,
@@ -184,11 +184,19 @@ class GlobalActionBarService : AccessibilityService() {
                             )
                         }
                         if (!isMatchCond) continue
-                        XLog.v("steps - ${step.name}")
 
                         //步骤只执行一次
-                        if (step.isExecuteOnce && mStepExecuteTime.containsKey(step)) {
+                        if (step.isExecuteOnce && mStepLog.any { it.index == index }) {
                             continue
+                        }
+
+                        XLog.v("steps - ${step.name}")
+
+                        //步骤记录
+                        val prevLogStep = mStepLog.firstOrNull()
+                        if (prevLogStep == null || prevLogStep.index != index || step.isRepeat) {
+                            mStepLog.firstOrNull { it.index == index }?.let { mStepLog.remove(it) }
+                            mStepLog.addFirst(MCStepLog(index, step, System.currentTimeMillis()))
                         }
 
                         //步骤警报
@@ -210,8 +218,6 @@ class GlobalActionBarService : AccessibilityService() {
 
                         //步骤失败返回
                         if (step.isFailBack && !handleResult) {
-                            mStepExecuteTime.remove(step)
-                            mStepExecuteTime[step] = System.currentTimeMillis()
                             repeat(step.failBackCount) {
                                 performGlobalAction(GLOBAL_ACTION_BACK)
                                 delay(200)
@@ -219,20 +225,10 @@ class GlobalActionBarService : AccessibilityService() {
                             continue
                         }
 
-                        //步骤重复
-                        if (step.isRepeat) {
-                            mStepExecuteTime[step] = System.currentTimeMillis()
-                        } else {
-                            val logStep = mStepExecuteTime.keys.lastOrNull()
-                            if (logStep != step) {
-                                mStepExecuteTime.remove(step)
-                                mStepExecuteTime[step] = System.currentTimeMillis()
-                            }
-
-                            if (step == steps.last()) {
-                                MHUtil.notify("终止提示", "\"${step.name}\" 为最后步骤，终止任务")
-                                cancelTask()
-                            }
+                        //步骤不可重复且最后一个
+                        if (!step.isRepeat && step == steps.last()) {
+                            MHUtil.notify("终止提示", "\"${step.name}\" 为最后步骤，终止任务")
+                            cancelTask()
                         }
                     }
 
@@ -248,7 +244,7 @@ class GlobalActionBarService : AccessibilityService() {
     private fun enableTask() {
         mSnapUpStatus.set(true)
         mLoopStartTime.set(System.currentTimeMillis())
-        mStepExecuteTime.clear()
+        mStepLog.clear()
         updateSnapUpButton()
     }
 

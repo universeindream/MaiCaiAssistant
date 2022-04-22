@@ -30,7 +30,7 @@
       "isFailBack": false,
       "isManual": false,
       "isRepeat": false,
-      "isExecuteOnce": true,
+      "isExecuteOnce": false,
       "name": "打开美团买菜"
     },
     {
