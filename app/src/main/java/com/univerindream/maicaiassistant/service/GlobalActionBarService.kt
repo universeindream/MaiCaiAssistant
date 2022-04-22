@@ -130,6 +130,19 @@ class GlobalActionBarService : AccessibilityService() {
                         continue
                     }
 
+                    //10s 异常捕捉
+                    mStepExecuteTime.keys.lastOrNull()?.let {
+                        val executeTime = mStepExecuteTime[it]
+                        if (executeTime != null && executeTime + 10 * 1000 < System.currentTimeMillis()) {
+                            val message = "\"${it.name}\" 步骤执行失败!!!"
+                            XLog.e("${it.name} %s", message)
+                            MHUtil.notify("失败提示", message)
+                            ToastUtils.showLong(message)
+                            if (MHData.wrongAlarmStatus) MHUtil.playRingTone()
+                            cancelTask()
+                        }
+                    }
+
                     //循环执行步骤
                     val steps = MHConfig.curMCSolution.steps.filter { it.isEnable }
                     for (step in steps) {
@@ -186,17 +199,6 @@ class GlobalActionBarService : AccessibilityService() {
                             if (logStep != step) {
                                 mStepExecuteTime.remove(step)
                                 mStepExecuteTime[step] = System.currentTimeMillis()
-                            }
-
-                            val executeTime = mStepExecuteTime[step]!!
-                            if (executeTime + 10 * 1000 < System.currentTimeMillis()) {
-                                val message = "\"${step.name}\" 步骤执行失败，请删除或修改该步骤!!!"
-                                XLog.e("${logStep?.name} %s", message)
-                                MHUtil.notify("失败提示", message)
-                                ToastUtils.showLong(message)
-                                if (MHData.wrongAlarmStatus) MHUtil.playRingTone()
-                                cancelTask()
-                                break
                             }
 
                             if (step == steps.last()) {
