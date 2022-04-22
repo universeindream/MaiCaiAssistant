@@ -1,23 +1,21 @@
 package com.univerindream.maicaiassistant.service
 
 import android.accessibilityservice.AccessibilityService
-import android.accessibilityservice.GestureDescription
-import android.accessibilityservice.GestureDescription.StrokeDescription
-import android.annotation.TargetApi
-import android.graphics.Path
+import android.annotation.SuppressLint
 import android.graphics.PixelFormat
 import android.os.Build
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.View
+import android.view.MotionEvent
 import android.view.WindowManager
 import android.view.accessibility.AccessibilityEvent
-import android.widget.Button
-import android.widget.FrameLayout
 import com.blankj.utilcode.util.AppUtils
+import com.blankj.utilcode.util.ConvertUtils
+import com.blankj.utilcode.util.ScreenUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.elvishew.xlog.XLog
 import com.univerindream.maicaiassistant.*
+import com.univerindream.maicaiassistant.databinding.ActionBarBinding
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -28,7 +26,7 @@ import java.util.concurrent.atomic.AtomicLong
 
 class GlobalActionBarService : AccessibilityService() {
 
-    private lateinit var mLayout: FrameLayout
+    private lateinit var binding: ActionBarBinding
 
     private var mSnapUpStatus = AtomicBoolean(false)
     private var mLoopStartTime = AtomicLong(System.currentTimeMillis())
@@ -51,32 +49,62 @@ class GlobalActionBarService : AccessibilityService() {
         MHUtil.startForegroundService(this)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onServiceConnected() {
         XLog.v("onServiceConnected")
 
         // Create an overlay and display the action bar
         val wm = getSystemService(WINDOW_SERVICE) as WindowManager
-        mLayout = FrameLayout(this)
         val lp = WindowManager.LayoutParams()
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             lp.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
         } else {
             lp.type = WindowManager.LayoutParams.TYPE_PHONE
         }
-
         lp.format = PixelFormat.TRANSLUCENT
         lp.flags = lp.flags or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT
-        lp.gravity = Gravity.CENTER_VERTICAL or Gravity.END
-        val inflater = LayoutInflater.from(this)
-        inflater.inflate(R.layout.action_bar, mLayout)
-        wm.addView(mLayout, lp)
+        lp.gravity = Gravity.START or Gravity.TOP
+        lp.x = ScreenUtils.getScreenWidth() - ConvertUtils.dp2px(40f)
+        lp.y = ScreenUtils.getScreenHeight() / 2 - ConvertUtils.dp2px(60f)
+        binding = ActionBarBinding.inflate(LayoutInflater.from(this))
+        wm.addView(binding.root, lp)
 
-        configureConfigButton()
-        configureSnapUpButton()
-        configureOpenAppButton()
+        binding.btnConfig.setOnClickListener {
+            AppUtils.launchApp(AppUtils.getAppPackageName())
+        }
+        binding.btnSnapUp.setOnClickListener {
+            if (mSnapUpStatus.get()) {
+                cancelTask()
+            } else {
+                enableTask()
+            }
+        }
+
+        var x = 0
+        var y = 0
+        binding.btnMove.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    x = event.rawX.toInt()
+                    y = event.rawY.toInt()
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val nowX = event.rawX.toInt()
+                    val nowY = event.rawY.toInt()
+                    val movedX = nowX - x
+                    val movedY = nowY - y
+                    x = nowX
+                    y = nowY
+
+                    lp.x = lp.x + movedX
+                    lp.y = lp.y + movedY
+                    wm.updateViewLayout(binding.root, lp);
+                }
+            }
+            return@setOnTouchListener true
+        }
 
         EventBus.getDefault().register(this)
 
@@ -229,80 +257,13 @@ class GlobalActionBarService : AccessibilityService() {
         updateSnapUpButton()
     }
 
-    private fun configureConfigButton() {
-        val openConfigButton = mLayout.findViewById<View>(R.id.btn_config) as Button
-        openConfigButton.setOnClickListener {
-            AppUtils.launchApp(AppUtils.getAppPackageName())
-        }
-    }
-
     private fun updateSnapUpButton() {
-        val snapUpButton = mLayout.findViewById<View>(R.id.btn_snap_up) as Button
-        val targetTxt = if (mSnapUpStatus.get()) "取消" else "抢购"
-        if (targetTxt == snapUpButton.text) return
-        GlobalScope.launch {
+        if (mSnapUpStatus.get() == binding.btnSnapUp.tag) return
+        mServiceScope.launch {
             withContext(Dispatchers.Main) {
-                snapUpButton.text = targetTxt
+                binding.btnSnapUp.setImageResource(if (mSnapUpStatus.get()) R.drawable.baseline_stop_24 else R.drawable.baseline_play_arrow_24)
             }
         }
-    }
-
-    private fun configureSnapUpButton() {
-        val snapUpButton = mLayout.findViewById<View>(R.id.btn_snap_up) as Button
-        snapUpButton.setOnClickListener {
-            if (mSnapUpStatus.get()) {
-                cancelTask()
-            } else {
-                enableTask()
-            }
-        }
-    }
-
-    private fun configureOpenAppButton() {
-        val openAppButton = mLayout.findViewById<View>(R.id.btn_test) as Button
-        if (BuildConfig.DEBUG) openAppButton.visibility = View.VISIBLE
-        openAppButton.setOnClickListener {
-            AppUtils.launchApp("com.yaya.zone")
-        }
-        openAppButton.setOnLongClickListener {
-            startActivity(packageManager.getLaunchIntentForPackage("com.yaya.zone"))
-            return@setOnLongClickListener false
-        }
-    }
-
-    suspend fun test() = withContext(Dispatchers.Main) {
-        XLog.v("循环中")
-        if (rootInActiveWindow?.findAccessibilityNodeInfosByText("结算")?.isNotEmpty() == true) {
-            XLog.i("test - 点击 结算")
-            click(820f, 2090f)
-            delay(200)
-        } else if (rootInActiveWindow?.findAccessibilityNodeInfosByText("我知道了")?.isNotEmpty() == true) {
-            XLog.i("test - 点击 我知道了")
-            click(556f, 1314f)
-            delay(200)
-        } else if (rootInActiveWindow?.findAccessibilityNodeInfosByText("返回购物车")?.isNotEmpty() == true) {
-            XLog.i("test - 点击 返回购物车")
-            click(533f, 1300f)
-            delay(200)
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.N)
-    fun click(x: Float, y: Float) {
-        val builder = GestureDescription.Builder()
-        val path = Path()
-        path.moveTo(x, y)
-        path.lineTo(x, y)
-        builder.addStroke(StrokeDescription(path, 1, 1))
-        dispatchGesture(builder.build(), object : GestureResultCallback() {
-            override fun onCancelled(gestureDescription: GestureDescription) {
-                super.onCancelled(gestureDescription)
-            }
-
-            override fun onCompleted(gestureDescription: GestureDescription) {
-                super.onCompleted(gestureDescription)
-            }
-        }, null)
     }
 
     class SubAlarm

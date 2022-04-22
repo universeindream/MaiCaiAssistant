@@ -15,33 +15,31 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical|end"
-    android:background="#00000000"
+    android:background="#20000000"
     android:orientation="vertical">
 
-    <Button
+    <ImageView
         android:id="@+id/btn_config"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:background="#60B0C4DE"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:padding="8dp"
-        android:paddingStart="1dp"
-        android:paddingEnd="1dp"
+        android:src="@drawable/baseline_settings_24"
         android:text="@string/btn_config" />
 
-    <Button
+    <ImageView
         android:id="@+id/btn_snap_up"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:background="#60B0C4DE"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:padding="8dp"
+        android:src="@drawable/baseline_play_arrow_24"
+        android:tag="false"
         android:text="@string/btn_snap_up" />
 
-    <Button
-        android:id="@+id/btn_test"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:background="#40B0C4DE"
-        android:text="@string/btn_test"
-        android:visibility="gone" />
+    <ImageView
+        android:id="@+id/btnMove"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="8dp"
+        android:src="@drawable/baseline_open_with_24" />
 
 </LinearLayout>
