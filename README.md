@@ -3,13 +3,13 @@
 [![GitHub release](https://img.shields.io/github/v/release/universeindream/MaiCaiAssistant.svg)](https://github.com/universeindream/MaiCaiAssistant/releases) [![Total Downloads](https://img.shields.io/github/downloads/universeindream/MaiCaiAssistant/total.svg)](https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk) ![Support Platforms](https://img.shields.io/badge/platform-android-blue)
 
 
-> 本项目，适用于任何购物平台, 其实就是一个自动化程序，前提是你会编辑方案
+> 本项目，适用于任何原生 APP, 其实就是一个自动化程序，前提是你会编辑方案
 
 ### 概述
 
 [买菜助手](https://github.com/universeindream/MaiCaiAssistant) 是一款可以自动执行 `购买方案` 的 APP。 购买方案由多个步骤构成，而每个步骤由条件与操作两个模块组成，条件用来指定系统当前处于哪一步骤，操作用来执行当前步骤的目标任务。
 
-> 截止 20220420，美团买菜 - 可抢购、可捡漏，叮咚 - 可抢购、捡漏待测，盒马 - 待反馈
+> 截止 20220422，美团买菜 - 可抢购、可捡漏，叮咚 - 可抢购、可捡漏，盒马 - 半自动
 
 ### 特性
 
@@ -46,7 +46,7 @@
 
 ### 常见问题
 
-- **`异常提示 - 步骤: xxx - 已重复执行了 10s，已自动关闭`**，可以尝试修改该步骤 xxx 的配置，比如延迟时间 - [视频教程](https://user-images.githubusercontent.com/7286154/163680965-a64f13ea-9bd7-4033-9c2e-e8f69e288831.mp4)
+- 如果 `xxx 步骤执行失败，请删除或修改该步骤!!!`，可以尝试修改该步骤 xxx 的配置，比如延迟时间 - [视频教程](https://user-images.githubusercontent.com/7286154/163680965-a64f13ea-9bd7-4033-9c2e-e8f69e288831.mp4)
 - 如果闪退，记得点击 `ERROR DETAILS` 截图反馈 - [参考图](https://user-images.githubusercontent.com/20157750/163066496-df9dafe9-bbbb-4bfd-8acb-1f7254475147.jpg)
 - 买菜的 APP 未成功启动，可手动打开 APP，再点击抢购
 - **无法定时打开购买 app ，请将买菜助手打开在前台试试**
