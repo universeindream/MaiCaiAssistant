@@ -179,14 +179,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/setting_wrong_alarm_status" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/setting_ringtone_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="系统响铃: "
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settingPermission" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

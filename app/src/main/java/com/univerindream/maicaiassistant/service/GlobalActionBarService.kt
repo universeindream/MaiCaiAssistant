@@ -62,17 +62,21 @@ class GlobalActionBarService : AccessibilityService() {
             lp.type = WindowManager.LayoutParams.TYPE_PHONE
         }
         lp.format = PixelFormat.TRANSLUCENT
-        lp.flags = lp.flags or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+        lp.flags =
+            lp.flags or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT
         lp.gravity = Gravity.START or Gravity.TOP
         lp.x = ScreenUtils.getScreenWidth() - ConvertUtils.dp2px(40f)
-        lp.y = ScreenUtils.getScreenHeight() / 2 - ConvertUtils.dp2px(60f)
+        lp.y = ScreenUtils.getScreenHeight() / 2 - ConvertUtils.dp2px(88f)
         binding = ActionBarBinding.inflate(LayoutInflater.from(this))
         wm.addView(binding.root, lp)
 
         binding.btnConfig.setOnClickListener {
             AppUtils.launchApp(AppUtils.getAppPackageName())
+        }
+        binding.btnAlarmOff.setOnClickListener {
+            MHUtil.stopRingTone()
         }
         binding.btnSnapUp.setOnClickListener {
             if (mSnapUpStatus.get()) {

@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doAfterTextChanged
@@ -202,9 +201,6 @@ class ConfigFragment : Fragment() {
                 ToastUtils.showShort("请到系统设置页关闭")
             }
         }
-        binding.settingRingtoneStatus.setOnClickListener {
-            if (MHUtil.ringtone.isPlaying) MHUtil.ringtone.stop() else MHUtil.ringtone.play()
-        }
 
         loadData()
 
@@ -240,8 +236,6 @@ class ConfigFragment : Fragment() {
 
         binding.settingTimerTriggerStatus.isChecked = MHData.timerTriggerStatus
         binding.settingWrongAlarmStatus.isChecked = MHData.wrongAlarmStatus
-
-        binding.settingRingtoneStatus.isChecked = MHUtil.ringtone.isPlaying
     }
 
     private fun checkTimerTrigger() {
