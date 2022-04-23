@@ -30,7 +30,7 @@
       "isFailBack": false,
       "isManual": false,
       "isRepeat": false,
-      "isExecuteOnce": false,
+      "isExecuteOnce": true,
       "name": "打开美团买菜"
     },
     {
@@ -181,7 +181,7 @@
         }
       ],
       "handle": {
-        "delayRunAfter": 0,
+        "delayRunAfter": 500,
         "delayRunBefore": 500,
         "node": {
           "className": "",

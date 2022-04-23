@@ -30,7 +30,7 @@
       "isFailBack": false,
       "isManual": false,
       "isRepeat": false,
-      "isExecuteOnce": false,
+      "isExecuteOnce": true,
       "name": "打开叮咚买菜"
     },
     {
