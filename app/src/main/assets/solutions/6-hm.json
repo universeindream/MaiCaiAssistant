@@ -109,7 +109,7 @@
       ],
       "failBackCount": 1,
       "handle": {
-        "delayRunAfter": 0,
+        "delayRunAfter": 500,
         "delayRunBefore": 500,
         "node": {
           "className": "",
@@ -140,7 +140,7 @@
         }
       ],
       "handle": {
-        "delayRunAfter": 0,
+        "delayRunAfter": 500,
         "delayRunBefore": 500,
         "node": {
           "className": "",
@@ -155,7 +155,7 @@
       "isFailBack": false,
       "isManual": false,
       "isRepeat": false,
-      "name": "结算"
+      "name": "点击结算"
     },
     {
       "condList": [
@@ -267,7 +267,7 @@
       "failBackCount": 1,
       "handle": {
         "delayRunAfter": 500,
-        "delayRunBefore": 0,
+        "delayRunBefore": 500,
         "node": {
           "className": "",
           "nodeIndex": 0,
