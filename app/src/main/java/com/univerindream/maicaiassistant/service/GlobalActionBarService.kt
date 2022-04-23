@@ -321,6 +321,7 @@ class GlobalActionBarService : AccessibilityService() {
         mStepLog.clear()
         updateSnapUpButton()
 
+        mLogInfo.clear()
         actionLogBinding.root.visibility = View.VISIBLE
     }
 
