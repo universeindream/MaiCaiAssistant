@@ -10,7 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.GsonUtils
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.univerindream.maicaiassistant.*
 import com.univerindream.maicaiassistant.databinding.FragmentCondBinding
 
@@ -49,9 +51,20 @@ class CondFragment : Fragment() {
             ArrayAdapter(
                 requireContext(),
                 R.layout.list_popup_window_item,
-                EMCNodeType.values().map { it.toString() }.toList()
+                EMCNodeType.values().map { it.toStr() }.toList()
             )
         )
+
+        binding.fragmentCondSelectPackageName.setOnClickListener {
+            val apps = AppUtils.getAppsInfo().filter { !it.isSystem }
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("获取应用包名")
+                .setItems(apps.map { it.name }.toTypedArray()) { _, which ->
+                    binding.fragmentCondNodePackageName.editText?.setText(apps[which].packageName)
+                }
+                .show()
+        }
+
         binding.floatingActionButton.setOnClickListener {
 
             saveData()
@@ -77,7 +90,9 @@ class CondFragment : Fragment() {
         val type = EMCCond.strOf(binding.fragmentCondType.text.toString())
         val nodeType = EMCNodeType.strOf(binding.fragmentCondNodeType.text.toString())
         val nodeKey = binding.fragmentCondNodeKey.editText?.text.toString()
-        val nodeIndex = binding.fragmentCondNodeIndex.editText?.text?.toString()?.toInt() ?: 0
+        var nodeIndex = binding.fragmentCondNodeIndex.editText?.text?.toString()
+        if (nodeIndex.isNullOrBlank()) nodeIndex = "0"
+
         val nodePackageName = binding.fragmentCondNodePackageName.editText?.text.toString()
         val nodeClassName = binding.fragmentCondNodeClassName.editText?.text.toString()
 
@@ -87,7 +102,7 @@ class CondFragment : Fragment() {
                 node = MCNode(
                     nodeType = nodeType,
                     nodeKey = nodeKey,
-                    nodeIndex = nodeIndex,
+                    nodeIndex = nodeIndex.toInt(),
                     className = nodeClassName,
                     packageName = nodePackageName
                 )

@@ -11,6 +11,7 @@ object MHDefault {
 
     val defaultMCSolutions: List<MCSolution> by lazy {
         val res = arrayListOf<MCSolution>()
+        res.add(MCSolution("自定义", arrayListOf()))
 
         try {
             val solutions = Utils.getApp().assets.list("solutions")

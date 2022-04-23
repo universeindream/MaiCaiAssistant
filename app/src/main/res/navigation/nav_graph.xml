@@ -92,7 +92,7 @@
     <fragment
         android:id="@+id/handleFragment"
         android:name="com.univerindream.maicaiassistant.ui.HandleFragment"
-        android:label="HandleFragment"
+        android:label="操作配置"
         tools:layout="@layout/fragment_handle">
         <argument
             android:name="handleJson"

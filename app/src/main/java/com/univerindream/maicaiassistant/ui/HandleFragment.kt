@@ -10,7 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.GsonUtils
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.univerindream.maicaiassistant.*
 import com.univerindream.maicaiassistant.databinding.FragmentHandleBinding
 
@@ -50,6 +52,16 @@ class HandleFragment : Fragment() {
             )
         )
 
+        binding.fragmentHandleSelectPackageName.setOnClickListener {
+            val apps = AppUtils.getAppsInfo().filter { !it.isSystem }
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("获取应用包名")
+                .setItems(apps.map { it.name }.toTypedArray()) { _, which ->
+                    binding.fragmentHandleNodePackageName.editText?.setText(apps[which].packageName)
+                }
+                .show()
+        }
+
         binding.floatingActionButton.setOnClickListener {
             saveData()
         }
@@ -73,23 +85,31 @@ class HandleFragment : Fragment() {
 
     fun saveData() {
         val type = EMCHandle.strOf(binding.fragmentHandleType.text.toString())
-        val delay = binding.fragmentHandleDelay.editText?.text?.toString()?.toLong() ?: 0L
-        val delayBefore = binding.fragmentHandleDelayBefore.editText?.text?.toString()?.toLong() ?: 0L
+
+        var delay = binding.fragmentHandleDelay.editText?.text?.toString()
+        if (delay.isNullOrBlank()) delay = "0"
+
+        var delayBefore = binding.fragmentHandleDelayBefore.editText?.text?.toString()
+        if (delayBefore.isNullOrBlank()) delayBefore = "0"
+
         val nodeType = EMCNodeType.strOf(binding.fragmentHandleNodeType.text.toString())
         val nodeKey = binding.fragmentHandleNodeKey.editText?.text.toString()
-        val nodeIndex = binding.fragmentHandleNodeIndex.editText?.text?.toString()?.toInt() ?: 0
+
+        var nodeIndex = binding.fragmentHandleNodeIndex.editText?.text?.toString()
+        if (nodeIndex.isNullOrBlank()) nodeIndex = "0"
+
         val nodePackageName = binding.fragmentHandleNodePackageName.editText?.text.toString()
         val nodeClassName = binding.fragmentHandleNodeClassName.editText?.text.toString()
 
         val handleJson = GsonUtils.toJson(
             MCHandle(
                 type = type,
-                delayRunAfter = delay,
-                delayRunBefore = delayBefore,
+                delayRunAfter = delay.toLong(),
+                delayRunBefore = delayBefore.toLong(),
                 node = MCNode(
                     nodeType = nodeType,
                     nodeKey = nodeKey,
-                    nodeIndex = nodeIndex,
+                    nodeIndex = nodeIndex.toInt(),
                     className = nodeClassName,
                     packageName = nodePackageName
                 )

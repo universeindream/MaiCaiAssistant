@@ -176,11 +176,6 @@ class StepFragment : Fragment() {
         binding.stepFailBackCount.editText?.setText("${mStep.failBackCount}")
 
         var handleContent = "类型：${mStep.handle.type.toStr()}"
-        handleContent += "\n节点："
-        handleContent += "\n   - 类型：${mStep.handle.node.nodeType.toStr()}"
-        handleContent += "\n   - 值：${mStep.handle.node.nodeKey}"
-        handleContent += "\n   - 包名：${mStep.handle.node.packageName}"
-        handleContent += "\n   - 类名：${mStep.handle.node.className}"
         handleContent += "\n执行前延迟(ms)：${mStep.handle.delayRunBefore}"
         handleContent += "\n执行后延迟(ms)：${mStep.handle.delayRunAfter}"
         binding.stepHandleValue.text = handleContent
@@ -206,16 +201,9 @@ class StepFragment : Fragment() {
             get() = R.id.adapter_cond_item
 
         override fun bindView(binding: ItemCondBinding, payloads: List<Any>) {
-            binding.adapterCondNo.text = "条件" + tag.toString()
-
-            var condContent = "类型：${model.type.toStr()}"
-            condContent += "\n节点："
-            condContent += "\n   - 类型：${model.node.nodeType.toStr()}"
-            condContent += "\n   - 值：${model.node.nodeKey}"
-            condContent += "\n   - 包名：${model.node.packageName}"
-            condContent += "\n   - 类名：${model.node.className}"
-            binding.adapterCondValue.text = condContent
-
+            var content = "条件：${tag}"
+            content += "\n类型：${model.type.toStr()}"
+            binding.adapterCondNo.text = content
         }
 
         override fun createBinding(inflater: LayoutInflater, parent: ViewGroup?): ItemCondBinding {
