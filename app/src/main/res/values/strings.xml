@@ -20,7 +20,8 @@
         1. 运行前：请确认已选方案是否适合你!!! \n
         2. 定时前：请测试该功能是否正常工作!!! \n
         3. 悬浮窗：默认开启屏幕常亮!!! \n
-        4. 官网：https://github.com/universeindream/MaiCaiAssistant \n
+        4. 效率慢：可调整该步骤的延迟时间!!! \n
+        5. 官网：https://github.com/universeindream/MaiCaiAssistant \n
         \n
         <b>常见问题：</b>\n\n
         1. 如果 xxx 步骤运行失败，请修改 xxx 步骤的执行前延迟或执行后延迟时间\n
