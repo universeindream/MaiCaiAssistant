@@ -88,6 +88,7 @@ object MHUtil {
         val result: Boolean = when (type) {
             EMCHandle.LAUNCH -> {
                 ActivityUtils.startActivity(MainActivity::class.java)
+                delay(1000)
                 AppUtils.launchApp(node.packageName)
                 delay(1000)
                 true
