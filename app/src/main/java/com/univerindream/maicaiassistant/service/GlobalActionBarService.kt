@@ -4,18 +4,14 @@ import android.accessibilityservice.AccessibilityService
 import android.annotation.SuppressLint
 import android.graphics.PixelFormat
 import android.os.Build
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.WindowManager
+import android.view.*
 import android.view.accessibility.AccessibilityEvent
-import com.blankj.utilcode.util.AppUtils
-import com.blankj.utilcode.util.ConvertUtils
-import com.blankj.utilcode.util.ScreenUtils
-import com.blankj.utilcode.util.ToastUtils
+import androidx.core.view.isGone
+import com.blankj.utilcode.util.*
 import com.elvishew.xlog.XLog
 import com.univerindream.maicaiassistant.*
 import com.univerindream.maicaiassistant.databinding.ActionBarBinding
+import com.univerindream.maicaiassistant.databinding.ActionLogBinding
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -26,11 +22,42 @@ import java.util.concurrent.atomic.AtomicLong
 
 class GlobalActionBarService : AccessibilityService() {
 
-    private lateinit var binding: ActionBarBinding
+    private lateinit var actionBarBinding: ActionBarBinding
+    private val mActionBarLayoutParams: WindowManager.LayoutParams by lazy {
+        WindowManager.LayoutParams().also {
+            it.format = PixelFormat.TRANSLUCENT
+            it.flags =
+                it.flags or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+            it.width = WindowManager.LayoutParams.WRAP_CONTENT
+            it.height = WindowManager.LayoutParams.WRAP_CONTENT
+            it.gravity = Gravity.START or Gravity.TOP
+            it.x = ScreenUtils.getScreenWidth() - ConvertUtils.dp2px(40f)
+            it.y = ScreenUtils.getScreenHeight() / 2 - ConvertUtils.dp2px(88f)
+        }
+    }
+
+    private lateinit var actionLogBinding: ActionLogBinding
+    private val mActionLogLayoutParams: WindowManager.LayoutParams by lazy {
+        WindowManager.LayoutParams().also {
+            it.format = PixelFormat.TRANSLUCENT
+            it.flags =
+                it.flags or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+            it.width = WindowManager.LayoutParams.WRAP_CONTENT
+            it.height = WindowManager.LayoutParams.WRAP_CONTENT
+            it.gravity = Gravity.START or Gravity.TOP
+            it.x = ConvertUtils.dp2px(20f)
+            it.y = ConvertUtils.dp2px(20f)
+        }
+    }
+
+    private val mWindowManager by lazy {
+        getSystemService(WINDOW_SERVICE) as WindowManager
+    }
 
     private var mSnapUpStatus = AtomicBoolean(false)
     private var mLoopStartTime = AtomicLong(System.currentTimeMillis())
 
+    private val mLogInfo = ArrayDeque<String>()
     private var mStepLog = LinkedHashMap<Int, MCStepLog>()
 
     private var mForegroundPackageName: String = ""
@@ -49,66 +76,12 @@ class GlobalActionBarService : AccessibilityService() {
         MHUtil.startForegroundService(this)
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onServiceConnected() {
         XLog.v("onServiceConnected")
 
         // Create an overlay and display the action bar
-        val wm = getSystemService(WINDOW_SERVICE) as WindowManager
-        val lp = WindowManager.LayoutParams()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            lp.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
-        } else {
-            lp.type = WindowManager.LayoutParams.TYPE_PHONE
-        }
-        lp.format = PixelFormat.TRANSLUCENT
-        lp.flags =
-            lp.flags or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
-        lp.gravity = Gravity.START or Gravity.TOP
-        lp.x = ScreenUtils.getScreenWidth() - ConvertUtils.dp2px(40f)
-        lp.y = ScreenUtils.getScreenHeight() / 2 - ConvertUtils.dp2px(88f)
-        binding = ActionBarBinding.inflate(LayoutInflater.from(this))
-        wm.addView(binding.root, lp)
-
-        binding.btnConfig.setOnClickListener {
-            AppUtils.launchApp(AppUtils.getAppPackageName())
-        }
-        binding.btnAlarmOff.setOnClickListener {
-            MHUtil.stopRingTone()
-        }
-        binding.btnSnapUp.setOnClickListener {
-            if (mSnapUpStatus.get()) {
-                cancelTask()
-            } else {
-                enableTask()
-            }
-        }
-
-        var x = 0
-        var y = 0
-        binding.btnMove.setOnTouchListener { _, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    x = event.rawX.toInt()
-                    y = event.rawY.toInt()
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    val nowX = event.rawX.toInt()
-                    val nowY = event.rawY.toInt()
-                    val movedX = nowX - x
-                    val movedY = nowY - y
-                    x = nowX
-                    y = nowY
-
-                    lp.x = lp.x + movedX
-                    lp.y = lp.y + movedY
-                    wm.updateViewLayout(binding.root, lp);
-                }
-            }
-            return@setOnTouchListener true
-        }
+        initBar()
+        initLog()
 
         EventBus.getDefault().register(this)
 
@@ -147,6 +120,94 @@ class GlobalActionBarService : AccessibilityService() {
 
     override fun onInterrupt() {}
 
+    @SuppressLint("ClickableViewAccessibility")
+    private fun initBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            mActionBarLayoutParams.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
+        } else {
+            mActionBarLayoutParams.type = WindowManager.LayoutParams.TYPE_PHONE
+        }
+        actionBarBinding = ActionBarBinding.inflate(LayoutInflater.from(this))
+        mWindowManager.addView(actionBarBinding.root, mActionBarLayoutParams)
+
+        actionBarBinding.btnConfig.setOnClickListener {
+            AppUtils.launchApp(AppUtils.getAppPackageName())
+        }
+        actionBarBinding.btnAlarmOff.setOnClickListener {
+            MHUtil.stopRingTone()
+        }
+        actionBarBinding.btnSnapUp.setOnClickListener {
+            if (mSnapUpStatus.get()) {
+                cancelTask()
+            } else {
+                enableTask()
+            }
+        }
+
+        var x = 0
+        var y = 0
+        actionBarBinding.btnMove.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    x = event.rawX.toInt()
+                    y = event.rawY.toInt()
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val nowX = event.rawX.toInt()
+                    val nowY = event.rawY.toInt()
+                    val movedX = nowX - x
+                    val movedY = nowY - y
+                    x = nowX
+                    y = nowY
+
+                    mActionBarLayoutParams.x = mActionBarLayoutParams.x + movedX
+                    mActionBarLayoutParams.y = mActionBarLayoutParams.y + movedY
+                    mWindowManager.updateViewLayout(actionBarBinding.root, mActionBarLayoutParams);
+                }
+            }
+            return@setOnTouchListener true
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun initLog() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            mActionLogLayoutParams.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
+        } else {
+            mActionLogLayoutParams.type = WindowManager.LayoutParams.TYPE_PHONE
+        }
+        actionLogBinding = ActionLogBinding.inflate(LayoutInflater.from(this))
+        mWindowManager.addView(actionLogBinding.root, mActionLogLayoutParams)
+
+        actionLogBinding.ivLogClose.setOnClickListener {
+            actionLogBinding.root.visibility = View.GONE
+        }
+
+        var x = 0
+        var y = 0
+        actionLogBinding.ivLogMove.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    x = event.rawX.toInt()
+                    y = event.rawY.toInt()
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val nowX = event.rawX.toInt()
+                    val nowY = event.rawY.toInt()
+                    val movedX = nowX - x
+                    val movedY = nowY - y
+                    x = nowX
+                    y = nowY
+
+                    mActionLogLayoutParams.x = mActionLogLayoutParams.x + movedX
+                    mActionLogLayoutParams.y = mActionLogLayoutParams.y + movedY
+                    mWindowManager.updateViewLayout(actionLogBinding.root, mActionLogLayoutParams);
+                }
+            }
+            return@setOnTouchListener true
+        }
+    }
+
     private fun runLoop() {
         mServiceScope.launch {
             while (true) {
@@ -182,6 +243,16 @@ class GlobalActionBarService : AccessibilityService() {
                         }
 
                         XLog.v("steps - ${step.name}")
+
+                        //更新日记
+                        updateLogInfo(
+                            "${
+                                TimeUtils.millis2String(
+                                    System.currentTimeMillis(),
+                                    "mm:ss SSS"
+                                )
+                            } ${step.name}"
+                        )
 
                         //步骤记录
                         val prevLogStep = mStepLog.values.lastOrNull()
@@ -242,7 +313,6 @@ class GlobalActionBarService : AccessibilityService() {
                 }
             }
         }
-
     }
 
     private fun enableTask() {
@@ -250,19 +320,33 @@ class GlobalActionBarService : AccessibilityService() {
         mLoopStartTime.set(System.currentTimeMillis())
         mStepLog.clear()
         updateSnapUpButton()
+
+        actionLogBinding.root.visibility = View.VISIBLE
     }
 
     private fun cancelTask() {
         mSnapUpStatus.set(false)
         updateSnapUpButton()
+
+        actionLogBinding.root.visibility = View.GONE
     }
 
     private fun updateSnapUpButton() {
-        if (mSnapUpStatus.get() == binding.btnSnapUp.tag) return
+        if (mSnapUpStatus.get() == actionBarBinding.btnSnapUp.tag) return
         mServiceScope.launch {
             withContext(Dispatchers.Main) {
-                binding.btnSnapUp.setImageResource(if (mSnapUpStatus.get()) R.drawable.baseline_stop_24 else R.drawable.baseline_play_arrow_24)
+                actionBarBinding.btnSnapUp.setImageResource(if (mSnapUpStatus.get()) R.drawable.baseline_stop_24 else R.drawable.baseline_play_arrow_24)
             }
+        }
+    }
+
+    private suspend fun updateLogInfo(info: String) {
+        if (actionLogBinding.root.isGone) return
+
+        if (mLogInfo.size >= 6) mLogInfo.removeLast()
+        mLogInfo.addFirst(info)
+        withContext(Dispatchers.Main) {
+            actionLogBinding.tvLogInfo.text = mLogInfo.joinToString("\n")
         }
     }
 
