@@ -275,7 +275,7 @@
         }
       ],
       "handle": {
-        "delayRunAfter": 0,
+        "delayRunAfter": 500,
         "delayRunBefore": 500,
         "node": {
           "className": "",
@@ -291,6 +291,47 @@
       "isManual": false,
       "isRepeat": false,
       "name": "点击去结算"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "请选择送达时间",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_CAN_CLICK"
+        },
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
+            "nodeKey": "请选择送达时间",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_EXIST"
+        }
+      ],
+      "handle": {
+        "delayRunAfter": 0,
+        "delayRunBefore": 0,
+        "node": {
+          "className": "",
+          "nodeIndex": 0,
+          "nodeKey": "请选择送达时间",
+          "nodeType": "TXT",
+          "packageName": ""
+        },
+        "type": "CLICK_NODE"
+      },
+      "isAlarm": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": true,
+      "name": "重复点击请选择送达时间"
     },
     {
       "condList": [
@@ -349,6 +390,16 @@
           "node": {
             "className": "",
             "nodeIndex": 0,
+            "nodeKey": "请选择送达时间",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_NO_EXIST"
+        },
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
             "nodeKey": "立即支付",
             "nodeType": "TXT",
             "packageName": ""
@@ -357,7 +408,7 @@
         }
       ],
       "handle": {
-        "delayRunAfter": 0,
+        "delayRunAfter": 500,
         "delayRunBefore": 500,
         "node": {
           "className": "",
@@ -372,7 +423,7 @@
       "isFailBack": false,
       "isManual": false,
       "isRepeat": true,
-      "name": "点击立即支付 - 可重复"
+      "name": "重复点击立即支付"
     },
     {
       "condList": [
