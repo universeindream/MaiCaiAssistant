@@ -15,8 +15,15 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical|end"
-    android:background="#20000000"
+    android:background="#80000000"
     android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/btn_config"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:padding="8dp"
+        android:src="@drawable/baseline_settings_24" />
 
     <ImageView
         android:id="@+id/btn_alarm_off"
@@ -24,22 +31,12 @@
         android:layout_height="44dp"
         android:padding="8dp"
         android:src="@drawable/baseline_alarm_off_24"
-        android:tag="false"
-        android:text="@string/btn_snap_up" />
-
-    <ImageView
-        android:id="@+id/btn_config"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        android:padding="8dp"
-        android:src="@drawable/baseline_settings_24"
-        android:text="@string/btn_config" />
+        android:tag="false" />
 
     <ImageView
         android:id="@+id/btn_snap_up"
         android:layout_width="44dp"
         android:layout_height="44dp"
-        android:padding="8dp"
         android:src="@drawable/baseline_play_arrow_24"
         android:tag="false" />
 
