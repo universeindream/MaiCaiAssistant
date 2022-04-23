@@ -177,6 +177,7 @@ class GlobalActionBarService : AccessibilityService() {
             mActionLogLayoutParams.type = WindowManager.LayoutParams.TYPE_PHONE
         }
         actionLogBinding = ActionLogBinding.inflate(LayoutInflater.from(this))
+        actionLogBinding.root.visibility = View.GONE
         mWindowManager.addView(actionLogBinding.root, mActionLogLayoutParams)
 
         actionLogBinding.ivLogClose.setOnClickListener {
