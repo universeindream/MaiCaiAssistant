@@ -293,6 +293,9 @@ class GlobalActionBarService : AccessibilityService() {
                             MHUtil.notify("终止提示", "\"${step.name}\" 为最后步骤，终止任务")
                             cancelTask()
                         }
+
+                        //符合条件，终止本次流程
+                        break
                     }
 
                     //10s 异常捕捉
