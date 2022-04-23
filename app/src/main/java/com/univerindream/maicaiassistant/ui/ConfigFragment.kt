@@ -14,7 +14,10 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.blankj.utilcode.util.*
+import com.blankj.utilcode.util.GsonUtils
+import com.blankj.utilcode.util.TimeUtils
+import com.blankj.utilcode.util.ToastUtils
+import com.blankj.utilcode.util.Utils
 import com.elvishew.xlog.XLog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -64,7 +67,16 @@ class ConfigFragment : Fragment() {
                 XLog.i(result)
 
                 try {
-                    val json = FileIOUtils.readFile2String(UriUtils.uri2File(Uri.parse(result)))
+                    val input = requireContext().contentResolver.openInputStream(Uri.parse(result))
+                    if (input == null) {
+                        ToastUtils.showLong("方案导入失败")
+                        return@registerForActivityResult
+                    }
+
+                    val bytes = ByteArray(input.available())
+                    input.read(bytes)
+                    val json = String(bytes)
+
                     MHConfig.curMCSolution = GsonUtils.fromJson(json, MCSolution::class.java)
                     ToastUtils.showLong("方案导入成功")
                     loadData()
