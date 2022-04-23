@@ -154,7 +154,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="定时抢购: "
+        android:text="定时运行: "
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/setting_buy_time_value" />
 
@@ -188,15 +188,5 @@
         android:text="系统响铃: "
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settingPermission" />
-
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/setting_keep_screen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="屏幕常亮: "
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/setting_ringtone_status" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

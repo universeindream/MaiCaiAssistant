@@ -205,15 +205,6 @@ class ConfigFragment : Fragment() {
         binding.settingRingtoneStatus.setOnClickListener {
             if (MHUtil.ringtone.isPlaying) MHUtil.ringtone.stop() else MHUtil.ringtone.play()
         }
-        binding.settingKeepScreen.setOnCheckedChangeListener { compoundButton, b ->
-            if (!compoundButton.isPressed) return@setOnCheckedChangeListener
-
-            if (b) {
-                requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-            } else {
-                requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-            }
-        }
 
         loadData()
 
