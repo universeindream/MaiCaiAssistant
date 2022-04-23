@@ -204,19 +204,64 @@
           "node": {
             "className": "",
             "nodeIndex": 0,
+            "nodeKey": "普通支付",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_VISIBLE"
+        }
+      ],
+      "failBackCount": 1,
+      "handle": {
+        "delayRunAfter": 0,
+        "delayRunBefore": 100,
+        "node": {
+          "className": "",
+          "nodeIndex": 0,
+          "nodeKey": "普通支付",
+          "nodeType": "TXT",
+          "packageName": ""
+        },
+        "type": "CLICK_NODE"
+      },
+      "isAlarm": false,
+      "isEnable": true,
+      "isExecuteOnce": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": false,
+      "name": "点击普通支付"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 0,
             "nodeKey": "极速支付",
             "nodeType": "TXT",
             "packageName": ""
           },
-          "type": "NODE_CAN_CLICK"
+          "type": "NODE_EXIST"
+        },
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 1,
+            "nodeKey": "极速支付",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_NO_VISIBLE"
         }
       ],
+      "failBackCount": 1,
       "handle": {
         "delayRunAfter": 0,
-        "delayRunBefore": 500,
+        "delayRunBefore": 200,
         "node": {
           "className": "",
-          "nodeIndex": 1,
+          "nodeIndex": 0,
           "nodeKey": "极速支付",
           "nodeType": "TXT",
           "packageName": ""
@@ -224,6 +269,8 @@
         "type": "CLICK_NODE"
       },
       "isAlarm": false,
+      "isEnable": true,
+      "isExecuteOnce": false,
       "isFailBack": false,
       "isManual": false,
       "isRepeat": false,
@@ -289,7 +336,7 @@
         "node": {
           "className": "",
           "nodeIndex": 0,
-          "nodeKey": "确认支付",
+          "nodeKey": "立即支付",
           "nodeType": "TXT",
           "packageName": ""
         },
@@ -340,6 +387,40 @@
       "isFailBack": false,
       "isRepeat": false,
       "name": "点击确认支付"
+    },
+    {
+      "condList": [
+        {
+          "node": {
+            "className": "",
+            "nodeIndex": 1,
+            "nodeKey": "极速支付",
+            "nodeType": "TXT",
+            "packageName": ""
+          },
+          "type": "NODE_CAN_CLICK"
+        }
+      ],
+      "failBackCount": 1,
+      "handle": {
+        "delayRunAfter": 0,
+        "delayRunBefore": 200,
+        "node": {
+          "className": "",
+          "nodeIndex": 1,
+          "nodeKey": "极速支付",
+          "nodeType": "TXT",
+          "packageName": ""
+        },
+        "type": "CLICK_NODE"
+      },
+      "isAlarm": false,
+      "isEnable": true,
+      "isExecuteOnce": false,
+      "isFailBack": false,
+      "isManual": false,
+      "isRepeat": false,
+      "name": "点击极速支付"
     }
   ]
 }
