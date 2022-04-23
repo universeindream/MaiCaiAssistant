@@ -13,10 +13,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.blankj.utilcode.util.GsonUtils
-import com.blankj.utilcode.util.TimeUtils
-import com.blankj.utilcode.util.ToastUtils
-import com.blankj.utilcode.util.Utils
+import com.blankj.utilcode.util.*
 import com.elvishew.xlog.XLog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -204,19 +201,7 @@ class ConfigFragment : Fragment() {
 
         loadData()
 
-        if (!MHUtil.hasServicePermission()) {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle("提示")
-                .setMessage("请先开启无障碍权限")
-                .setNegativeButton("取消") { dialog, which ->
-                    dialog.cancel()
-                }
-                .setPositiveButton("去开启") { dialog, which ->
-                    MHUtil.toAccessibilitySetting()
-                }
-                .setCancelable(false)
-                .show()
-        }
+
     }
 
     override fun onResume() {
@@ -225,6 +210,8 @@ class ConfigFragment : Fragment() {
         loadData()
         checkTimerTrigger()
         checkConfig()
+        checkPermission()
+        checkConfigVersion()
     }
 
     private fun loadData() {
@@ -244,6 +231,21 @@ class ConfigFragment : Fragment() {
         }
     }
 
+    private fun checkPermission() {
+        if (MHUtil.hasServicePermission()) return
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("权限提示")
+            .setMessage("请先开启无障碍服务")
+            .setNegativeButton("取消") { dialog, which ->
+                dialog.cancel()
+            }
+            .setPositiveButton("去开启") { dialog, which ->
+                MHUtil.toAccessibilitySetting()
+            }
+            .setCancelable(false)
+            .show()
+    }
+
     private fun checkConfig() {
         lifecycleScope.launch {
             try {
@@ -258,6 +260,28 @@ class ConfigFragment : Fragment() {
             } catch (e: Exception) {
                 XLog.e(e)
             }
+        }
+    }
+
+    private fun checkConfigVersion() {
+        val curVersionCode = BuildConfig.VERSION_CODE
+        val cacheVersionCode = SPUtils.getInstance().getInt("cacheVersionCode", curVersionCode)
+        if (curVersionCode > cacheVersionCode) {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("方案提示")
+                .setMessage("方案可能有更新，是否重置本地方案")
+                .setNegativeButton("取消") { dialog, which ->
+                    dialog.cancel()
+                }
+                .setPositiveButton("确定") { dialog, which ->
+                    SPUtils.getInstance().put("cacheVersionCode", curVersionCode)
+                    MHConfig.curMCSolution = MCSolution("自定义", arrayListOf())
+                    loadData()
+                }
+                .setCancelable(false)
+                .show()
+        } else {
+            SPUtils.getInstance().put("cacheVersionCode", curVersionCode)
         }
     }
 
