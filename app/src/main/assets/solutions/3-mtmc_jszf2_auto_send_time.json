@@ -1,5 +1,5 @@
 {
-  "name": "美团买菜 - 普通极速支付 - 自动送达时间",
+  "name": "美团买菜 - 默认极速支付 - 自动送达时间",
   "steps": [
     {
       "condList": [
@@ -197,50 +197,6 @@
       "isManual": false,
       "isRepeat": false,
       "name": "点击结算"
-    },
-    {
-      "condList": [
-        {
-          "node": {
-            "className": "",
-            "nodeIndex": 0,
-            "nodeKey": "普通支付",
-            "nodeType": "TXT",
-            "packageName": ""
-          },
-          "type": "NODE_VISIBLE"
-        },
-        {
-          "node": {
-            "className": "",
-            "nodeIndex": 0,
-            "nodeKey": "普通支付",
-            "nodeType": "TXT",
-            "packageName": ""
-          },
-          "type": "NODE_EXIST"
-        }
-      ],
-      "failBackCount": 1,
-      "handle": {
-        "delayRunAfter": 0,
-        "delayRunBefore": 100,
-        "node": {
-          "className": "",
-          "nodeIndex": 0,
-          "nodeKey": "普通支付",
-          "nodeType": "TXT",
-          "packageName": ""
-        },
-        "type": "CLICK_NODE"
-      },
-      "isAlarm": false,
-      "isEnable": true,
-      "isExecuteOnce": false,
-      "isFailBack": false,
-      "isManual": false,
-      "isRepeat": false,
-      "name": "点击普通支付"
     },
     {
       "condList": [
