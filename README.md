@@ -23,7 +23,8 @@
 1. [安装 APK](https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk)
 1. 开启无障碍服务
 1. 选择适合的方案 - 比如：美团买菜 - 支付宝
-1. 点击右侧悬浮窗的运行按钮(▶)
+2. 添加需要的东西至购物车
+3. 点击右侧悬浮窗的运行按钮(▶)
 
 > 因每个人的手机性能和网络环境不同, 如果运行失败，请大家自行设置问题步骤的`延迟时间`
 
