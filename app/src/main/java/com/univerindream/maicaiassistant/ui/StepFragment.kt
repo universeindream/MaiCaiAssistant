@@ -201,8 +201,7 @@ class StepFragment : Fragment() {
             get() = R.id.adapter_cond_item
 
         override fun bindView(binding: ItemCondBinding, payloads: List<Any>) {
-            var content = "条件：${tag}"
-            content += "\n类型：${model.type.toStr()}"
+            val content = "条件${tag}: ${model.type.toStr()}"
             binding.adapterCondNo.text = content
         }
 

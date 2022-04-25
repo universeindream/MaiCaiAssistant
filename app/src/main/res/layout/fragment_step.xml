@@ -31,22 +31,31 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/step_enable"
+            <TextView
+                android:id="@+id/step_cond_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="条件(且)："
+                android:textColor="@color/black" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/step_cond_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:text="启用：(关闭后，将跳过本步骤)"
-                android:textColor="@color/black" />
-
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/step_cond_label" />
 
             <TextView
                 android:id="@+id/step_handle_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="操作："
                 android:textColor="@color/black" />
 
@@ -68,22 +77,14 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                android:id="@+id/step_cond_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="条件组合："
-                android:textColor="@color/black" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/step_cond_value"
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/step_enable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/step_cond_label" />
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="启用：(关闭后，将跳过本步骤)"
+                android:textColor="@color/black" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/step_execute_once"

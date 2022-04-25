@@ -45,7 +45,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:text="编辑当前方案"
+        android:text="查看编辑方案"
         app:layout_constraintEnd_toStartOf="@+id/setting_choose"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/setting_auto_info" />
@@ -69,7 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:text="JSON 方案"
+        android:text="JSON 分享"
         app:layout_constraintBottom_toBottomOf="@+id/setting_export"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/setting_export" />
@@ -81,7 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="导入方案"
+        android:text="导入文件"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/setting_edit" />
 
@@ -92,7 +92,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:text="导出方案"
+        android:text="导出文件"
         app:layout_constraintBottom_toBottomOf="@+id/setting_import"
         app:layout_constraintEnd_toStartOf="@+id/setting_edit_json"
         app:layout_constraintStart_toEndOf="@+id/setting_import"
