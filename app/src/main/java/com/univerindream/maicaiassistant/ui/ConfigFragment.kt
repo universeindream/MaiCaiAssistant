@@ -104,9 +104,12 @@ class ConfigFragment : Fragment() {
             findNavController().navigate(R.id.action_ConfigFragment_to_SolutionFragment)
         }
         binding.settingChoose.setOnClickListener {
-            val solutions = arrayListOf<MCSolution>()
-            solutions.addAll(MHDefault.defaultMCSolutions)
-            solutions.addAll(MHDefault.githubSolutions)
+            val solutions = arrayListOf(MCSolution("自定义", arrayListOf()))
+            if (MHDefault.s3Solutions.isNotEmpty()) {
+                solutions.addAll(MHDefault.s3Solutions)
+            } else {
+                solutions.addAll(MHDefault.defaultMCSolutions)
+            }
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle("默认方案 - 选后会覆盖当前方案")
                 .setItems(solutions.map { it.name }.toTypedArray()) { _, which ->
@@ -254,12 +257,12 @@ class ConfigFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 val json = GithubApi.get()
-                    .downloadFileWithDynamicUrlSync("https://raw.githubusercontent.com/universeindream/MaiCaiAssistant/main/config.json")
+                    .downloadFileWithDynamicUrlSync("https://maicaiassistant.s3.ap-east-1.amazonaws.com/solutions.json")
                     .string()
                 val solution =
                     Gson().fromJson<List<MCSolution>>(json, object : TypeToken<ArrayList<MCSolution>>() {}.type)
-                MHDefault.githubSolutions.clear()
-                MHDefault.githubSolutions.addAll(solution)
+                MHDefault.s3Solutions.clear()
+                MHDefault.s3Solutions.addAll(solution)
                 XLog.i("远程方案更新成功")
             } catch (e: Exception) {
                 XLog.e(e)

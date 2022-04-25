@@ -1,24 +1,20 @@
 package com.univerindream.maicaiassistant
 
-import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ResourceUtils
-import com.blankj.utilcode.util.Utils
 import com.elvishew.xlog.XLog
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 object MHDefault {
 
-    val githubSolutions = arrayListOf<MCSolution>()
+    val s3Solutions = arrayListOf<MCSolution>()
 
     val defaultMCSolutions: List<MCSolution> by lazy {
         val res = arrayListOf<MCSolution>()
-        res.add(MCSolution("自定义", arrayListOf()))
 
         try {
-            val solutions = Utils.getApp().assets.list("solutions")
-            solutions?.forEach {
-                val json = ResourceUtils.readAssets2String("solutions/$it")
-                res.add(GsonUtils.fromJson(json, MCSolution::class.java))
-            }
+            val json = ResourceUtils.readAssets2String("solutions.json")
+            res.addAll(Gson().fromJson<List<MCSolution>>(json, object : TypeToken<ArrayList<MCSolution>>() {}.type))
         } catch (e: Exception) {
             XLog.e(e)
         }
