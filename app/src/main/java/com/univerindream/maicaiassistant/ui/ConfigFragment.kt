@@ -27,7 +27,9 @@ import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.io.BufferedWriter
 import java.io.FileOutputStream
+import java.io.OutputStreamWriter
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -47,7 +49,9 @@ class ConfigFragment : Fragment() {
                     val uri = Uri.parse(result)
                     Utils.getApp().contentResolver.openFileDescriptor(uri, "w")?.use {
                         FileOutputStream(it.fileDescriptor).use {
-                            it.write(GsonUtils.toJson(MHConfig.curMCSolution).toByteArray())
+                            val buf = BufferedWriter(OutputStreamWriter(it))
+                            buf.write(GsonUtils.toJson(MHConfig.curMCSolution))
+                            buf.close()
                         }
                     }
                     ToastUtils.showShort("方案导出成功")
