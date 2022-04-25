@@ -206,6 +206,12 @@ class ConfigFragment : Fragment() {
             }
         }
 
+        binding.settingHelp.setOnCheckedChangeListener { compoundButton, b ->
+            if (!compoundButton.isPressed) return@setOnCheckedChangeListener
+
+            binding.settingHelpInfo.visibility = if (b) View.VISIBLE else View.GONE
+        }
+
         loadData()
 
 
@@ -241,8 +247,8 @@ class ConfigFragment : Fragment() {
     private fun checkPermission() {
         if (MHUtil.hasServicePermission()) return
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle("权限提示")
-            .setMessage("请先开启无障碍服务")
+            .setTitle("友情提示")
+            .setMessage("请先开启无障碍服务，然后开启你的幸运之旅!")
             .setNegativeButton("取消") { dialog, which ->
                 dialog.cancel()
             }

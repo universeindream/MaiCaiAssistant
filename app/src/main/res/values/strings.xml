@@ -6,7 +6,8 @@
         <b>使用：</b>\n\n
         1. 开启无障碍服务\n
         2. 选择适合的方案 - 比如：美团买菜 - 支付宝\n
-        3. 点击右侧悬浮窗的运行按钮(▶)\n
+        3. 添加需要的东西至购物车\n
+        4. 点击右侧悬浮窗的运行按钮(▶)\n
         \n
         <b>悬浮窗：</b>\n\n
         1. 设置: 打开设置界面\n
@@ -21,7 +22,8 @@
         2. 定时前：请测试该功能是否正常工作!!! \n
         3. 悬浮窗：默认开启屏幕常亮!!! \n
         4. 运行慢：请降低问题步骤的延迟时间!!! \n
-        5. 官方Url：https://github.com/universeindream/MaiCaiAssistant \n
+        5. 关浮窗：杀死 APP 即可!!! \n
+        6. 官网址：https://github.com/universeindream/MaiCaiAssistant \n
         \n
         <b>常见问题：</b>\n\n
         1. 如果 xxx 步骤运行失败，请尝试增加 xxx 步骤的执行前延迟或执行后延迟时间\n
