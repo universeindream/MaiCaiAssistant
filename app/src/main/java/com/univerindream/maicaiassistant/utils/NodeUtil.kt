@@ -93,6 +93,31 @@ object NodeUtil {
         }
     }
 
+    fun searchNodeByXY(root: AccessibilityNodeInfo?, x: Int, y: Int): List<AccessibilityNodeInfo> {
+        root ?: return emptyList()
+
+        val data = arrayListOf<AccessibilityNodeInfo>()
+
+        val queue = ArrayDeque<AccessibilityNodeInfo>()
+        queue.add(root)
+
+        while (!queue.isEmpty()) {
+            val node = queue.removeFirst()
+
+            val rect = Rect()
+            node.getBoundsInScreen(rect)
+            if (x in rect.left..rect.right && y in rect.top..rect.bottom) {
+                data.add(node)
+
+                repeat(node.childCount) {
+                    queue.addLast(node.getChild(it))
+                }
+            }
+        }
+
+        return data
+    }
+
     fun searchAllNode(
         root: AccessibilityNodeInfo?,
         node: MCNode

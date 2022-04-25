@@ -34,13 +34,22 @@
         android:padding="8dp"
         android:src="@drawable/baseline_close_24" />
 
-    <TextView
-        android:id="@+id/tvLogInfo"
-        android:layout_width="200dp"
-        android:layout_height="120dp"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="260dp"
+        android:layout_height="140dp"
         android:layout_marginTop="36dp"
-        android:padding="8dp"
-        android:textColor="@color/white"
-        tools:text="20:28:01 步骤一aaaaaaaaaaaaaaaaaaaaaa\n20:28:01 步骤二" />
+        android:scrollbars="vertical">
+
+        <TextView
+            android:id="@+id/tv_log_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="8dp"
+            android:textColor="@color/white"
+            tools:text="20:28:01 步骤一aaaaaaaaaaaaaaaaaaaaaa\n20:28:01 步骤二" />
+
+    </androidx.core.widget.NestedScrollView>
 
 </FrameLayout>

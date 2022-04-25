@@ -7,11 +7,14 @@ import android.os.Build
 import android.view.*
 import android.view.accessibility.AccessibilityEvent
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import com.blankj.utilcode.util.*
 import com.elvishew.xlog.XLog
 import com.univerindream.maicaiassistant.*
 import com.univerindream.maicaiassistant.databinding.ActionBarBinding
 import com.univerindream.maicaiassistant.databinding.ActionLogBinding
+import com.univerindream.maicaiassistant.databinding.ActionSearchBinding
+import com.univerindream.maicaiassistant.utils.NodeUtil
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -50,6 +53,20 @@ class GlobalActionBarService : AccessibilityService() {
         }
     }
 
+    private lateinit var actionSearchBinding: ActionSearchBinding
+    private val mActionViewLayoutParams: WindowManager.LayoutParams by lazy {
+        WindowManager.LayoutParams().also {
+            it.format = PixelFormat.TRANSLUCENT
+            it.flags =
+                it.flags or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+            it.width = WindowManager.LayoutParams.WRAP_CONTENT
+            it.height = WindowManager.LayoutParams.WRAP_CONTENT
+            it.gravity = Gravity.START or Gravity.TOP
+            it.x = ScreenUtils.getScreenWidth() / 2
+            it.y = ScreenUtils.getScreenHeight() / 2
+        }
+    }
+
     private val mWindowManager by lazy {
         getSystemService(WINDOW_SERVICE) as WindowManager
     }
@@ -80,8 +97,9 @@ class GlobalActionBarService : AccessibilityService() {
         XLog.v("onServiceConnected")
 
         // Create an overlay and display the action bar
-        initBar()
+        initPanel()
         initLog()
+        initSearch()
 
         EventBus.getDefault().register(this)
 
@@ -121,7 +139,7 @@ class GlobalActionBarService : AccessibilityService() {
     override fun onInterrupt() {}
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun initBar() {
+    private fun initPanel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             mActionBarLayoutParams.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
         } else {
@@ -130,6 +148,9 @@ class GlobalActionBarService : AccessibilityService() {
         actionBarBinding = ActionBarBinding.inflate(LayoutInflater.from(this))
         mWindowManager.addView(actionBarBinding.root, mActionBarLayoutParams)
 
+        actionBarBinding.btnShowSearch.setOnClickListener {
+            setSearchView(!actionSearchBinding.root.isVisible)
+        }
         actionBarBinding.btnConfig.setOnClickListener {
             AppUtils.launchApp(AppUtils.getAppPackageName())
         }
@@ -181,7 +202,7 @@ class GlobalActionBarService : AccessibilityService() {
         mWindowManager.addView(actionLogBinding.root, mActionLogLayoutParams)
 
         actionLogBinding.ivLogClose.setOnClickListener {
-            actionLogBinding.root.visibility = View.GONE
+            setLogView(false)
         }
 
         var x = 0
@@ -203,6 +224,47 @@ class GlobalActionBarService : AccessibilityService() {
                     mActionLogLayoutParams.x = mActionLogLayoutParams.x + movedX
                     mActionLogLayoutParams.y = mActionLogLayoutParams.y + movedY
                     mWindowManager.updateViewLayout(actionLogBinding.root, mActionLogLayoutParams);
+                }
+            }
+            return@setOnTouchListener true
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun initSearch() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            mActionViewLayoutParams.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
+        } else {
+            mActionViewLayoutParams.type = WindowManager.LayoutParams.TYPE_PHONE
+        }
+        actionSearchBinding = ActionSearchBinding.inflate(LayoutInflater.from(this))
+        actionSearchBinding.root.visibility = View.GONE
+        mWindowManager.addView(actionSearchBinding.root, mActionViewLayoutParams)
+
+        var x = 0
+        var y = 0
+        actionSearchBinding.ivSearchMove.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    x = event.rawX.toInt()
+                    y = event.rawY.toInt()
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val nowX = event.rawX.toInt()
+                    val nowY = event.rawY.toInt()
+                    val movedX = nowX - x
+                    val movedY = nowY - y
+                    x = nowX
+                    y = nowY
+
+                    mActionViewLayoutParams.x = mActionViewLayoutParams.x + movedX
+                    mActionViewLayoutParams.y = mActionViewLayoutParams.y + movedY
+                    mWindowManager.updateViewLayout(actionSearchBinding.root, mActionViewLayoutParams);
+                }
+                MotionEvent.ACTION_UP -> {
+                    x = event.rawX.toInt()
+                    y = event.rawY.toInt()
+                    updatePageInfo(x, y)
                 }
             }
             return@setOnTouchListener true
@@ -321,19 +383,20 @@ class GlobalActionBarService : AccessibilityService() {
 
     private fun enableTask() {
         mSnapUpStatus.set(true)
-        mLoopStartTime.set(System.currentTimeMillis())
-        mStepLog.clear()
         updateSnapUpButton()
 
-        mLogInfo.clear()
-        actionLogBinding.root.visibility = View.VISIBLE
+        mLoopStartTime.set(System.currentTimeMillis())
+        mStepLog.clear()
+
+        setSearchView(false)
+        setLogView(true)
     }
 
     private fun cancelTask() {
         mSnapUpStatus.set(false)
         updateSnapUpButton()
 
-        actionLogBinding.root.visibility = View.GONE
+        setLogView(false)
     }
 
     private fun updateSnapUpButton() {
@@ -352,6 +415,49 @@ class GlobalActionBarService : AccessibilityService() {
         mLogInfo.addFirst(info)
         withContext(Dispatchers.Main) {
             actionLogBinding.tvLogInfo.text = mLogInfo.joinToString("\n")
+        }
+    }
+
+    private fun updatePageInfo(x: Int, y: Int) {
+        val node = NodeUtil.searchNodeByXY(rootInActiveWindow, x, y).lastOrNull() ?: return
+        var content = "坐标: x$x,y$y"
+        content += "\n包名: ${node.packageName}"
+        content += "\n类名: ${node.className}"
+        content += "\n值: ${node.text}"
+        var index = 0
+        if (!node.text.isNullOrBlank()) {
+            val allSearch = NodeUtil.searchAllNode(rootInActiveWindow, MCNode(EMCNodeType.TXT, node.text.toString()))
+            index = allSearch.indexOf(node)
+        }
+        content += "\n索引: $index"
+        content += "\n是否选择: ${node.isSelected}"
+        content += "\n是否选中: ${node.isChecked}"
+        content += "\n是否可选中: ${node.isCheckable}"
+        content += "\n是否可点击: ${node.isClickable}"
+        content += "\n是否可见: ${node.isVisibleToUser}"
+        content += "\n是否启用: ${node.isEnabled}"
+
+        actionLogBinding.tvLogInfo.text = content
+    }
+
+    private fun setLogView(visible: Boolean = false) {
+        mLogInfo.clear()
+        actionLogBinding.tvLogInfo.text = ""
+
+        if (visible) {
+            actionLogBinding.root.visibility = View.VISIBLE
+        } else {
+            actionLogBinding.root.visibility = View.GONE
+        }
+    }
+
+    private fun setSearchView(visible: Boolean = false) {
+        setLogView(visible)
+
+        if (visible) {
+            actionSearchBinding.root.visibility = View.VISIBLE
+        } else {
+            actionSearchBinding.root.visibility = View.GONE
         }
     }
 
