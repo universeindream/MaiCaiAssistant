@@ -10,6 +10,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.GsonUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.elvishew.xlog.XLog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.fastadapter.FastAdapter
@@ -81,15 +82,36 @@ class SolutionFragment : Fragment() {
         }
         fastAdapter.onLongClickListener = { _, _, _, position ->
             MaterialAlertDialogBuilder(requireContext())
-                .setMessage("删除该步骤？")
-                .setNegativeButton("取消") { dialog, which ->
-                    // Respond to negative button press
-                    dialog.cancel()
-                }
-                .setPositiveButton("确定") { dialog, which ->
-                    // Respond to positive button press
-                    mcSolution.steps.removeAt(position)
-                    loadData()
+                .setTitle("操作")
+                .setItems(arrayOf("上移", "下移", "删除")) { dialog, which ->
+                    // Respond to item chosen
+                    when (which) {
+                        0 -> {
+                            if (position == 0) {
+                                ToastUtils.showShort("已经是第一步了")
+                            } else {
+                                val step = mcSolution.steps[position]
+                                mcSolution.steps.removeAt(position)
+                                mcSolution.steps.add(position - 1, step)
+                                loadData()
+                            }
+                        }
+                        1 -> {
+                            if (position == mcSolution.steps.size - 1) {
+                                ToastUtils.showShort("已经是最后一步了")
+                            } else {
+                                val step = mcSolution.steps[position]
+                                mcSolution.steps.removeAt(position)
+                                mcSolution.steps.add(position + 1, step)
+                                loadData()
+                            }
+                        }
+                        2 -> {
+                            mcSolution.steps.removeAt(position)
+                            loadData()
+                        }
+                    }
+                    dialog.dismiss()
                 }
                 .show()
             false
