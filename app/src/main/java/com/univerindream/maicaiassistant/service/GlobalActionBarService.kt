@@ -448,6 +448,7 @@ class GlobalActionBarService : AccessibilityService() {
             actionLogBinding.root.visibility = View.VISIBLE
         } else {
             actionLogBinding.root.visibility = View.GONE
+            actionSearchBinding.root.visibility = View.GONE
         }
     }
 
