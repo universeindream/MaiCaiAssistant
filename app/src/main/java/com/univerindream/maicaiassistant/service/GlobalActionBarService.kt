@@ -421,9 +421,11 @@ class GlobalActionBarService : AccessibilityService() {
     private fun updatePageInfo(x: Int, y: Int) {
         val node = NodeUtil.searchNodeByXY(rootInActiveWindow, x, y).lastOrNull() ?: return
         var content = "坐标: x$x,y$y"
+        content += "\n页面: $mCurClassNameByRootWindow"
         content += "\n包名: ${node.packageName}"
         content += "\n类名: ${node.className}"
         content += "\n值: ${node.text}"
+        content += "\nId: ${node.viewIdResourceName}"
         var index = 0
         if (!node.text.isNullOrBlank()) {
             val allSearch = NodeUtil.searchAllNode(rootInActiveWindow, MCNode(EMCNodeType.TXT, node.text.toString()))
