@@ -46,4 +46,28 @@
 
     <string name="previous">Previous</string>
 
+
+    <string name="node_package_name">包名</string>
+    <string name="node_class_name">类名</string>
+    <string name="node_id">Id</string>
+    <string name="node_text">文本值</string>
+
+    <string name="node_child_count">子节点数</string>
+
+    <string name="node_is_enabled">是否启用</string>
+    <string name="node_is_focused">是否焦点光标</string>
+    <string name="node_is_checked">是否选中</string>
+    <string name="node_is_selected">是否选择</string>
+    <string name="node_is_visible_to_user">是否可见</string>
+
+    <string name="node_is_clickable">是否可以点击</string>
+    <string name="node_is_long_clickable">是否可以长点击</string>
+    <string name="node_is_context_clickable">是否父子节点可以点击</string>
+    <string name="node_is_checkable">是否可以选中</string>
+    <string name="node_is_editable">是否可以编辑</string>
+    <string name="node_is_focusable">是否可以获取光标焦点</string>
+    <string name="node_is_scrollable">是否可以滚动</string>
+    <string name="node_is_dismissable">是否可以关闭</string>
+    <string name="node_is_content_invalid">是否输入内容无效</string>
+
 </resources>
