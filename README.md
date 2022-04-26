@@ -47,13 +47,14 @@
 
 由于本人所有购物平台都停运了，所以合适的方案很难给到大家，为了方便大家讨论出合适的抢购方案，建个微信群，大家互相帮助！！！ 
 
-| 微信群 | 拉群微信 | TG 频道 | TG 群 |
+| 新人群 | 拉群微信 | TG 频道 | TG 群 |
 | ------------- | ------------- | ------------- | ------------- |
-| <img width="150" src="https://user-images.githubusercontent.com/7286154/165221659-41e6fc15-59f3-4307-84e8-a896c8251507.png"> | <img width="150" src="https://user-images.githubusercontent.com/7286154/164888899-16c76894-61c6-4e42-981b-48c0e16752a1.png"> | <img width="150" src="https://user-images.githubusercontent.com/7286154/163721131-3aa6da8d-44ab-48d3-98a5-3ccfc083fae0.png"> |     <img width="150" src="https://user-images.githubusercontent.com/7286154/163738276-3460fdd0-930b-493a-a899-d8aa8a4e03be.png">     |
+| <img width="150" src="https://user-images.githubusercontent.com/7286154/165222758-b653353d-a1a8-4c27-8252-e27c939473ed.png"> | <img width="150" src="https://user-images.githubusercontent.com/7286154/164888899-16c76894-61c6-4e42-981b-48c0e16752a1.png"> | <img width="150" src="https://user-images.githubusercontent.com/7286154/163721131-3aa6da8d-44ab-48d3-98a5-3ccfc083fae0.png"> |     <img width="150" src="https://user-images.githubusercontent.com/7286154/163738276-3460fdd0-930b-493a-a899-d8aa8a4e03be.png">     |
+
 
 **ps:**
 
-- 互助群会比较活跃都是新人，大家可以先尝试一起帮助，需求进大群的晚上统一加好友拉群
+- 新人群会比较活跃都是新人，大家可以先尝试一起帮助，需求进大群的晚上统一加好友拉群
 - 空余时间我会帮忙新增或优化方案(离不开群友的录屏截图分享)，当然也期待大家自由创建和分享方案
 - 望疫情早日结束，也祝大伙也早点结束抢菜的日子
 - 最后点个 :star: , 支持下 :ghost:
