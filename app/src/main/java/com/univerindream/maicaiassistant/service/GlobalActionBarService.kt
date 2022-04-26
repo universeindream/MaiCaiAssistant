@@ -6,6 +6,7 @@ import android.graphics.PixelFormat
 import android.os.Build
 import android.view.*
 import android.view.accessibility.AccessibilityEvent
+import android.view.accessibility.AccessibilityNodeInfo
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.blankj.utilcode.util.*
@@ -424,14 +425,30 @@ class GlobalActionBarService : AccessibilityService() {
         content += "\n页面: $mCurClassNameByRootWindow"
         content += "\n包名: ${node.packageName}"
         content += "\n类名: ${node.className}"
-        content += "\n值: ${node.text}"
         content += "\nId: ${node.viewIdResourceName}"
         var index = 0
+        if (!node.viewIdResourceName.isNullOrBlank()) {
+            val allSearch =
+                NodeUtil.searchAllNode(rootInActiveWindow, MCNode(EMCNodeType.ID, node.viewIdResourceName.toString()))
+            index = allSearch.indexOf(node)
+        }
+        content += "\nId索引: $index"
+        content += "\n值: ${node.text}"
         if (!node.text.isNullOrBlank()) {
             val allSearch = NodeUtil.searchAllNode(rootInActiveWindow, MCNode(EMCNodeType.TXT, node.text.toString()))
             index = allSearch.indexOf(node)
         }
-        content += "\n索引: $index"
+        content += "\n值索引: $index"
+
+
+        var temp: AccessibilityNodeInfo? = node
+        var depth = 0
+        while (temp != null) {
+            temp = temp.parent
+            depth++
+        }
+
+        content += "\n层级: $depth"
         content += "\n是否选择: ${node.isSelected}"
         content += "\n是否选中: ${node.isChecked}"
         content += "\n是否可选中: ${node.isCheckable}"
