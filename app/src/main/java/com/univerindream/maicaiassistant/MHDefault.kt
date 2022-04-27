@@ -10,7 +10,7 @@ object MHDefault {
     val s3Solutions = arrayListOf<MCSolution>()
 
     val defaultMCSolutions: List<MCSolution> by lazy {
-        val res = arrayListOf<MCSolution>()
+        val res = arrayListOf(MCSolution("自定义", arrayListOf()))
 
         try {
             val json = ResourceUtils.readAssets2String("solutions.json")
