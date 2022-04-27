@@ -9,11 +9,15 @@ import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.*
 import com.elvishew.xlog.XLog
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.univerindream.maicaiassistant.*
+import com.univerindream.maicaiassistant.adapter.BindingSearchNodeItem
 import com.univerindream.maicaiassistant.databinding.ActionBarBinding
-import com.univerindream.maicaiassistant.databinding.ActionLogBinding
+import com.univerindream.maicaiassistant.databinding.ActionInfoBinding
 import com.univerindream.maicaiassistant.databinding.ActionSearchBinding
 import com.univerindream.maicaiassistant.utils.NodeUtil
 import kotlinx.coroutines.*
@@ -25,6 +29,12 @@ import java.util.concurrent.atomic.AtomicLong
 
 
 class GlobalActionBarService : AccessibilityService() {
+
+    private val mServiceScope = CoroutineScope(Dispatchers.Main + Job())
+
+    private val mWindowManager by lazy {
+        getSystemService(WINDOW_SERVICE) as WindowManager
+    }
 
     private lateinit var actionBarBinding: ActionBarBinding
     private val mActionBarLayoutParams: WindowManager.LayoutParams by lazy {
@@ -40,8 +50,8 @@ class GlobalActionBarService : AccessibilityService() {
         }
     }
 
-    private lateinit var actionLogBinding: ActionLogBinding
-    private val mActionLogLayoutParams: WindowManager.LayoutParams by lazy {
+    private lateinit var actionInfoBinding: ActionInfoBinding
+    private val mActionInfoLayoutParams: WindowManager.LayoutParams by lazy {
         WindowManager.LayoutParams().also {
             it.format = PixelFormat.TRANSLUCENT
             it.flags =
@@ -68,21 +78,23 @@ class GlobalActionBarService : AccessibilityService() {
         }
     }
 
-    private val mWindowManager by lazy {
-        getSystemService(WINDOW_SERVICE) as WindowManager
+    private val itemAdapter by lazy {
+        ItemAdapter<BindingSearchNodeItem>()
+    }
+
+    private val fastAdapter by lazy {
+        FastAdapter.with(itemAdapter)
     }
 
     private var mSnapUpStatus = AtomicBoolean(false)
     private var mLoopStartTime = AtomicLong(System.currentTimeMillis())
 
-    private val mLogInfo = ArrayDeque<String>()
+    private val mStepLogMessage = ArrayDeque<String>()
     private var mStepLog = LinkedHashMap<Int, MCStepLog>()
 
     private var mForegroundPackageName: String = ""
     private var mForegroundClassName: String = ""
     private var mForegroundWindowId: Int = -1
-
-    private val mServiceScope = CoroutineScope(Dispatchers.Main + Job())
 
     private var mClassNameByWindowId = mutableMapOf<Int, String>()
     private val mCurClassNameByRootWindow: String
@@ -99,7 +111,7 @@ class GlobalActionBarService : AccessibilityService() {
 
         // Create an overlay and display the action bar
         initPanel()
-        initLog()
+        initInfo()
         initSearch()
 
         EventBus.getDefault().register(this)
@@ -150,7 +162,7 @@ class GlobalActionBarService : AccessibilityService() {
         mWindowManager.addView(actionBarBinding.root, mActionBarLayoutParams)
 
         actionBarBinding.btnShowSearch.setOnClickListener {
-            setSearchView(!actionSearchBinding.root.isVisible)
+            setInfoView(!actionSearchBinding.root.isVisible, true)
         }
         actionBarBinding.btnConfig.setOnClickListener {
             AppUtils.launchApp(AppUtils.getAppPackageName())
@@ -192,23 +204,23 @@ class GlobalActionBarService : AccessibilityService() {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun initLog() {
+    private fun initInfo() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            mActionLogLayoutParams.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
+            mActionInfoLayoutParams.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
         } else {
-            mActionLogLayoutParams.type = WindowManager.LayoutParams.TYPE_PHONE
+            mActionInfoLayoutParams.type = WindowManager.LayoutParams.TYPE_PHONE
         }
-        actionLogBinding = ActionLogBinding.inflate(LayoutInflater.from(this))
-        actionLogBinding.root.visibility = View.GONE
-        mWindowManager.addView(actionLogBinding.root, mActionLogLayoutParams)
+        actionInfoBinding = ActionInfoBinding.inflate(LayoutInflater.from(this))
+        actionInfoBinding.root.visibility = View.GONE
+        mWindowManager.addView(actionInfoBinding.root, mActionInfoLayoutParams)
 
-        actionLogBinding.ivLogClose.setOnClickListener {
-            setLogView(false)
+        actionInfoBinding.ivClose.setOnClickListener {
+            setInfoView(false)
         }
 
         var x = 0
         var y = 0
-        actionLogBinding.ivLogMove.setOnTouchListener { _, event ->
+        actionInfoBinding.ivMove.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     x = event.rawX.toInt()
@@ -222,12 +234,24 @@ class GlobalActionBarService : AccessibilityService() {
                     x = nowX
                     y = nowY
 
-                    mActionLogLayoutParams.x = mActionLogLayoutParams.x + movedX
-                    mActionLogLayoutParams.y = mActionLogLayoutParams.y + movedY
-                    mWindowManager.updateViewLayout(actionLogBinding.root, mActionLogLayoutParams);
+                    mActionInfoLayoutParams.x = mActionInfoLayoutParams.x + movedX
+                    mActionInfoLayoutParams.y = mActionInfoLayoutParams.y + movedY
+                    mWindowManager.updateViewLayout(actionInfoBinding.root, mActionInfoLayoutParams);
                 }
             }
             return@setOnTouchListener true
+        }
+
+        actionInfoBinding.rvInfo.adapter = fastAdapter
+        actionInfoBinding.rvInfo.layoutManager = LinearLayoutManager(this)
+        fastAdapter.onClickListener = { _, _, item, _ ->
+            if (item.model.node != null) {
+                updateNodeInfo(item.model.node)
+            } else {
+                ClipboardUtils.copyText(item.model.value.toString())
+                ToastUtils.showShort("${item.model.name} 已复制")
+            }
+            true
         }
     }
 
@@ -265,7 +289,7 @@ class GlobalActionBarService : AccessibilityService() {
                 MotionEvent.ACTION_UP -> {
                     x = event.rawX.toInt()
                     y = event.rawY.toInt()
-                    updatePageInfo(x, y)
+                    updateSearchInfo(x, y)
                 }
             }
             return@setOnTouchListener true
@@ -309,7 +333,7 @@ class GlobalActionBarService : AccessibilityService() {
                         XLog.v("steps - ${step.name}")
 
                         //更新日记
-                        updateLogInfo(
+                        updateStepInfo(
                             "${
                                 TimeUtils.millis2String(
                                     System.currentTimeMillis(),
@@ -388,16 +412,16 @@ class GlobalActionBarService : AccessibilityService() {
 
         mLoopStartTime.set(System.currentTimeMillis())
         mStepLog.clear()
+        mStepLogMessage.clear()
 
-        setSearchView(false)
-        setLogView(true)
+        setInfoView(true)
     }
 
     private fun cancelTask() {
         mSnapUpStatus.set(false)
         updateSnapUpButton()
 
-        setLogView(false)
+        setInfoView(false)
     }
 
     private fun updateSnapUpButton() {
@@ -409,38 +433,33 @@ class GlobalActionBarService : AccessibilityService() {
         }
     }
 
-    private suspend fun updateLogInfo(info: String) {
-        if (actionLogBinding.root.isGone) return
+    private suspend fun updateStepInfo(info: String) {
+        if (actionInfoBinding.root.isGone) return
 
-        if (mLogInfo.size >= 6) mLogInfo.removeLast()
-        mLogInfo.addFirst(info)
+        if (mStepLogMessage.size >= 6) mStepLogMessage.removeLast()
+        mStepLogMessage.addFirst(info)
         withContext(Dispatchers.Main) {
-            actionLogBinding.tvLogInfo.text = mLogInfo.joinToString("\n")
+            actionInfoBinding.tvInfo.text = mStepLogMessage.joinToString("\n")
         }
     }
 
-    private fun updatePageInfo(x: Int, y: Int) {
+    private fun updateSearchInfo(x: Int, y: Int) {
+        itemAdapter.clear()
+
         val node = NodeUtil.searchNodeByXY(rootInActiveWindow, x, y).lastOrNull() ?: return
-        var content = "坐标: x$x,y$y"
-        content += "\n页面: $mCurClassNameByRootWindow"
-        content += "\n包名: ${node.packageName}"
-        content += "\n类名: ${node.className}"
-        content += "\nId: ${node.viewIdResourceName}"
-        var index = 0
+
+        var idIndex = 0
         if (!node.viewIdResourceName.isNullOrBlank()) {
             val allSearch =
                 NodeUtil.searchAllNode(rootInActiveWindow, MCNode(EMCNodeType.ID, node.viewIdResourceName.toString()))
-            index = allSearch.indexOf(node)
+            idIndex = allSearch.indexOf(node)
         }
-        content += "\nId索引: $index"
-        content += "\n值: ${node.text}"
+
+        var txtIndex = 0
         if (!node.text.isNullOrBlank()) {
             val allSearch = NodeUtil.searchAllNode(rootInActiveWindow, MCNode(EMCNodeType.TXT, node.text.toString()))
-            index = allSearch.indexOf(node)
+            txtIndex = allSearch.indexOf(node)
         }
-        content += "\n值索引: $index"
-
-
         var temp: AccessibilityNodeInfo? = node
         var depth = 0
         while (temp != null) {
@@ -448,36 +467,135 @@ class GlobalActionBarService : AccessibilityService() {
             depth++
         }
 
-        content += "\n层级: $depth"
-        content += "\n是否选择: ${node.isSelected}"
-        content += "\n是否选中: ${node.isChecked}"
-        content += "\n是否可选中: ${node.isCheckable}"
-        content += "\n是否可点击: ${node.isClickable}"
-        content += "\n是否可见: ${node.isVisibleToUser}"
-        content += "\n是否启用: ${node.isEnabled}"
+        itemAdapter.add(
+            BindingSearchNodeItem(MCNodeMessage("------- 通用属性 -------", "")),
 
-        actionLogBinding.tvLogInfo.text = content
-    }
+            BindingSearchNodeItem(MCNodeMessage("页面", mCurClassNameByRootWindow)),
+            BindingSearchNodeItem(MCNodeMessage("层级", depth)),
+            BindingSearchNodeItem(MCNodeMessage("坐标(x,y)", "$x,$y")),
+            BindingSearchNodeItem(MCNodeMessage("重复索引(Id,值)", "$idIndex,$txtIndex")),
 
-    private fun setLogView(visible: Boolean = false) {
-        mLogInfo.clear()
-        actionLogBinding.tvLogInfo.text = ""
+            BindingSearchNodeItem(MCNodeMessage("------- 控件属性 -------", "")),
 
-        if (visible) {
-            actionLogBinding.root.visibility = View.VISIBLE
-        } else {
-            actionLogBinding.root.visibility = View.GONE
-            actionSearchBinding.root.visibility = View.GONE
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_package_name), node.packageName)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_class_name), node.className)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_id), node.viewIdResourceName)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_text), node.text)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_child_count), node.childCount)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_enabled), node.isEnabled)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_focused), node.isFocused)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_checked), node.isChecked)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_selected), node.isSelected)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_visible_to_user), node.isVisibleToUser)),
+
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_clickable), node.isClickable)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_long_clickable), node.isLongClickable)),
+            BindingSearchNodeItem(
+                MCNodeMessage(
+                    getString(R.string.node_is_context_clickable),
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) node.isContextClickable else ""
+                )
+            ),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_checkable), node.isCheckable)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_editable), node.isEditable)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_focusable), node.isFocusable)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_scrollable), node.isScrollable)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_dismissable), node.isDismissable)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_content_invalid), node.isContentInvalid)),
+        )
+
+        itemAdapter.add(BindingSearchNodeItem(MCNodeMessage("------- 关联控件 -------", "")))
+
+        if (node.parent != null) {
+            itemAdapter.add(BindingSearchNodeItem(MCNodeMessage("父控件", "", node.parent)))
+        }
+
+        repeat(node.childCount) {
+            val childNode = node.getChild(it)
+            itemAdapter.add(
+                BindingSearchNodeItem(
+                    MCNodeMessage(
+                        "子控件${it + 1}",
+                        childNode.className,
+                        childNode
+                    )
+                )
+            )
         }
     }
 
-    private fun setSearchView(visible: Boolean = false) {
-        setLogView(visible)
+    private fun updateNodeInfo(node: AccessibilityNodeInfo?) {
+        itemAdapter.clear()
+        node ?: return
+
+        itemAdapter.add(
+            BindingSearchNodeItem(MCNodeMessage("------- 控件属性 -------", "")),
+
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_package_name), node.packageName)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_class_name), node.className)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_id), node.viewIdResourceName)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_text), node.text)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_child_count), node.childCount)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_enabled), node.isEnabled)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_focused), node.isFocused)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_checked), node.isChecked)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_selected), node.isSelected)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_visible_to_user), node.isVisibleToUser)),
+
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_clickable), node.isClickable)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_long_clickable), node.isLongClickable)),
+            BindingSearchNodeItem(
+                MCNodeMessage(
+                    getString(R.string.node_is_context_clickable),
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) node.isContextClickable else ""
+                )
+            ),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_checkable), node.isCheckable)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_editable), node.isEditable)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_focusable), node.isFocusable)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_scrollable), node.isScrollable)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_dismissable), node.isDismissable)),
+            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_content_invalid), node.isContentInvalid)),
+        )
+
+        itemAdapter.add(BindingSearchNodeItem(MCNodeMessage("------- 关联控件 -------", "")))
+
+        if (node.parent != null) {
+            itemAdapter.add(BindingSearchNodeItem(MCNodeMessage("父控件", "", node.parent)))
+        }
+
+        repeat(node.childCount) {
+            val childNode = node.getChild(it)
+            itemAdapter.add(
+                BindingSearchNodeItem(
+                    MCNodeMessage(
+                        "子控件${it + 1}",
+                        childNode.className,
+                        childNode
+                    )
+                )
+            )
+        }
+    }
+
+    private fun setInfoView(visible: Boolean = false, hasSearch: Boolean = false) {
+        actionInfoBinding.tvInfo.text = ""
+        itemAdapter.clear()
+
+        actionSearchBinding.root.visibility = View.GONE
+        actionInfoBinding.root.visibility = View.GONE
+        actionInfoBinding.rvInfo.visibility = View.GONE
+        actionInfoBinding.tvInfo.visibility = View.GONE
 
         if (visible) {
-            actionSearchBinding.root.visibility = View.VISIBLE
-        } else {
-            actionSearchBinding.root.visibility = View.GONE
+            actionInfoBinding.root.visibility = View.VISIBLE
+
+            if (hasSearch) {
+                actionSearchBinding.root.visibility = View.VISIBLE
+                actionInfoBinding.rvInfo.visibility = View.VISIBLE
+            } else {
+                actionInfoBinding.tvInfo.visibility = View.VISIBLE
+            }
         }
     }
 

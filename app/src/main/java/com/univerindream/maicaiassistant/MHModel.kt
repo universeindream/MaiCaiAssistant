@@ -1,5 +1,7 @@
 package com.univerindream.maicaiassistant
 
+import android.view.accessibility.AccessibilityNodeInfo
+
 enum class EMCNodeType {
     ID,
     TXT,
@@ -223,4 +225,11 @@ data class MCStepLog(
     val index: Int,
     val step: MCStep,
     var executionTime: Long = 0L
+)
+
+
+data class MCNodeMessage(
+    val name: String,
+    val value: Any?,
+    val node: AccessibilityNodeInfo? = null
 )

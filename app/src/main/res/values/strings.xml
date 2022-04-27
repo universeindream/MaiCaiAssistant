@@ -52,7 +52,7 @@
     <string name="node_id">Id</string>
     <string name="node_text">文本值</string>
 
-    <string name="node_child_count">子节点数</string>
+    <string name="node_child_count">子控件数</string>
 
     <string name="node_is_enabled">是否启用</string>
     <string name="node_is_focused">是否焦点光标</string>
