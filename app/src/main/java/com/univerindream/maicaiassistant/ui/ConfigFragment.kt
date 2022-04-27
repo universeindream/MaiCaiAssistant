@@ -27,9 +27,7 @@ import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.io.BufferedWriter
 import java.io.FileOutputStream
-import java.io.OutputStreamWriter
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -47,12 +45,11 @@ class ConfigFragment : Fragment() {
                 XLog.i(result)
                 try {
                     val uri = Uri.parse(result)
+                    val json = GsonUtils.toJson(MHConfig.curMCSolution)
                     Utils.getApp().contentResolver.openFileDescriptor(uri, "w")?.use {
-                        FileOutputStream(it.fileDescriptor).use {
-                            val buf = BufferedWriter(OutputStreamWriter(it))
-                            buf.write(GsonUtils.toJson(MHConfig.curMCSolution))
-                            buf.close()
-                        }
+                        val bufferedWriter = FileOutputStream(it.fileDescriptor).bufferedWriter()
+                        bufferedWriter.write(json)
+                        bufferedWriter.close()
                     }
                     ToastUtils.showShort("方案导出成功")
                 } catch (e: Exception) {
@@ -68,14 +65,9 @@ class ConfigFragment : Fragment() {
 
                 try {
                     val input = requireContext().contentResolver.openInputStream(Uri.parse(result))
-                    if (input == null) {
-                        ToastUtils.showLong("方案导入失败")
-                        return@registerForActivityResult
-                    }
-
-                    val bytes = ByteArray(input.available())
-                    input.read(bytes)
-                    val json = String(bytes)
+                    val bufferedReader = input!!.bufferedReader()
+                    val json = bufferedReader.readText()
+                    bufferedReader.close()
 
                     MHConfig.curMCSolution = GsonUtils.fromJson(json, MCSolution::class.java)
                     ToastUtils.showLong("方案导入成功")
