@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.blankj.utilcode.util.ColorUtils
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.elvishew.xlog.XLog
@@ -164,21 +165,11 @@ class SolutionFragment : Fragment() {
             val handleContent = "操作:${model.handle.type.toStr()}"
             binding.solutionStepHandle.text = handleContent
 
-
-//            var handleContent = "  - 操作:"
-//            handleContent += "\n      - 类型：${model.handle.type.toStr()}"
-//            handleContent += "\n      - 节点类型：${model.handle.node.nodeType.toStr()}"
-//            handleContent += "\n      - 运行前延迟：${model.handle.delayRunBefore}"
-//            handleContent += "\n      - 运行后延迟：${model.handle.delayRunAfter}"
-//            binding.solutionStepHandle.text = handleContent
-//
-//            var condContent = "  - 条件列表:"
-//            model.condList.forEachIndexed { i, s ->
-//                condContent += "\n      - No${i + 1}:"
-//                condContent += "\n          - 类型: " + s.type.toStr()
-//                condContent += "\n          - 节点类型: " + s.node.nodeType.toStr()
-//            }
-//            binding.solutionStepCondList.text = condContent
+            if (model.isEnable) {
+                binding.solutionStepName.setTextColor(ColorUtils.getColor(android.R.color.holo_green_dark))
+            } else {
+                binding.solutionStepName.setTextColor(ColorUtils.getColor(android.R.color.holo_red_dark))
+            }
         }
 
         override fun createBinding(inflater: LayoutInflater, parent: ViewGroup?): ItemStepBinding {
