@@ -25,13 +25,13 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.lang.ref.WeakReference
-import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 
 
 class GlobalActionBarService : AccessibilityService() {
 
-    private val mServiceScope = CoroutineScope(Dispatchers.Main + Job())
+    private val mTaskScope = CoroutineScope(Dispatchers.Main + Job())
+    private var mTaskJob: Job? = null
 
     private val mWindowManager by lazy {
         getSystemService(WINDOW_SERVICE) as WindowManager
@@ -87,11 +87,10 @@ class GlobalActionBarService : AccessibilityService() {
         FastAdapter.with(itemAdapter)
     }
 
-    private var mSnapUpStatus = AtomicBoolean(false)
-    private var mLoopStartTime = AtomicLong(System.currentTimeMillis())
+    private val mInfoList = ArrayDeque<String>()
 
-    private val mStepLogMessage = ArrayDeque<String>()
-    private var mStepLog = LinkedHashMap<Int, MCStepLog>()
+    private var mTaskJobLaunchTime = AtomicLong(System.currentTimeMillis())
+    private var mTaskJobLaunchLog = LinkedHashMap<Int, MCStepLog>()
 
     private var mForegroundPackageName: String = ""
     private var mForegroundClassName: String = ""
@@ -110,14 +109,11 @@ class GlobalActionBarService : AccessibilityService() {
     override fun onServiceConnected() {
         XLog.v("onServiceConnected")
 
-        // Create an overlay and display the action bar
         initPanel()
         initInfo()
         initSearch()
 
         EventBus.getDefault().register(this)
-
-        runLoop()
     }
 
     override fun onDestroy() {
@@ -172,10 +168,10 @@ class GlobalActionBarService : AccessibilityService() {
             MHUtil.stopRingTone()
         }
         actionBarBinding.btnSnapUp.setOnClickListener {
-            if (mSnapUpStatus.get()) {
-                cancelTask()
+            if (it.tag == true) {
+                cancelTaskJob()
             } else {
-                enableTask()
+                launchTaskJob()
             }
         }
 
@@ -297,25 +293,41 @@ class GlobalActionBarService : AccessibilityService() {
         }
     }
 
-    private fun runLoop() {
-        mServiceScope.launch {
-            while (true) {
-                if (mSnapUpStatus.get()) {
-                    XLog.v("loop - curWindowClassName - $mCurClassNameByRootWindow")
+    private fun launchTaskJob() {
+        mTaskJobLaunchTime.set(System.currentTimeMillis())
+        mTaskJobLaunchLog.clear()
 
-                    //任务时长是否达标
-                    if (System.currentTimeMillis() > mLoopStartTime.get() + MHData.buyMinTime * 1000 * 60) {
-                        val message = "已执行了 ${MHData.buyMinTime} 分钟"
-                        XLog.i("loop - %s", message)
-                        MHUtil.notify("完成提示", message)
-                        cancelTask()
-                        continue
-                    }
+        actionBarBinding.btnSnapUp.tag = true
+        actionBarBinding.btnSnapUp.setImageResource(R.drawable.baseline_stop_24)
+        setInfoView(true)
 
-                    //循环执行步骤
-                    val steps = MHConfig.curMCSolution.steps.filter { it.isEnable }
-                    for ((index, step) in steps.withIndex()) {
-                        val isMatchCond = step.condList.all {
+        mTaskJob?.cancel()
+        mTaskJob = null
+        mTaskJob = mTaskScope.launch {
+            val solution = MHConfig.curMCSolution
+            loop@ while (true) {
+                XLog.v("loop - curWindowClassName - $mCurClassNameByRootWindow")
+
+                //任务时长是否达标
+                if (System.currentTimeMillis() > mTaskJobLaunchTime.get() + MHData.buyMinTime * 1000 * 60) {
+                    val message = "已执行了 ${MHData.buyMinTime} 分钟"
+                    XLog.i("loop - %s", message)
+                    MHUtil.notify("完成提示", message)
+                    cancelTaskJob()
+                    continue
+                }
+
+                //循环执行步骤
+                val steps = solution.steps
+                for ((index, step) in steps.withIndex()) {
+                    //步骤未启用
+                    if (!step.isEnable) continue
+
+                    //步骤只执行一次
+                    if (step.isExecuteOnce && mTaskJobLaunchLog.containsKey(index)) continue
+
+                    //步骤不匹配
+                    if (!step.condList.all {
                             MHUtil.stepCond(
                                 rootInActiveWindow,
                                 mForegroundPackageName,
@@ -323,124 +335,94 @@ class GlobalActionBarService : AccessibilityService() {
                                 it.type,
                                 it.node
                             )
-                        }
-                        if (!isMatchCond) continue
+                        }) continue
 
-                        //步骤只执行一次
-                        if (step.isExecuteOnce && mStepLog.containsKey(index)) {
-                            continue
-                        }
+                    val stepName = "步骤${index + 1}.${step.name}"
+                    XLog.v("steps - $stepName")
 
-                        XLog.v("steps - ${step.name}")
+                    //步骤日志
+                    val stepLog = "${TimeUtils.millis2String(System.currentTimeMillis(), "mm:ss.SSS")} $stepName"
+                    updateStepInfo(stepLog)
 
-                        //更新日记
-                        updateStepInfo(
-                            "${
-                                TimeUtils.millis2String(
-                                    System.currentTimeMillis(),
-                                    "mm:ss SSS"
-                                )
-                            } ${step.name}"
-                        )
-
-                        //步骤记录
-                        val prevLogStep = mStepLog.values.lastOrNull()
-                        if (prevLogStep == null || prevLogStep.index != index || step.isRepeat) {
-                            mStepLog.remove(index)
-                            mStepLog[index] = MCStepLog(index, step, System.currentTimeMillis())
-                        }
-
-                        //步骤警报
-                        if (step.isAlarm) {
-                            MHUtil.notify("响铃提示", "\"${step.name}\" 步骤，触发响铃")
-                            MHUtil.playRingTone()
-                        }
-
-                        //步骤人工
-                        if (step.isManual) {
-                            MHUtil.notify("人工提示", "\"${step.name}\" 步骤，人工操作")
-                            cancelTask()
-                            break
-                        }
-
-                        val handleResult =
-                            MHUtil.stepHandle(this@GlobalActionBarService, rootInActiveWindow, step.handle)
-                        XLog.v("steps - ${step.name} - 执行结果 - $handleResult")
-
-                        //步骤失败返回
-                        if (step.isFailBack && !handleResult) {
-                            repeat(step.failBackCount) {
-                                performGlobalAction(GLOBAL_ACTION_BACK)
-                                delay(200)
-                            }
-                            continue
-                        }
-
-                        //步骤不可重复且最后一个
-                        if (!step.isRepeat && step == steps.last()) {
-                            MHUtil.notify("终止提示", "\"${step.name}\" 为最后步骤，终止任务")
-                            cancelTask()
-                        }
-
-                        //符合条件，终止本次流程
-                        break
+                    //步骤记录
+                    val prevLogStep = mTaskJobLaunchLog.values.lastOrNull()
+                    if (prevLogStep == null || prevLogStep.index != index || step.isRepeat) {
+                        mTaskJobLaunchLog.remove(index)
+                        mTaskJobLaunchLog[index] = MCStepLog(index, step, System.currentTimeMillis())
                     }
 
-                    //10s 异常捕捉
-                    mStepLog.values.lastOrNull()?.let {
-                        val executeTime = it.executionTime
-                        if (executeTime + 10 * 1000 < System.currentTimeMillis()) {
-                            val message = "\"${it.step.name}\" 步骤执行失败!!!"
-                            XLog.e("${it.step.name} %s", message)
-                            MHUtil.notify("失败提示", message)
-                            ToastUtils.showLong(message)
-                            if (MHData.wrongAlarmStatus) MHUtil.playRingTone()
-                            cancelTask()
-                        }
+                    //步骤警报
+                    if (step.isAlarm) {
+                        MHUtil.notify("响铃提示", "$stepName，触发响铃")
+                        MHUtil.playRingTone()
                     }
 
-                    delay(100)
-                } else {
-                    delay(1000)
+                    //步骤人工
+                    if (step.isManual) {
+                        MHUtil.notify("人工提示", "$stepName，人工操作")
+                        cancelTaskJob()
+                        break@loop
+                    }
+
+                    val handleResult =
+                        MHUtil.stepHandle(this@GlobalActionBarService, rootInActiveWindow, step.handle)
+                    XLog.v("steps - $stepName - 执行结果 - $handleResult")
+
+                    //步骤失败返回
+                    if (step.isFailBack && !handleResult) {
+                        repeat(step.failBackCount) {
+                            performGlobalAction(GLOBAL_ACTION_BACK)
+                            delay(200)
+                        }
+                        continue
+                    }
+
+                    //步骤不可重复且最后一个
+                    if (!step.isRepeat && step == steps.last()) {
+                        MHUtil.notify("终止提示", "$stepName 为最后步骤，终止任务")
+                        cancelTaskJob()
+                        break@loop
+                    }
+
+                    //步骤达标, 终止本次流程
+                    break
                 }
+
+                //10s 异常捕捉
+                mTaskJobLaunchLog.values.lastOrNull()?.let {
+                    val executeTime = it.executionTime
+                    if (executeTime + 10 * 1000 < System.currentTimeMillis()) {
+                        val stepName = "步骤${it.index + 1}.${it.step.name}"
+                        val message = "\"$stepName\" 执行失败!!!"
+                        XLog.e("$stepName - %s", message)
+                        MHUtil.notify("失败提示", message)
+                        ToastUtils.showLong(message)
+                        if (MHData.wrongAlarmStatus) MHUtil.playRingTone()
+                        cancelTaskJob()
+                    }
+                }
+
+                delay(100)
             }
         }
     }
 
-    private fun enableTask() {
-        mSnapUpStatus.set(true)
-        updateSnapUpButton()
-
-        mLoopStartTime.set(System.currentTimeMillis())
-        mStepLog.clear()
-        mStepLogMessage.clear()
-
-        setInfoView(true)
-    }
-
-    private fun cancelTask() {
-        mSnapUpStatus.set(false)
-        updateSnapUpButton()
-
+    private fun cancelTaskJob() {
+        actionBarBinding.btnSnapUp.tag = false
+        actionBarBinding.btnSnapUp.setImageResource(R.drawable.baseline_play_arrow_24)
         setInfoView(false)
-    }
 
-    private fun updateSnapUpButton() {
-        if (mSnapUpStatus.get() == actionBarBinding.btnSnapUp.tag) return
-        mServiceScope.launch {
-            withContext(Dispatchers.Main) {
-                actionBarBinding.btnSnapUp.setImageResource(if (mSnapUpStatus.get()) R.drawable.baseline_stop_24 else R.drawable.baseline_play_arrow_24)
-            }
-        }
+        mTaskJob?.cancel()
+        mTaskJob = null
     }
 
     private suspend fun updateStepInfo(info: String) {
         if (actionInfoBinding.root.isGone) return
 
-        if (mStepLogMessage.size >= 6) mStepLogMessage.removeLast()
-        mStepLogMessage.addFirst(info)
+        if (mInfoList.size >= 6) mInfoList.removeLast()
+        mInfoList.addFirst(info)
         withContext(Dispatchers.Main) {
-            actionInfoBinding.tvInfo.text = mStepLogMessage.joinToString("\n")
+            actionInfoBinding.tvInfo.text = mInfoList.joinToString("\n")
         }
     }
 
@@ -581,6 +563,7 @@ class GlobalActionBarService : AccessibilityService() {
 
     private fun setInfoView(visible: Boolean = false, hasSearch: Boolean = false) {
         actionInfoBinding.tvInfo.text = ""
+        mInfoList.clear()
         itemAdapter.clear()
 
         actionSearchBinding.root.visibility = View.GONE
@@ -605,7 +588,7 @@ class GlobalActionBarService : AccessibilityService() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun subAlarm(event: SubAlarm) {
         XLog.d("subAlarm")
-        enableTask()
+        launchTaskJob()
     }
 
 }

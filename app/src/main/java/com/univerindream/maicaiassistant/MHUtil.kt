@@ -235,8 +235,6 @@ object MHUtil {
         )
     }
 
-    fun scheduleRingTone() = if (ringtone.isPlaying) ringtone.stop() else ringtone.play()
-
     fun playRingTone() {
         if (!ringtone.isPlaying) ringtone.play()
     }
