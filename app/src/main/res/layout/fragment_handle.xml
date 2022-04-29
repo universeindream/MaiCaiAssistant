@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:hint="操作类型：">
+                android:hint="操作类型">
 
                 <AutoCompleteTextView
                     android:id="@+id/fragment_handle_type"
@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:hint="执行前延迟(ms):"
+                android:hint="等待多久后，执行当前步骤(毫秒)"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:hint="执行后延迟(ms):"
+                android:hint="等待多久后，执行下一步骤(毫秒)"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -67,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:hint="目标类型">
+                android:hint="执行目标">
 
 
                 <AutoCompleteTextView
@@ -83,7 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:hint="目标值:"
+                android:hint="目标值(ID、文本)"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -97,9 +97,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:hint="目标索引:"
+                android:hint="目标索引"
                 app:endIconMode="clear_text"
-                app:helperText="节点重复时，取第几个，从 0 开始">
+                app:helperText="控件重复时，取第几个，从 0 开始">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -113,7 +113,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:hint="目标包名:"
+                android:hint="目标包名(软件包名、控件包名)"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -128,14 +128,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:text="选择应用，获取包名" />
+                android:text="选择应用，获取软件包名" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/fragment_handle_node_class_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:hint="目标类名:"
+                android:hint="目标类名(页面类名、控件类名)"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText

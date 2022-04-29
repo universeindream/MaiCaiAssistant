@@ -23,7 +23,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:hint="条件类型：">
+                android:hint="条件类型">
 
                 <AutoCompleteTextView
                     android:id="@+id/fragment_cond_type"
@@ -58,7 +58,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:hint="目标值:"
+                android:hint="目标值(ID、文本)"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -92,7 +92,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:hint="目标包名:"
+                android:hint="目标包名(软件包名、控件包名)"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -116,7 +116,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:hint="目标类名:"
+                android:hint="目标类名(页面类名、控件类名)"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText

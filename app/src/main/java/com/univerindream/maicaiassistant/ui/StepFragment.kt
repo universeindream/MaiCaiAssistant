@@ -175,9 +175,11 @@ class StepFragment : Fragment() {
         binding.stepFailBack.isChecked = mStep.isFailBack
         binding.stepFailBackCount.editText?.setText("${mStep.failBackCount}")
 
-        var handleContent = "类型：${mStep.handle.type.toStr()}"
-        handleContent += "\n执行前延迟(ms)：${mStep.handle.delayRunBefore}"
-        handleContent += "\n执行后延迟(ms)：${mStep.handle.delayRunAfter}"
+        val delayRunBefore = mStep.handle.delayRunBefore
+        val delayRunAfter = mStep.handle.delayRunAfter
+        var handleContent = "${mStep.handle.type.toStr()} - \"${mStep.handle.node.nodeKey}\""
+        if (delayRunBefore > 0) handleContent += "\n> 等待 ${delayRunBefore / 1000.0} 秒后，执行当前步骤"
+        if (delayRunAfter > 0) handleContent += "\n> 等待 ${delayRunAfter / 1000.0} 秒后，执行下一步骤"
         binding.stepHandleValue.text = handleContent
 
         itemAdapter.clear()
@@ -201,7 +203,7 @@ class StepFragment : Fragment() {
             get() = R.id.adapter_cond_item
 
         override fun bindView(binding: ItemCondBinding, payloads: List<Any>) {
-            val content = "条件${tag}: ${model.type.toStr()}"
+            val content = "${tag}、${model.type.toStr()} - \"${model.node.nodeKey}\""
             binding.adapterCondNo.text = content
         }
 

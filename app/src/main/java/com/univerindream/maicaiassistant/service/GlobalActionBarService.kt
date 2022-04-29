@@ -344,8 +344,8 @@ class GlobalActionBarService : AccessibilityService() {
                     if (!step.condList.all {
                             MHUtil.stepCond(
                                 rootInActiveWindow,
-                                mForegroundPackageName,
-                                mForegroundClassName,
+                                mCurPackageName,
+                                mCurActivityName,
                                 it.type,
                                 it.node
                             )

@@ -12,20 +12,20 @@ enum class EMCNodeType {
     fun toStr(): String {
 
         return when (this) {
-            ID -> "ID"
-            TXT -> "文本"
-            PACKAGE_NAME -> "包名"
-            CLASSNAME -> "类名"
+            ID -> "控件 - 依据 ID"
+            TXT -> "控件 - 依据文本"
+            PACKAGE_NAME -> "软件 - 依据包名"
+            CLASSNAME -> "页面 - 依据类名"
         }
     }
 
     companion object {
         fun strOf(str: String): EMCNodeType {
             return when (str) {
-                "ID" -> ID
-                "文本" -> TXT
-                "包名" -> PACKAGE_NAME
-                "类名" -> CLASSNAME
+                "控件 - 依据 ID" -> ID
+                "控件 - 依据文本" -> TXT
+                "软件 - 依据包名" -> PACKAGE_NAME
+                "页面 - 依据类名" -> CLASSNAME
                 else -> throw Exception("EMCNodeType strOf error")
             }
         }
@@ -54,18 +54,18 @@ enum class EMCCond {
 
         return when (this) {
             APP_IS_BACKGROUND -> "软件在后台"
-            EQ_PACKAGE_NAME -> "包名一致"
-            EQ_CLASS_NAME -> "类名一致"
-            NODE_EXIST -> "目标存在"
-            NODE_NO_EXIST -> "目标不存在"
-            NODE_VISIBLE -> "目标可见"
-            NODE_NO_VISIBLE -> "目标不可见"
-            NODE_CAN_CLICK -> "目标可点击"
-            NODE_NOT_CLICK -> "目标不可点击"
-            NODE_SELECTED -> "目标已选择"
-            NODE_NOT_SELECTED -> "目标未选择"
-            NODE_CHECKED -> "目标已选中"
-            NODE_NOT_CHECKED -> "目标未选中"
+            EQ_PACKAGE_NAME -> "软件包名一致"
+            EQ_CLASS_NAME -> "页面类名一致"
+            NODE_EXIST -> "控件存在"
+            NODE_NO_EXIST -> "控件不存在"
+            NODE_VISIBLE -> "控件可见"
+            NODE_NO_VISIBLE -> "控件不可见"
+            NODE_CAN_CLICK -> "控件可点击"
+            NODE_NOT_CLICK -> "控件不可点击"
+            NODE_SELECTED -> "控件已选择"
+            NODE_NOT_SELECTED -> "控件未选择"
+            NODE_CHECKED -> "控件已选中"
+            NODE_NOT_CHECKED -> "控件未选中"
         }
     }
 
@@ -74,18 +74,18 @@ enum class EMCCond {
         fun strOf(str: String): EMCCond {
             return when (str) {
                 "软件在后台" -> APP_IS_BACKGROUND
-                "包名一致" -> EQ_PACKAGE_NAME
-                "类名一致" -> EQ_CLASS_NAME
-                "目标存在" -> NODE_EXIST
-                "目标不存在" -> NODE_NO_EXIST
-                "目标可见" -> NODE_VISIBLE
-                "目标不可见" -> NODE_NO_VISIBLE
-                "目标可点击" -> NODE_CAN_CLICK
-                "目标不可点击" -> NODE_NOT_CLICK
-                "目标已选择" -> NODE_SELECTED
-                "目标未选择" -> NODE_NOT_SELECTED
-                "目标已选中" -> NODE_CHECKED
-                "目标未选中" -> NODE_NOT_CHECKED
+                "软件包名一致" -> EQ_PACKAGE_NAME
+                "页面类名一致" -> EQ_CLASS_NAME
+                "控件存在" -> NODE_EXIST
+                "控件不存在" -> NODE_NO_EXIST
+                "控件可见" -> NODE_VISIBLE
+                "控件不可见" -> NODE_NO_VISIBLE
+                "控件可点击" -> NODE_CAN_CLICK
+                "控件不可点击" -> NODE_NOT_CLICK
+                "控件已选择" -> NODE_SELECTED
+                "控件未选择" -> NODE_NOT_SELECTED
+                "控件已选中" -> NODE_CHECKED
+                "控件未选中" -> NODE_NOT_CHECKED
                 else -> throw Exception("EMCCond strOf error")
             }
         }
