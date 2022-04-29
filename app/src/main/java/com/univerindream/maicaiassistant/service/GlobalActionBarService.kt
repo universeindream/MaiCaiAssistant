@@ -93,6 +93,9 @@ class GlobalActionBarService : AccessibilityService() {
     private var mTaskJobLaunchTime = AtomicLong(System.currentTimeMillis())
     private var mTaskJobLaunchLog = LinkedHashMap<Int, MCStepLog>()
 
+    private var mCurPackageName: String = "-"
+    private var mCurActivityName: String = "-"
+
     private var mForegroundPackageName: String = ""
     private var mForegroundClassName: String = ""
     private var mForegroundWindowId: Int = -1
@@ -134,7 +137,14 @@ class GlobalActionBarService : AccessibilityService() {
             }
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 XLog.v("TYPE_WINDOW_STATE_CHANGED - %s - %s", event, source)
+
+                if (ActivityUtils.isActivityExists(pName, cName)) {
+                    mCurPackageName = pName
+                    mCurActivityName = cName
+                }
+
                 if (pName == "com.android.systemui" || pName == "android") return
+
                 mForegroundPackageName = pName
                 mForegroundClassName = cName
                 mForegroundWindowId = windowId
@@ -244,7 +254,7 @@ class GlobalActionBarService : AccessibilityService() {
         actionInfoBinding.rvInfo.layoutManager = LinearLayoutManager(this)
         fastAdapter.onClickListener = { _, _, item, _ ->
             if (item.model.node != null) {
-                showNodeInfoToSearchInfo(item.model.node?.get())
+                updateNodeInfoToSearchInfo(item.model.node?.get())
             } else {
                 ClipboardUtils.copyText(item.model.value.toString())
                 ToastUtils.showShort("${item.model.name} 已复制")
@@ -289,7 +299,7 @@ class GlobalActionBarService : AccessibilityService() {
                     y = event.rawY.toInt()
 
                     NodeUtil.searchNodeByXY(rootInActiveWindow, x, y).lastOrNull()?.let {
-                        showNodeInfoToSearchInfo(it)
+                        updateNodeInfoToSearchInfo(it)
                     }
                 }
             }
@@ -430,7 +440,7 @@ class GlobalActionBarService : AccessibilityService() {
         }
     }
 
-    private fun showNodeInfoToSearchInfo(node: AccessibilityNodeInfo?) {
+    private fun updateNodeInfoToSearchInfo(node: AccessibilityNodeInfo?) {
         itemAdapter.clear()
         node ?: return
 
@@ -456,9 +466,13 @@ class GlobalActionBarService : AccessibilityService() {
         val rect = Rect()
         node.getBoundsInScreen(rect)
 
+        val appInfo = AppUtils.getAppInfo(mCurPackageName)
+
         itemAdapter.add(
             BindingSearchNodeItem(MCNodeMessage("------- 通用属性 -------", "")),
-            BindingSearchNodeItem(MCNodeMessage("页面", mCurClassNameByRootWindow)),
+            BindingSearchNodeItem(MCNodeMessage("软件", appInfo?.name ?: "-")),
+            BindingSearchNodeItem(MCNodeMessage("软件包", mCurPackageName)),
+            BindingSearchNodeItem(MCNodeMessage("页面类", mCurActivityName)),
 
             BindingSearchNodeItem(MCNodeMessage("------- 控件属性 -------", "")),
             BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_package_name), node.packageName)),
@@ -468,7 +482,7 @@ class GlobalActionBarService : AccessibilityService() {
             BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_text), node.text)),
             BindingSearchNodeItem(MCNodeMessage("文本索引", "$txtIndex")),
             BindingSearchNodeItem(MCNodeMessage("层级", depth)),
-            BindingSearchNodeItem(MCNodeMessage("坐标(上,下,左,右)", rect.toShortString())),
+            BindingSearchNodeItem(MCNodeMessage("位置", rect.toShortString())),
             BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_child_count), node.childCount)),
             BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_enabled), node.isEnabled)),
             BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_focused), node.isFocused)),
