@@ -1,6 +1,7 @@
 package com.univerindream.maicaiassistant
 
 import android.view.accessibility.AccessibilityNodeInfo
+import java.lang.ref.WeakReference
 
 enum class EMCNodeType {
     ID,
@@ -231,5 +232,5 @@ data class MCStepLog(
 data class MCNodeMessage(
     val name: String,
     val value: Any?,
-    val node: AccessibilityNodeInfo? = null
+    val node: WeakReference<AccessibilityNodeInfo>? = null
 )

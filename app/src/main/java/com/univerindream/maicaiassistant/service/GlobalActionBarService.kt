@@ -24,6 +24,7 @@ import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.lang.ref.WeakReference
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 
@@ -246,7 +247,7 @@ class GlobalActionBarService : AccessibilityService() {
         actionInfoBinding.rvInfo.layoutManager = LinearLayoutManager(this)
         fastAdapter.onClickListener = { _, _, item, _ ->
             if (item.model.node != null) {
-                updateNodeInfo(item.model.node)
+                updateNodeInfo(item.model.node?.get())
             } else {
                 ClipboardUtils.copyText(item.model.value.toString())
                 ToastUtils.showShort("${item.model.name} 已复制")
@@ -507,7 +508,7 @@ class GlobalActionBarService : AccessibilityService() {
         itemAdapter.add(BindingSearchNodeItem(MCNodeMessage("------- 关联控件 -------", "")))
 
         if (node.parent != null) {
-            itemAdapter.add(BindingSearchNodeItem(MCNodeMessage("父控件", "", node.parent)))
+            itemAdapter.add(BindingSearchNodeItem(MCNodeMessage("父控件", "", WeakReference(node.parent))))
         }
 
         repeat(node.childCount) {
@@ -517,7 +518,7 @@ class GlobalActionBarService : AccessibilityService() {
                     MCNodeMessage(
                         "子控件${it + 1}",
                         childNode.className,
-                        childNode
+                        WeakReference(node.parent)
                     )
                 )
             )
@@ -561,7 +562,7 @@ class GlobalActionBarService : AccessibilityService() {
         itemAdapter.add(BindingSearchNodeItem(MCNodeMessage("------- 关联控件 -------", "")))
 
         if (node.parent != null) {
-            itemAdapter.add(BindingSearchNodeItem(MCNodeMessage("父控件", "", node.parent)))
+            itemAdapter.add(BindingSearchNodeItem(MCNodeMessage("父控件", "", WeakReference(node.parent))))
         }
 
         repeat(node.childCount) {
@@ -571,7 +572,7 @@ class GlobalActionBarService : AccessibilityService() {
                     MCNodeMessage(
                         "子控件${it + 1}",
                         childNode.className,
-                        childNode
+                        WeakReference(childNode)
                     )
                 )
             )
