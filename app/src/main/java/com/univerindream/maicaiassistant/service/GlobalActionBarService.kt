@@ -3,6 +3,7 @@ package com.univerindream.maicaiassistant.service
 import android.accessibilityservice.AccessibilityService
 import android.annotation.SuppressLint
 import android.graphics.PixelFormat
+import android.graphics.Rect
 import android.os.Build
 import android.view.*
 import android.view.accessibility.AccessibilityEvent
@@ -243,7 +244,7 @@ class GlobalActionBarService : AccessibilityService() {
         actionInfoBinding.rvInfo.layoutManager = LinearLayoutManager(this)
         fastAdapter.onClickListener = { _, _, item, _ ->
             if (item.model.node != null) {
-                updateNodeInfo(item.model.node?.get())
+                showNodeInfoToSearchInfo(item.model.node?.get())
             } else {
                 ClipboardUtils.copyText(item.model.value.toString())
                 ToastUtils.showShort("${item.model.name} 已复制")
@@ -286,7 +287,10 @@ class GlobalActionBarService : AccessibilityService() {
                 MotionEvent.ACTION_UP -> {
                     x = event.rawX.toInt()
                     y = event.rawY.toInt()
-                    updateSearchInfo(x, y)
+
+                    NodeUtil.searchNodeByXY(rootInActiveWindow, x, y).lastOrNull()?.let {
+                        showNodeInfoToSearchInfo(it)
+                    }
                 }
             }
             return@setOnTouchListener true
@@ -426,10 +430,9 @@ class GlobalActionBarService : AccessibilityService() {
         }
     }
 
-    private fun updateSearchInfo(x: Int, y: Int) {
+    private fun showNodeInfoToSearchInfo(node: AccessibilityNodeInfo?) {
         itemAdapter.clear()
-
-        val node = NodeUtil.searchNodeByXY(rootInActiveWindow, x, y).lastOrNull() ?: return
+        node ?: return
 
         var idIndex = 0
         if (!node.viewIdResourceName.isNullOrBlank()) {
@@ -450,20 +453,22 @@ class GlobalActionBarService : AccessibilityService() {
             depth++
         }
 
+        val rect = Rect()
+        node.getBoundsInScreen(rect)
+
         itemAdapter.add(
             BindingSearchNodeItem(MCNodeMessage("------- 通用属性 -------", "")),
-
             BindingSearchNodeItem(MCNodeMessage("页面", mCurClassNameByRootWindow)),
-            BindingSearchNodeItem(MCNodeMessage("层级", depth)),
-            BindingSearchNodeItem(MCNodeMessage("坐标(x,y)", "$x,$y")),
-            BindingSearchNodeItem(MCNodeMessage("重复索引(Id,值)", "$idIndex,$txtIndex")),
 
             BindingSearchNodeItem(MCNodeMessage("------- 控件属性 -------", "")),
-
             BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_package_name), node.packageName)),
             BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_class_name), node.className)),
             BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_id), node.viewIdResourceName)),
+            BindingSearchNodeItem(MCNodeMessage("Id 索引", "$idIndex")),
             BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_text), node.text)),
+            BindingSearchNodeItem(MCNodeMessage("文本索引", "$txtIndex")),
+            BindingSearchNodeItem(MCNodeMessage("层级", depth)),
+            BindingSearchNodeItem(MCNodeMessage("坐标(上,下,左,右)", rect.toShortString())),
             BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_child_count), node.childCount)),
             BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_enabled), node.isEnabled)),
             BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_focused), node.isFocused)),
@@ -501,60 +506,6 @@ class GlobalActionBarService : AccessibilityService() {
                         "子控件${it + 1}",
                         childNode.className,
                         WeakReference(node.parent)
-                    )
-                )
-            )
-        }
-    }
-
-    private fun updateNodeInfo(node: AccessibilityNodeInfo?) {
-        itemAdapter.clear()
-        node ?: return
-
-        itemAdapter.add(
-            BindingSearchNodeItem(MCNodeMessage("------- 控件属性 -------", "")),
-
-            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_package_name), node.packageName)),
-            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_class_name), node.className)),
-            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_id), node.viewIdResourceName)),
-            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_text), node.text)),
-            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_child_count), node.childCount)),
-            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_enabled), node.isEnabled)),
-            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_focused), node.isFocused)),
-            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_checked), node.isChecked)),
-            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_selected), node.isSelected)),
-            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_visible_to_user), node.isVisibleToUser)),
-
-            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_clickable), node.isClickable)),
-            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_long_clickable), node.isLongClickable)),
-            BindingSearchNodeItem(
-                MCNodeMessage(
-                    getString(R.string.node_is_context_clickable),
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) node.isContextClickable else ""
-                )
-            ),
-            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_checkable), node.isCheckable)),
-            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_editable), node.isEditable)),
-            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_focusable), node.isFocusable)),
-            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_scrollable), node.isScrollable)),
-            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_dismissable), node.isDismissable)),
-            BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_is_content_invalid), node.isContentInvalid)),
-        )
-
-        itemAdapter.add(BindingSearchNodeItem(MCNodeMessage("------- 关联控件 -------", "")))
-
-        if (node.parent != null) {
-            itemAdapter.add(BindingSearchNodeItem(MCNodeMessage("父控件", "", WeakReference(node.parent))))
-        }
-
-        repeat(node.childCount) {
-            val childNode = node.getChild(it)
-            itemAdapter.add(
-                BindingSearchNodeItem(
-                    MCNodeMessage(
-                        "子控件${it + 1}",
-                        childNode.className,
-                        WeakReference(childNode)
                     )
                 )
             )
