@@ -288,7 +288,7 @@ class GlobalActionBarService : AccessibilityService() {
 
         var x = 0
         var y = 0
-        actionSearchBinding.ivSearchMove.setOnTouchListener { _, event ->
+        actionSearchBinding.ivSearchMove.setOnTouchListener { view, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     x = event.rawX.toInt()
@@ -459,6 +459,14 @@ class GlobalActionBarService : AccessibilityService() {
         itemAdapter.clear()
         node ?: return
 
+        val appInfo = AppUtils.getAppInfo(mCurPackageNameByRootWindow)
+        itemAdapter.add(
+            BindingSearchNodeItem(MCNodeMessage("------- 通用属性 -------", "")),
+            BindingSearchNodeItem(MCNodeMessage("软件名", appInfo?.name ?: "-")),
+            BindingSearchNodeItem(MCNodeMessage("软件包名", mCurPackageNameByRootWindow)),
+            BindingSearchNodeItem(MCNodeMessage("页面类名", mCurActivityNameByRootWindow)),
+        )
+
         var idIndex = 0
         if (!node.viewIdResourceName.isNullOrBlank()) {
             val allSearch =
@@ -481,14 +489,7 @@ class GlobalActionBarService : AccessibilityService() {
         val rect = Rect()
         node.getBoundsInScreen(rect)
 
-        val appInfo = AppUtils.getAppInfo(mCurPackageNameByRootWindow)
-
         itemAdapter.add(
-            BindingSearchNodeItem(MCNodeMessage("------- 通用属性 -------", "")),
-            BindingSearchNodeItem(MCNodeMessage("软件", appInfo?.name ?: "-")),
-            BindingSearchNodeItem(MCNodeMessage("软件包", mCurPackageNameByRootWindow)),
-            BindingSearchNodeItem(MCNodeMessage("页面类", mCurActivityNameByRootWindow)),
-
             BindingSearchNodeItem(MCNodeMessage("------- 控件属性 -------", "")),
             BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_package_name), node.packageName)),
             BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_class_name), node.className)),

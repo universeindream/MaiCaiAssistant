@@ -47,8 +47,8 @@
     <string name="previous">Previous</string>
 
 
-    <string name="node_package_name">包名</string>
-    <string name="node_class_name">类名</string>
+    <string name="node_package_name">控件包名</string>
+    <string name="node_class_name">控件类名</string>
     <string name="node_id">Id</string>
     <string name="node_text">文本值</string>
 
