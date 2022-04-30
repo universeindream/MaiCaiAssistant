@@ -334,10 +334,6 @@ class GlobalActionBarService : AccessibilityService() {
         mTaskJob = mTaskScope.launch(Dispatchers.IO) {
             val solution = MHConfig.curMCSolution
             loop@ while (isActive) {
-                val pn = mCurPackageNameByRootWindow
-                val an = mCurActivityNameByRootWindow
-                XLog.v("loop - mCurPackageNameByRootWindow,mCurActivityNameByRootWindow - $pn,$an")
-
                 //任务时长是否达标
                 if (System.currentTimeMillis() > mTaskJobLaunchTime.get() + MHData.buyMinTime * 1000 * 60) {
                     val message = "已执行了 ${MHData.buyMinTime} 分钟"
@@ -357,7 +353,15 @@ class GlobalActionBarService : AccessibilityService() {
                     if (step.isExecuteOnce && mTaskJobLaunchLog.containsKey(index)) continue
 
                     //步骤不匹配
-                    val isMatch = step.condList.all { MHUtil.stepCond(rootInActiveWindow, pn, an, it.type, it.node) }
+                    val isMatch = step.condList.all {
+                        MHUtil.stepCond(
+                            rootInActiveWindow,
+                            mPackageNameByWindowId,
+                            mActivityNameByWindowId,
+                            it.type,
+                            it.node
+                        )
+                    }
                     if (!isMatch) continue
 
                     val stepName = "步骤${index + 1}.${step.name}"
@@ -426,8 +430,6 @@ class GlobalActionBarService : AccessibilityService() {
                         break@loop
                     }
                 }
-
-                delay(100)
             }
         }
     }

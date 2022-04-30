@@ -29,8 +29,8 @@ object MHUtil {
      */
     fun stepCond(
         rootInActiveWindow: AccessibilityNodeInfo?,
-        foregroundPackageName: String,
-        foregroundClassName: String,
+        packageNameByWindowId: Map<Int, String>,
+        activityNameByWindowId: Map<Int, String>,
         cond: EMCCond,
         condNode: MCNode
     ): Boolean {
@@ -38,8 +38,8 @@ object MHUtil {
             EMCCond.APP_IS_BACKGROUND -> {
                 return rootInActiveWindow?.packageName != condNode.packageName
             }
-            EMCCond.EQ_PACKAGE_NAME -> foregroundPackageName == condNode.packageName
-            EMCCond.EQ_CLASS_NAME -> foregroundClassName == condNode.className
+            EMCCond.EQ_PACKAGE_NAME -> packageNameByWindowId[rootInActiveWindow?.windowId] == condNode.packageName
+            EMCCond.EQ_CLASS_NAME -> activityNameByWindowId[rootInActiveWindow?.windowId] == condNode.className
             EMCCond.NODE_EXIST -> {
                 return NodeUtil.isExist(rootInActiveWindow, condNode)
             }
