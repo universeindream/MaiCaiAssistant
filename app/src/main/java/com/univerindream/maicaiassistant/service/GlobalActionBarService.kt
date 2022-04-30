@@ -96,13 +96,28 @@ class GlobalActionBarService : AccessibilityService() {
     private var mCurPackageName: String = "-"
     private var mCurActivityName: String = "-"
 
-    private var mForegroundPackageName: String = ""
-    private var mForegroundClassName: String = ""
-    private var mForegroundWindowId: Int = -1
-
-    private var mClassNameByWindowId = mutableMapOf<Int, String>()
-    private val mCurClassNameByRootWindow: String
-        get() = mClassNameByWindowId[rootInActiveWindow?.windowId] ?: ""
+    private var mPackageNameByWindowId = mutableMapOf<Int, String>()
+    private var mActivityNameByWindowId = mutableMapOf<Int, String>()
+    private val mCurPackageNameByRootWindow: String
+        get() {
+            val pn = mPackageNameByWindowId[rootInActiveWindow?.windowId]
+            return if (pn.isNullOrBlank()) {
+                mCurPackageName
+            } else {
+                mCurPackageName = pn
+                pn
+            }
+        }
+    private val mCurActivityNameByRootWindow: String
+        get() {
+            val cn = mActivityNameByWindowId[rootInActiveWindow?.windowId]
+            return if (cn.isNullOrBlank()) {
+                mCurActivityName
+            } else {
+                mCurActivityName = cn
+                cn
+            }
+        }
 
     override fun onCreate() {
         super.onCreate()
@@ -137,18 +152,15 @@ class GlobalActionBarService : AccessibilityService() {
             }
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 XLog.v("TYPE_WINDOW_STATE_CHANGED - %s - %s", event, source)
+                mTaskScope.launch {
+                    if (ActivityUtils.isActivityExists(pName, cName)) {
+                        mCurPackageName = pName
+                        mCurActivityName = cName
 
-                if (ActivityUtils.isActivityExists(pName, cName)) {
-                    mCurPackageName = pName
-                    mCurActivityName = cName
+                        mPackageNameByWindowId[windowId] = pName
+                        mActivityNameByWindowId[windowId] = cName
+                    }
                 }
-
-                if (pName == "com.android.systemui" || pName == "android") return
-
-                mForegroundPackageName = pName
-                mForegroundClassName = cName
-                mForegroundWindowId = windowId
-                mClassNameByWindowId[windowId] = cName
             }
             AccessibilityEvent.TYPE_VIEW_CLICKED -> {
                 XLog.v("TYPE_VIEW_CLICKED - %s - %s", event, source)
@@ -311,16 +323,20 @@ class GlobalActionBarService : AccessibilityService() {
         mTaskJobLaunchTime.set(System.currentTimeMillis())
         mTaskJobLaunchLog.clear()
 
-        actionBarBinding.btnSnapUp.tag = true
-        actionBarBinding.btnSnapUp.setImageResource(R.drawable.baseline_stop_24)
-        setInfoView(true)
+        mTaskScope.launch(Dispatchers.Main) {
+            actionBarBinding.btnSnapUp.tag = true
+            actionBarBinding.btnSnapUp.setImageResource(R.drawable.baseline_stop_24)
+            setInfoView(true)
+        }
 
         mTaskJob?.cancel()
         mTaskJob = null
-        mTaskJob = mTaskScope.launch {
+        mTaskJob = mTaskScope.launch(Dispatchers.IO) {
             val solution = MHConfig.curMCSolution
-            loop@ while (true) {
-                XLog.v("loop - curWindowClassName - $mCurClassNameByRootWindow")
+            loop@ while (isActive) {
+                val pn = mCurPackageNameByRootWindow
+                val an = mCurActivityNameByRootWindow
+                XLog.v("loop - mCurPackageNameByRootWindow,mCurActivityNameByRootWindow - $pn,$an")
 
                 //任务时长是否达标
                 if (System.currentTimeMillis() > mTaskJobLaunchTime.get() + MHData.buyMinTime * 1000 * 60) {
@@ -328,7 +344,7 @@ class GlobalActionBarService : AccessibilityService() {
                     XLog.i("loop - %s", message)
                     MHUtil.notify("完成提示", message)
                     cancelTaskJob()
-                    continue
+                    break@loop
                 }
 
                 //循环执行步骤
@@ -341,18 +357,11 @@ class GlobalActionBarService : AccessibilityService() {
                     if (step.isExecuteOnce && mTaskJobLaunchLog.containsKey(index)) continue
 
                     //步骤不匹配
-                    if (!step.condList.all {
-                            MHUtil.stepCond(
-                                rootInActiveWindow,
-                                mCurPackageName,
-                                mCurActivityName,
-                                it.type,
-                                it.node
-                            )
-                        }) continue
+                    val isMatch = step.condList.all { MHUtil.stepCond(rootInActiveWindow, pn, an, it.type, it.node) }
+                    if (!isMatch) continue
 
                     val stepName = "步骤${index + 1}.${step.name}"
-                    XLog.v("steps - $stepName")
+                    XLog.v("stepName - $stepName")
 
                     //步骤日志
                     val stepLog = "${TimeUtils.millis2String(System.currentTimeMillis(), "mm:ss.SSS")} $stepName"
@@ -403,16 +412,18 @@ class GlobalActionBarService : AccessibilityService() {
                 }
 
                 //10s 异常捕捉
-                mTaskJobLaunchLog.values.lastOrNull()?.let {
-                    val executeTime = it.executionTime
+                val lastStep = mTaskJobLaunchLog.values.lastOrNull()
+                if (lastStep != null) {
+                    val executeTime = lastStep.executionTime
                     if (executeTime + 10 * 1000 < System.currentTimeMillis()) {
-                        val stepName = "步骤${it.index + 1}.${it.step.name}"
+                        val stepName = "步骤${lastStep.index + 1}.${lastStep.step.name}"
                         val message = "\"$stepName\" 执行失败!!!"
                         XLog.e("$stepName - %s", message)
                         MHUtil.notify("失败提示", message)
                         ToastUtils.showLong(message)
                         if (MHData.wrongAlarmStatus) MHUtil.playRingTone()
                         cancelTaskJob()
+                        break@loop
                     }
                 }
 
@@ -422,9 +433,11 @@ class GlobalActionBarService : AccessibilityService() {
     }
 
     private fun cancelTaskJob() {
-        actionBarBinding.btnSnapUp.tag = false
-        actionBarBinding.btnSnapUp.setImageResource(R.drawable.baseline_play_arrow_24)
-        setInfoView(false)
+        mTaskScope.launch(Dispatchers.Main) {
+            actionBarBinding.btnSnapUp.tag = false
+            actionBarBinding.btnSnapUp.setImageResource(R.drawable.baseline_play_arrow_24)
+            setInfoView(false)
+        }
 
         mTaskJob?.cancel()
         mTaskJob = null
@@ -466,13 +479,13 @@ class GlobalActionBarService : AccessibilityService() {
         val rect = Rect()
         node.getBoundsInScreen(rect)
 
-        val appInfo = AppUtils.getAppInfo(mCurPackageName)
+        val appInfo = AppUtils.getAppInfo(mCurPackageNameByRootWindow)
 
         itemAdapter.add(
             BindingSearchNodeItem(MCNodeMessage("------- 通用属性 -------", "")),
             BindingSearchNodeItem(MCNodeMessage("软件", appInfo?.name ?: "-")),
-            BindingSearchNodeItem(MCNodeMessage("软件包", mCurPackageName)),
-            BindingSearchNodeItem(MCNodeMessage("页面类", mCurActivityName)),
+            BindingSearchNodeItem(MCNodeMessage("软件包", mCurPackageNameByRootWindow)),
+            BindingSearchNodeItem(MCNodeMessage("页面类", mCurActivityNameByRootWindow)),
 
             BindingSearchNodeItem(MCNodeMessage("------- 控件属性 -------", "")),
             BindingSearchNodeItem(MCNodeMessage(getString(R.string.node_package_name), node.packageName)),
