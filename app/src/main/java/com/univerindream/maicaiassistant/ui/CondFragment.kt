@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
@@ -13,8 +14,10 @@ import androidx.navigation.fragment.navArgs
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.GsonUtils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.univerindream.maicaiassistant.*
+import com.univerindream.maicaiassistant.R
 import com.univerindream.maicaiassistant.databinding.FragmentCondBinding
+import com.univerindream.maicaiassistant.model.ECond
+import com.univerindream.maicaiassistant.model.MCCond
 
 class CondFragment : Fragment() {
     private var _binding: FragmentCondBinding? = null
@@ -23,7 +26,7 @@ class CondFragment : Fragment() {
 
     private val args: CondFragmentArgs by navArgs()
 
-    private val mcCond: MCCond by lazy {
+    private val mCond: MCCond by lazy {
         GsonUtils.fromJson(args.condJson, MCCond::class.java)
     }
 
@@ -39,30 +42,92 @@ class CondFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        binding.fragmentCondType.setAdapter(
+
+        binding.condTypeSelect.setAdapter(
             ArrayAdapter(
                 requireContext(),
                 R.layout.list_popup_window_item,
-                EMCCond.values().map { it.toStr() }.toList()
+                ECond.values().map { it.toStr() }.toList()
             )
         )
+        binding.condType.editText?.doAfterTextChanged { inputText ->
+            mCond.type = ECond.strOf(inputText?.toString())
+        }
 
-        binding.fragmentCondNodeType.setAdapter(
-            ArrayAdapter(
-                requireContext(),
-                R.layout.list_popup_window_item,
-                EMCNodeType.values().map { it.toStr() }.toList()
-            )
-        )
+        binding.nodePackage.editText?.doAfterTextChanged { inputText ->
+            mCond.node.packageName = inputText?.toString() ?: ""
+        }
 
-        binding.fragmentCondSelectPackageName.setOnClickListener {
-            val apps = AppUtils.getAppsInfo().filter { !it.isSystem }
+        binding.nodePackage.editText?.doAfterTextChanged { inputText ->
+            mCond.node.packageName = inputText?.toString() ?: ""
+        }
+
+        binding.nodeClass.editText?.doAfterTextChanged { inputText ->
+            mCond.node.className = inputText?.toString() ?: ""
+        }
+
+        binding.nodeId.editText?.doAfterTextChanged { inputText ->
+            mCond.node.id = inputText?.toString() ?: ""
+        }
+
+        binding.nodeTxt.editText?.doAfterTextChanged { inputText ->
+            mCond.node.txt = inputText?.toString() ?: ""
+        }
+
+        binding.nodeIndex.editText?.doAfterTextChanged { inputText ->
+            mCond.node.index = (inputText?.toString()?.toIntOrNull() ?: 1) - 1
+        }
+
+        binding.nodePackageSelect.setOnClickListener {
+            val apps = AppUtils.getAppsInfo()
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle("获取应用包名")
                 .setItems(apps.map { it.name }.toTypedArray()) { _, which ->
-                    binding.fragmentCondNodePackageName.editText?.setText(apps[which].packageName)
+                    binding.nodePackage.editText?.setText(apps[which].packageName)
                 }
                 .show()
+        }
+
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.list_popup_window_item, arrayListOf("", "是", "否"))
+        binding.nodeIsEnabledAuto.setAdapter(arrayAdapter)
+        binding.nodeIsEnabled.editText?.doAfterTextChanged { inputText ->
+            mCond.node.isEnabled = when (inputText?.toString()) {
+                "是" -> true
+                "否" -> false
+                else -> null
+            }
+        }
+        binding.nodeVisibleAuto.setAdapter(arrayAdapter)
+        binding.nodeVisible.editText?.doAfterTextChanged { inputText ->
+            mCond.node.isVisibleToUser = when (inputText?.toString()) {
+                "是" -> true
+                "否" -> false
+                else -> null
+            }
+        }
+        binding.nodeIsCheckedAuto.setAdapter(arrayAdapter)
+        binding.nodeIsChecked.editText?.doAfterTextChanged { inputText ->
+            mCond.node.isChecked = when (inputText?.toString()) {
+                "是" -> true
+                "否" -> false
+                else -> null
+            }
+        }
+        binding.nodeIsSelectedAuto.setAdapter(arrayAdapter)
+        binding.nodeIsSelected.editText?.doAfterTextChanged { inputText ->
+            mCond.node.isSelected = when (inputText?.toString()) {
+                "是" -> true
+                "否" -> false
+                else -> null
+            }
+        }
+        binding.nodeIsClickableAuto.setAdapter(arrayAdapter)
+        binding.nodeIsClickable.editText?.doAfterTextChanged { inputText ->
+            mCond.node.isClickable = when (inputText?.toString()) {
+                "是" -> true
+                "否" -> false
+                else -> null
+            }
         }
 
         binding.floatingActionButton.setOnClickListener {
@@ -74,43 +139,29 @@ class CondFragment : Fragment() {
     }
 
     fun loadData() {
-        val cond = mcCond
+        binding.condTypeSelect.setText(mCond.type.toStr(), false)
+        binding.nodePackage.editText?.setText(mCond.node.packageName)
+        binding.nodeClass.editText?.setText(mCond.node.className)
+        binding.nodeId.editText?.setText(mCond.node.id)
+        binding.nodeTxt.editText?.setText(mCond.node.txt)
+        val index = "${mCond.node.index + 1}"
+        binding.nodeIndex.editText?.setText(index)
 
-        binding.fragmentCondType.setText(cond.type.toStr(), false)
-        binding.fragmentCondNodeType.setText(cond.node.nodeType.toStr(), false)
-        binding.fragmentCondNodeKey.editText?.setText(cond.node.nodeKey)
-        binding.fragmentCondNodeIndex.editText?.setText(cond.node.nodeIndex.toString())
-        binding.fragmentCondNodePackageName.editText?.setText(cond.node.packageName)
-        binding.fragmentCondNodeClassName.editText?.setText(cond.node.className)
+        binding.nodeIsEnabled.editText?.setText(itemStatus(mCond.node.isEnabled))
+        binding.nodeVisible.editText?.setText(itemStatus(mCond.node.isVisibleToUser))
+        binding.nodeIsChecked.editText?.setText(itemStatus(mCond.node.isChecked))
+        binding.nodeIsSelected.editText?.setText(itemStatus(mCond.node.isSelected))
+        binding.nodeIsClickable.editText?.setText(itemStatus(mCond.node.isClickable))
+    }
 
+    private fun itemStatus(status: Boolean?) = when (status) {
+        true -> "是"
+        false -> "否"
+        else -> ""
     }
 
     fun saveData() {
-
-        val type = EMCCond.strOf(binding.fragmentCondType.text.toString())
-        val nodeType = EMCNodeType.strOf(binding.fragmentCondNodeType.text.toString())
-        val nodeKey = binding.fragmentCondNodeKey.editText?.text.toString()
-        var nodeIndex = binding.fragmentCondNodeIndex.editText?.text?.toString()
-        if (nodeIndex.isNullOrBlank()) nodeIndex = "0"
-
-        val nodePackageName = binding.fragmentCondNodePackageName.editText?.text.toString()
-        val nodeClassName = binding.fragmentCondNodeClassName.editText?.text.toString()
-
-        val condJson = GsonUtils.toJson(
-            MCCond(
-                type = type,
-                node = MCNode(
-                    nodeType = nodeType,
-                    nodeKey = nodeKey,
-                    nodeIndex = nodeIndex.toInt(),
-                    className = nodeClassName,
-                    packageName = nodePackageName
-                )
-            )
-        )
-
-
-        setFragmentResult("updateCond", bundleOf("condJson" to condJson, "condIndex" to args.condIndex))
+        setFragmentResult("updateCond", bundleOf("condJson" to GsonUtils.toJson(mCond), "condIndex" to args.condIndex))
         findNavController().navigateUp()
     }
 

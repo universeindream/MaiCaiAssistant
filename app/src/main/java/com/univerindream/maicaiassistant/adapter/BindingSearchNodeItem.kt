@@ -3,9 +3,9 @@ package com.univerindream.maicaiassistant.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.mikepenz.fastadapter.binding.ModelAbstractBindingItem
-import com.univerindream.maicaiassistant.MCNodeMessage
 import com.univerindream.maicaiassistant.R
 import com.univerindream.maicaiassistant.databinding.ItemSearchNodeBinding
+import com.univerindream.maicaiassistant.model.MCNodeMessage
 
 class BindingSearchNodeItem(model: MCNodeMessage) :
     ModelAbstractBindingItem<MCNodeMessage, ItemSearchNodeBinding>(model) {

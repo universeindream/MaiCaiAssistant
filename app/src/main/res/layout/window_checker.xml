@@ -17,10 +17,10 @@
     android:orientation="vertical">
 
     <View
-        android:layout_width="4dp"
-        android:layout_height="4dp"
+        android:layout_width="2dp"
+        android:layout_height="2dp"
         android:layout_gravity="center"
-        android:background="@android:color/holo_green_dark" />
+        android:background="@android:color/holo_green_light" />
 
     <ImageView
         android:id="@+id/iv_search_move"

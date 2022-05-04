@@ -5,24 +5,36 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.blankj.utilcode.util.ClipboardUtils
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.JsonUtils
 import com.blankj.utilcode.util.ToastUtils
-import com.univerindream.maicaiassistant.MCSolution
-import com.univerindream.maicaiassistant.MHConfig
+import com.univerindream.maicaiassistant.MCFile
+import com.univerindream.maicaiassistant.MCUtil
+import com.univerindream.maicaiassistant.data.DataRepository
 import com.univerindream.maicaiassistant.databinding.FragmentJsonBinding
+import com.univerindream.maicaiassistant.model.MCSolution
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
+@AndroidEntryPoint
 class JsonFragment : Fragment() {
+
+    @Inject
+    lateinit var dataRepository: DataRepository
 
     private var _binding: FragmentJsonBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    private val args: JsonFragmentArgs by navArgs()
+
+    private val mSolution: MCSolution by lazy {
+        if (args.solutionId.isBlank()) dataRepository.curSolution else MCFile.getSolution(args.solutionId)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,27 +53,35 @@ class JsonFragment : Fragment() {
             val data = binding.jsonContent.text.toString()
 
             try {
-                MHConfig.curMCSolution = GsonUtils.fromJson(data, MCSolution::class.java)
+                val solution = GsonUtils.fromJson(data, MCSolution::class.java)
+                if (!MCUtil.isValid(solution)) {
+                    ToastUtils.showLong("该方案当前版本不支持")
+                    return@setOnClickListener
+                }
+
+                if (solution.id == dataRepository.curSolution.id) {
+                    dataRepository.curSolution = solution
+                } else {
+                    MCFile.saveSolution(solution)
+                }
                 ToastUtils.showLong("保存成功")
             } catch (e: Exception) {
                 ToastUtils.showLong("JSON 数据非法")
             }
         }
         binding.jsonExport.setOnClickListener {
-            ClipboardUtils.copyText(GsonUtils.toJson(MHConfig.curMCSolution))
-            ToastUtils.showLong("已将当前方案导出至剪切板，可以复制给别人啦")
+            val data = binding.jsonContent.text.toString()
+            ClipboardUtils.copyText(JsonUtils.formatJson(data, 0))
+            ToastUtils.showLong("已将内容复制到剪切板，可以分享给别人啦")
         }
         binding.jsonImport.setOnClickListener {
             val content = ClipboardUtils.getText()
             if (content.isNullOrBlank()) {
                 ToastUtils.showLong("未读取到剪切板内容")
             } else {
-                binding.jsonContent.setText(
-                    JsonUtils.formatJson(content.toString())
-                )
-                ToastUtils.showLong("已将剪切板内容导入至编辑框")
+                binding.jsonContent.setText(JsonUtils.formatJson(content.toString()))
+                ToastUtils.showLong("已将剪切板内容复制到编辑框，记得保存")
             }
-
         }
 
         loadData()
@@ -69,7 +89,7 @@ class JsonFragment : Fragment() {
     }
 
     fun loadData() {
-        val json = GsonUtils.toJson(MHConfig.curMCSolution)
+        val json = GsonUtils.toJson(mSolution)
         binding.jsonContent.setText(JsonUtils.formatJson(json))
     }
 

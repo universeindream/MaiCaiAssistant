@@ -3,27 +3,32 @@ package com.univerindream.maicaiassistant.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
-import com.elvishew.xlog.XLog
-import com.univerindream.maicaiassistant.MHData
-import com.univerindream.maicaiassistant.MHUtil
-import com.univerindream.maicaiassistant.service.GlobalActionBarService
-import com.univerindream.maicaiassistant.ui.ConfigFragment
-import org.greenrobot.eventbus.EventBus
+import com.jeremyliao.liveeventbus.LiveEventBus
+import com.univerindream.maicaiassistant.LEBConstants
+import com.univerindream.maicaiassistant.MCUtil
+import com.univerindream.maicaiassistant.data.DataRepository
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class AlarmReceiver : BroadcastReceiver() {
 
+    @Inject
+    lateinit var dataRepository: DataRepository
+
     override fun onReceive(p0: Context?, p1: Intent?) {
-        XLog.v("AlarmReceiver - onReceive")
-        MHData.timerTriggerStatus = false
+        LogUtils.v("AlarmReceiver - onReceive")
+        dataRepository.timerStatus = false
+        LiveEventBus.get<String>(LEBConstants.REFRESH_TIMER_STATUS).post("")
 
-        if (MHUtil.hasServicePermission()) {
-            EventBus.getDefault().post(GlobalActionBarService.SubAlarm())
+        if (MCUtil.hasServicePermission()) {
+            ToastUtils.showLong("定时执行中...")
+            LiveEventBus.get<String>(LEBConstants.LAUNCH_SOLUTION).post("")
         } else {
-            ToastUtils.showLong("暂为开启无障碍模式，定时任务无法执行")
-            MHUtil.notify("异常", "暂为开启无障碍模式，定时任务无法执行")
+            ToastUtils.showLong("未开启无障碍服务，定时执行失败")
+            MCUtil.notify("失败提示", "未开启无障碍服务，定时执行失败")
         }
-
-        EventBus.getDefault().post(ConfigFragment.SubRefresh())
     }
 }

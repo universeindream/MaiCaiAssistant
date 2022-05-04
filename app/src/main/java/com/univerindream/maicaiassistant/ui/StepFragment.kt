@@ -13,17 +13,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.GsonUtils
-import com.elvishew.xlog.XLog
+import com.blankj.utilcode.util.LogUtils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.binding.ModelAbstractBindingItem
-import com.univerindream.maicaiassistant.MCCond
-import com.univerindream.maicaiassistant.MCHandle
-import com.univerindream.maicaiassistant.MCStep
 import com.univerindream.maicaiassistant.R
 import com.univerindream.maicaiassistant.databinding.FragmentStepBinding
 import com.univerindream.maicaiassistant.databinding.ItemCondBinding
+import com.univerindream.maicaiassistant.model.MCCond
+import com.univerindream.maicaiassistant.model.MCHandle
+import com.univerindream.maicaiassistant.model.MCStep
 
 class StepFragment : Fragment() {
     private var _binding: FragmentStepBinding? = null
@@ -48,12 +48,12 @@ class StepFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         setFragmentResultListener("updateHandle") { requestKey, bundle ->
-            XLog.i("handle -> $requestKey $bundle")
+            LogUtils.i("handle -> $requestKey $bundle")
             mStep.handle = GsonUtils.fromJson(bundle.getString("handleJson"), MCHandle::class.java)
         }
 
         setFragmentResultListener("updateCond") { requestKey, bundle ->
-            XLog.i("handle -> $requestKey $bundle")
+            LogUtils.i("handle -> $requestKey $bundle")
             val mcCond = GsonUtils.fromJson(bundle.getString("condJson"), MCCond::class.java)
             val index = bundle.getInt("condIndex")
 
@@ -175,11 +175,7 @@ class StepFragment : Fragment() {
         binding.stepFailBack.isChecked = mStep.isFailBack
         binding.stepFailBackCount.editText?.setText("${mStep.failBackCount}")
 
-        val delayRunBefore = mStep.handle.delayRunBefore
-        val delayRunAfter = mStep.handle.delayRunAfter
-        var handleContent = "${mStep.handle.type.toStr()} - \"${mStep.handle.node.nodeKey}\""
-        if (delayRunBefore > 0) handleContent += "\n> 等待 ${delayRunBefore / 1000.0} 秒后，执行当前步骤"
-        if (delayRunAfter > 0) handleContent += "\n> 等待 ${delayRunAfter / 1000.0} 秒后，执行下一步骤"
+        val handleContent = mStep.handle.type.toStr()
         binding.stepHandleValue.text = handleContent
 
         itemAdapter.clear()
@@ -203,7 +199,7 @@ class StepFragment : Fragment() {
             get() = R.id.adapter_cond_item
 
         override fun bindView(binding: ItemCondBinding, payloads: List<Any>) {
-            val content = "${tag}、${model.type.toStr()} - \"${model.node.nodeKey}\""
+            val content = "${tag}、${model.type.toStr()}"
             binding.adapterCondNo.text = content
         }
 

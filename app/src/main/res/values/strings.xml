@@ -1,18 +1,18 @@
 <resources>
     <string name="app_name">买菜助手</string>
 
-    <string name="accessibility_service_label">买菜助手</string>
     <string name="accessibility_service_description">
         <b>使用：</b>\n\n
         1. 开启无障碍服务\n
-        2. 选择适合的方案 - 比如：美团买菜 - 支付宝\n
+        2. 选择适合的方案 - 比如：美团买菜\n
         3. 添加需要的东西至购物车\n
         4. 点击右侧悬浮窗的运行按钮(▶)\n
         \n
         <b>悬浮窗：</b>\n\n
-        1. 设置: 打开设置界面\n
-        2. 铃声: 关闭铃声\n
-        3. 操作：\n
+        1. 元素: 查看界面元素\n
+        2. 设置: 打开设置界面\n
+        3. 铃声: 关闭铃声\n
+        4. 操作：\n
         &#160;&#160;&#160;&#160;3.1. ▶: 开始运行\n
         &#160;&#160;&#160;&#160;3.2. ■: 停止运行\n
         4. 移动：可以移动悬浮窗\n
@@ -32,20 +32,7 @@
         \n
     </string>
 
-    <string name="btn_config">配置</string>
-    <string name="btn_snap_up">抢购</string>
-    <string name="btn_test">测试</string>
-
-    <!-- Strings used for fragments for navigation -->
-    <string name="config_fragment_label">@string/app_name</string>
-    <string name="json_fragment_label">JSON 配置</string>
-    <string name="solution_fragment_label">方案配置</string>
-    <string name="step_fragment_label">步骤配置</string>
-
     <string name="dialog_choose_solution">方案选择</string>
-
-    <string name="previous">Previous</string>
-
 
     <string name="node_package_name">控件包名</string>
     <string name="node_class_name">控件类名</string>

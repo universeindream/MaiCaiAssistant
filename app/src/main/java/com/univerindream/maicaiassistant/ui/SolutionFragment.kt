@@ -6,27 +6,39 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.blankj.utilcode.util.ColorUtils
-import com.blankj.utilcode.util.GsonUtils
-import com.blankj.utilcode.util.ToastUtils
-import com.elvishew.xlog.XLog
+import com.blankj.utilcode.util.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.binding.ModelAbstractBindingItem
-import com.univerindream.maicaiassistant.MCStep
-import com.univerindream.maicaiassistant.MHConfig
+import com.univerindream.maicaiassistant.BuildConfig
 import com.univerindream.maicaiassistant.R
 import com.univerindream.maicaiassistant.databinding.FragmentSolutionBinding
 import com.univerindream.maicaiassistant.databinding.ItemStepBinding
+import com.univerindream.maicaiassistant.model.MCSolution
+import com.univerindream.maicaiassistant.model.MCStep
+import com.univerindream.maicaiassistant.viewmodels.SharedViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class SolutionFragment : Fragment() {
-    private var _binding: FragmentSolutionBinding? = null
 
+    private val sharedModel: SharedViewModel by activityViewModels()
+
+    private var _binding: FragmentSolutionBinding? = null
     private val binding get() = _binding!!
+
+    private val args: SolutionFragmentArgs by navArgs()
+    private val mSolution: MCSolution by lazy {
+        sharedModel.getSolution(args.solutionId)
+    }
 
     private val itemAdapter by lazy {
         ItemAdapter<BindingStepItem>()
@@ -36,21 +48,17 @@ class SolutionFragment : Fragment() {
         FastAdapter.with(itemAdapter)
     }
 
-    private val mcSolution by lazy {
-        MHConfig.curMCSolution
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setFragmentResultListener("updateStep") { requestKey, bundle ->
-            XLog.i("handle -> $requestKey $bundle")
+            LogUtils.i("handle -> $requestKey $bundle")
             val mcStep = GsonUtils.fromJson(bundle.getString("stepJson"), MCStep::class.java)
             val index = bundle.getInt("stepIndex")
             if (index == -1) {
-                mcSolution.steps.add(mcStep)
+                mSolution.steps.add(mcStep)
             } else {
-                mcSolution.steps[index] = mcStep
+                mSolution.steps[index] = mcStep
             }
         }
     }
@@ -60,20 +68,42 @@ class SolutionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSolutionBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         binding.solutionName.editText?.doAfterTextChanged { inputText ->
-            val name = if (inputText.isNullOrBlank()) "" else inputText.toString()
-            mcSolution.name = name
+            mSolution.name = inputText?.toString()?.ifBlank { "" } ?: ""
         }
+        binding.solutionAuthor.editText?.doAfterTextChanged { inputText ->
+            mSolution.author = inputText?.toString()?.ifBlank { "" } ?: ""
+        }
+        binding.solutionDesc.editText?.doAfterTextChanged { inputText ->
+            mSolution.desc = inputText?.toString()?.ifBlank { "" } ?: ""
+        }
+        binding.solutionLaunchTime.editText?.doAfterTextChanged { inputText ->
+            mSolution.launchTime = (inputText?.toString()?.ifBlank { "25" } ?: "25").toLong()
+        }
+        binding.solutionDelay.editText?.doAfterTextChanged { inputText ->
+            mSolution.stepDelay = (inputText?.toString()?.ifBlank { "100" } ?: "100").toLong()
+        }
+        binding.solutionFailAlarm.setOnCheckedChangeListener { compoundButton, b ->
+            if (!compoundButton.isPressed) return@setOnCheckedChangeListener
+            mSolution.failIsAlarm = b
+        }
+
+        binding.floatingSaveButton.setOnClickListener {
+            saveData()
+        }
+        binding.floatingAddButton.setOnClickListener {
+            val action = SolutionFragmentDirections.actionSolutionFragmentToStepFragment(
+                stepJson = "{}",
+                stepIndex = -1
+            )
+            findNavController().navigate(action)
+        }
+
         binding.solutionSteps.adapter = fastAdapter
         binding.solutionSteps.layoutManager = LinearLayoutManager(requireContext())
         fastAdapter.onClickListener = { _, _, _, position ->
-            val stepJson = GsonUtils.toJson(mcSolution.steps[position])
+            val stepJson = GsonUtils.toJson(mSolution.steps[position])
             val action = SolutionFragmentDirections.actionSolutionFragmentToStepFragment(
                 stepJson = stepJson,
                 stepIndex = position
@@ -91,24 +121,24 @@ class SolutionFragment : Fragment() {
                             if (position == 0) {
                                 ToastUtils.showShort("已经是第一步了")
                             } else {
-                                val step = mcSolution.steps[position]
-                                mcSolution.steps.removeAt(position)
-                                mcSolution.steps.add(position - 1, step)
+                                val step = mSolution.steps[position]
+                                mSolution.steps.removeAt(position)
+                                mSolution.steps.add(position - 1, step)
                                 loadData()
                             }
                         }
                         1 -> {
-                            if (position == mcSolution.steps.size - 1) {
+                            if (position == mSolution.steps.size - 1) {
                                 ToastUtils.showShort("已经是最后一步了")
                             } else {
-                                val step = mcSolution.steps[position]
-                                mcSolution.steps.removeAt(position)
-                                mcSolution.steps.add(position + 1, step)
+                                val step = mSolution.steps[position]
+                                mSolution.steps.removeAt(position)
+                                mSolution.steps.add(position + 1, step)
                                 loadData()
                             }
                         }
                         2 -> {
-                            mcSolution.steps.removeAt(position)
+                            mSolution.steps.removeAt(position)
                             loadData()
                         }
                     }
@@ -118,16 +148,11 @@ class SolutionFragment : Fragment() {
             false
         }
 
-        binding.floatingSaveButton.setOnClickListener {
-            saveData()
-        }
-        binding.floatingAddButton.setOnClickListener {
-            val action = SolutionFragmentDirections.actionSolutionFragmentToStepFragment(
-                stepJson = "{}",
-                stepIndex = -1
-            )
-            findNavController().navigate(action)
-        }
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         loadData()
     }
@@ -138,9 +163,14 @@ class SolutionFragment : Fragment() {
     }
 
     fun loadData() {
-        binding.solutionName.editText?.setText(mcSolution.name)
+        binding.solutionName.editText?.setText(mSolution.name)
+        binding.solutionAuthor.editText?.setText(mSolution.author)
+        binding.solutionDesc.editText?.setText(mSolution.desc)
+        binding.solutionDelay.editText?.setText(mSolution.stepDelay.toString())
+        binding.solutionLaunchTime.editText?.setText(mSolution.launchTime.toString())
+        binding.solutionFailAlarm.isChecked = mSolution.failIsAlarm
         itemAdapter.clear()
-        mcSolution.steps.forEachIndexed { index, mcStep ->
+        mSolution.steps.forEachIndexed { index, mcStep ->
             itemAdapter.add(BindingStepItem(mcStep).apply {
                 tag = index + 1
             })
@@ -148,8 +178,13 @@ class SolutionFragment : Fragment() {
     }
 
     fun saveData() {
-        MHConfig.curMCSolution = mcSolution
-        findNavController().navigateUp()
+        lifecycleScope.launch {
+            mSolution.appVersion = BuildConfig.VERSION_NAME
+            mSolution.updateDateStr = TimeUtils.getNowString()
+            sharedModel.saveSolution(mSolution)
+
+            findNavController().navigateUp()
+        }
     }
 
     class BindingStepItem(model: MCStep) : ModelAbstractBindingItem<MCStep, ItemStepBinding>(model) {

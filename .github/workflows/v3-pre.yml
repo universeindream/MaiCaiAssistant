@@ -1,0 +1,31 @@
+name: Android CI
+
+on:
+  push:
+    tags:
+      - 'v3*-pre'
+
+jobs:
+  Gradle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: setup jdk
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Sign Release
+        id: sign_app
+        run: |
+          echo "${{ secrets.NEW_SIGNINGKEYBASE64 }}" | base64 -d > $GITHUB_WORKSPACE/signing-key.jks
+          chmod +x ./gradlew
+          ./gradlew build -x test -x lint -x lintVitalRelease
+          ./gradlew assembleRelease -Pandroid.injected.signing.store.file=$GITHUB_WORKSPACE/signing-key.jks -Pandroid.injected.signing.store.password=${{ secrets.NEW_KEYSTOREPASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.NEW_ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.NEW_KEYPASSWORD }}
+          rm $GITHUB_WORKSPACE/signing-key.jks
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: app/build/outputs/apk/release/*.apk
+          prerelease: true
+          generate_release_notes: true

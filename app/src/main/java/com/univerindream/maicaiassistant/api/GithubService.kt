@@ -1,6 +1,8 @@
 package com.univerindream.maicaiassistant.api
 
+import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -9,11 +11,11 @@ import retrofit2.http.Path
 import retrofit2.http.Url
 
 
-interface GithubApi {
+interface GithubService {
 
     @Headers("User-Agent: MaiCaiAssistant")
     @GET("/repos/{owner}/{repo}/releases")
-    suspend fun searchRepos(
+    suspend fun searchReleases(
         @Path("owner") owner: String,
         @Path("repo") repo: String,
     ): List<GithubReleases>
@@ -33,19 +35,19 @@ interface GithubApi {
     companion object {
         private const val BASE_URL = "https://api.github.com/"
 
-        private val retrofit by lazy {
-            Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(BASE_URL)
+        fun create(): GithubService {
+            val logger = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
+
+            val client = OkHttpClient.Builder()
+                .addInterceptor(logger)
                 .build()
-        }
 
-        private val githubApi by lazy {
-            retrofit.create(GithubApi::class.java)
-        }
-
-        fun get(): GithubApi {
-            return githubApi
+            return Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(GithubService::class.java)
         }
     }
 }

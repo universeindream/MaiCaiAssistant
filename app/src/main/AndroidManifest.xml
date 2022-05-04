@@ -9,8 +9,8 @@
 
 
     <application
-        android:name="com.univerindream.maicaiassistant.MHApp"
-        android:allowBackup="false"
+        android:name=".MCApp"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
@@ -31,9 +31,8 @@
         </activity>
 
         <service
-            android:name="com.univerindream.maicaiassistant.service.GlobalActionBarService"
+            android:name="com.univerindream.maicaiassistant.service.MaiCaiAssistantService"
             android:exported="true"
-            android:label="@string/accessibility_service_label"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
@@ -41,7 +40,7 @@
 
             <meta-data
                 android:name="android.accessibilityservice"
-                android:resource="@xml/global_action_bar_service" />
+                android:resource="@xml/mai_cai_assistant_service" />
         </service>
 
         <receiver android:name="com.univerindream.maicaiassistant.receiver.AlarmReceiver" />
