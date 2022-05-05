@@ -13,8 +13,8 @@ android {
         applicationId "com.univerindream.zaishou"
         minSdk rootProject.minSdkVersion
         targetSdk rootProject.targetSdkVersion
-        versionCode 42
-        versionName "3.0.0-pre"
+        versionCode 43
+        versionName "3.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
