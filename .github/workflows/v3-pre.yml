@@ -20,7 +20,7 @@ jobs:
         run: |
           echo "${{ secrets.NEW_SIGNINGKEYBASE64 }}" | base64 -d > $GITHUB_WORKSPACE/signing-key.jks
           chmod +x ./gradlew
-          ./gradlew build -x test -x lint -x lintVitalRelease
+          ./gradlew build -x test
           ./gradlew assembleRelease -Pandroid.injected.signing.store.file=$GITHUB_WORKSPACE/signing-key.jks -Pandroid.injected.signing.store.password=${{ secrets.NEW_KEYSTOREPASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.NEW_ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.NEW_KEYPASSWORD }}
           rm $GITHUB_WORKSPACE/signing-key.jks
       - name: Release

@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.univerindream.zaishou",
+  "variantName": "release",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 41,
+      "versionName": "3.0.0",
+      "outputFile": "app-release.apk"
+    }
+  ],
+  "elementType": "File"
+}
