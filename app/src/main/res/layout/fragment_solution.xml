@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="失败响铃: " />
+                android:text="异常响铃: " />
 
             <TextView
                 android:id="@+id/solution_cond"

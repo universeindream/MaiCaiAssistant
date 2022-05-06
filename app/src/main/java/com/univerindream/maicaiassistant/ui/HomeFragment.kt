@@ -20,7 +20,6 @@ import com.jeremyliao.liveeventbus.LiveEventBus
 import com.univerindream.maicaiassistant.LEBConstants
 import com.univerindream.maicaiassistant.MCData
 import com.univerindream.maicaiassistant.MCUtil
-import com.univerindream.maicaiassistant.R
 import com.univerindream.maicaiassistant.databinding.FragmentHomeBinding
 import com.univerindream.maicaiassistant.utils.VersionComparator
 import com.univerindream.maicaiassistant.viewmodels.HomeViewModel
@@ -40,11 +39,11 @@ class HomeFragment : Fragment() {
         val binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         binding.settingSolutionName.setOnClickListener {
-            findNavController().navigate(R.id.action_ConfigFragment_to_localSolutionFragment)
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSolutionFragment())
         }
         binding.settingSolutionName.setOnLongClickListener {
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSolutionFragment())
-            false
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToJsonFragment())
+            return@setOnLongClickListener false
         }
         binding.settingTimerStatus.setOnCheckedChangeListener { compoundButton, b ->
             if (!compoundButton.isPressed) return@setOnCheckedChangeListener

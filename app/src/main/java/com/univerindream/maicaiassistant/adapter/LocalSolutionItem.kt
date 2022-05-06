@@ -30,7 +30,7 @@ class LocalSolutionItem(model: MCSolution) :
     }
 
     override val type: Int
-        get() = R.id.localSolutionFragment
+        get() = R.id.localFragment
 
     override fun bindView(binding: ListLocalSolutionBinding, payloads: List<Any>) {
         super.bindView(binding, payloads)

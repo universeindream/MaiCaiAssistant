@@ -12,16 +12,30 @@
         tools:layout="@layout/fragment_home">
 
         <action
-            android:id="@+id/action_ConfigFragment_to_JsonFragment"
+            android:id="@+id/action_HomeFragment_to_JsonFragment"
             app:destination="@id/jsonFragment" />
-        <action
-            android:id="@+id/action_ConfigFragment_to_localSolutionFragment"
-            app:destination="@id/localSolutionFragment" />
         <action
             android:id="@+id/action_HomeFragment_to_SolutionFragment"
             app:destination="@id/solutionFragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/localFragment"
+        android:name="com.univerindream.maicaiassistant.ui.LocalFragment"
+        android:label="本地方案"
+        tools:layout="@layout/fragment_local">
+        <action
+            android:id="@+id/action_localFragment_to_SolutionFragment"
+            app:destination="@id/solutionFragment" />
+        <action
+            android:id="@+id/action_localFragment_to_JsonFragment"
+            app:destination="@id/jsonFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/discoverFragment"
+        android:name="com.univerindream.maicaiassistant.ui.DiscoverFragment"
+        android:label="远程方案" />
     <fragment
         android:id="@+id/jsonFragment"
         android:name="com.univerindream.maicaiassistant.ui.JsonFragment"
@@ -36,17 +50,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/localSolutionFragment"
-        android:name="com.univerindream.maicaiassistant.ui.LocalSolutionFragment"
-        android:label="本地方案"
-        tools:layout="@layout/fragment_local_solution">
-        <action
-            android:id="@+id/action_localSolutionFragment_to_SolutionFragment"
-            app:destination="@id/solutionFragment" />
-        <action
-            android:id="@+id/action_localSolutionFragment_to_JsonFragment"
-            app:destination="@id/jsonFragment" />
-    </fragment>
+        android:id="@+id/helpFragment"
+        android:name="com.univerindream.maicaiassistant.ui.HelpFragment"
+        android:label="帮助" />
 
     <fragment
         android:id="@+id/solutionFragment"

@@ -1,7 +1,5 @@
 package com.univerindream.maicaiassistant.ui
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -9,11 +7,8 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.onNavDestinationSelected
-import androidx.navigation.ui.setupActionBarWithNavController
-import com.univerindream.maicaiassistant.BuildConfig
+import androidx.navigation.ui.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.univerindream.maicaiassistant.R
 import com.univerindream.maicaiassistant.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,28 +32,23 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.toolbar)
 
-        appBarConfiguration = AppBarConfiguration(navController.graph)
+        val navView: BottomNavigationView = binding.navView
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.homeFragment, R.id.localFragment, R.id.discoverFragment, R.id.helpFragment
+            )
+        )
         setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            if (destination.id == R.id.homeFragment) {
-                binding.toolbar.title = "${destination.label}(${BuildConfig.VERSION_NAME})"
-            }
+
         }
 
         binding.toolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.help -> {
-                    val intent =
-                        Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/universeindream/MaiCaiAssistant"))
-                    startActivity(intent)
-                    true
-                }
-                else -> false
-            }
+            false
         }
     }
 

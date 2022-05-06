@@ -22,7 +22,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.univerindream.maicaiassistant.MCData
 import com.univerindream.maicaiassistant.MCUtil
 import com.univerindream.maicaiassistant.adapter.LocalSolutionItem
-import com.univerindream.maicaiassistant.databinding.FragmentLocalSolutionBinding
+import com.univerindream.maicaiassistant.databinding.FragmentLocalBinding
 import com.univerindream.maicaiassistant.model.MCSolution
 import com.univerindream.maicaiassistant.viewmodels.LocalSolutionViewModel
 import com.univerindream.maicaiassistant.viewmodels.SharedViewModel
@@ -34,7 +34,7 @@ import java.io.FileOutputStream
 import java.util.*
 
 @AndroidEntryPoint
-class LocalSolutionFragment : Fragment() {
+class LocalFragment : Fragment() {
 
     private val sharedModel: SharedViewModel by activityViewModels()
     private val viewModel: LocalSolutionViewModel by viewModels()
@@ -98,7 +98,7 @@ class LocalSolutionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentLocalSolutionBinding.inflate(inflater, container, false)
+        val binding = FragmentLocalBinding.inflate(inflater, container, false)
 
         binding.localSolutions.adapter = fastAdapter
         binding.localSolutions.layoutManager = LinearLayoutManager(requireContext())
@@ -123,12 +123,12 @@ class LocalSolutionFragment : Fragment() {
                     when (items[which]) {
                         "修改" -> {
                             val action =
-                                LocalSolutionFragmentDirections.actionLocalSolutionFragmentToSolutionFragment(solutionId)
+                                LocalFragmentDirections.actionLocalFragmentToSolutionFragment(solutionId)
                             findNavController().navigate(action)
                         }
                         "JSON" -> {
                             val action =
-                                LocalSolutionFragmentDirections.actionLocalSolutionFragmentToJsonFragment(solutionId)
+                                LocalFragmentDirections.actionLocalFragmentToJsonFragment(solutionId)
                             findNavController().navigate(action)
                         }
                         "复制" -> {
@@ -193,9 +193,6 @@ class LocalSolutionFragment : Fragment() {
                     dialog.dismiss()
                 }
                 .show()
-        }
-        binding.floatingPublicButton.setOnClickListener {
-            getPublicSolutions()
         }
 
         subscribeUI()

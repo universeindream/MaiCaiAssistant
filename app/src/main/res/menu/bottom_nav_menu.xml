@@ -1,0 +1,28 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/baseline_dashboard_24"
+        android:enabled="true"
+        android:title="首页" />
+
+    <item
+        android:id="@+id/localFragment"
+        android:icon="@drawable/baseline_folder_24"
+        android:enabled="true"
+        android:title="本地" />
+
+    <item
+        android:id="@+id/discoverFragment"
+        android:icon="@drawable/baseline_explore_24"
+        android:enabled="true"
+        android:title="发现" />
+
+    <item
+        android:id="@+id/helpFragment"
+        android:icon="@drawable/baseline_help_24"
+        android:enabled="true"
+        android:title="帮助" />
+
+</menu>
