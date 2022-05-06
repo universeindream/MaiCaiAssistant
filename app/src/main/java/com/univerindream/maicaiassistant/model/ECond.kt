@@ -26,7 +26,7 @@ enum class ECond {
 
         fun strOf(str: String?): ECond {
             return when (str) {
-                "软件在后台" -> APP_IS_BACKGROUND
+                "软件后台" -> APP_IS_BACKGROUND
                 "软件一致" -> APP_IS_EQUAL
                 "页面一致" -> PAGE_IS_EQUAL
                 "控件存在" -> NODE_IS_MATCH
