@@ -1,6 +1,6 @@
 ## 买菜助手
 
-[![GitHub release](https://img.shields.io/github/v/release/universeindream/MaiCaiAssistant.svg)](https://github.com/universeindream/MaiCaiAssistant/releases) [![Total Downloads](https://img.shields.io/github/downloads/universeindream/MaiCaiAssistant/total.svg)](https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk) ![Support Platforms](https://img.shields.io/badge/platform-android-blue) 
+[![GitHub release](https://img.shields.io/github/v/release/universeindream/MaiCaiAssistant.svg)](https://github.com/universeindream/MaiCaiAssistant/releases) [![Total Downloads](https://img.shields.io/github/downloads/universeindream/MaiCaiAssistant/total.svg)](https://github.com/universeindream/MaiCaiAssistant/releases/download/v2.12.4/app-release.apk) ![Support Platforms](https://img.shields.io/badge/platform-android-blue) 
 
 ### 概述
 
@@ -20,7 +20,7 @@
 
 ### 使用
 
-1. [安装 APK](https://github.com/universeindream/MaiCaiAssistant/releases/latest/download/app-release.apk)
+1. [安装 APK](https://github.com/universeindream/MaiCaiAssistant/releases/download/v2.12.4/app-release.apk)
 1. 开启无障碍服务
 1. 选择适合的方案 - 比如：美团买菜 - 支付宝
 2. 添加需要的东西至购物车
