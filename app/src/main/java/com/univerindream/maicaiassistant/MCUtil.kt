@@ -12,7 +12,7 @@ import androidx.core.app.NotificationCompat
 import com.blankj.utilcode.util.*
 import com.univerindream.maicaiassistant.model.MCSolution
 import com.univerindream.maicaiassistant.receiver.AlarmReceiver
-import com.univerindream.maicaiassistant.service.MaiCaiAssistantService
+import com.univerindream.maicaiassistant.service.ZaishouService
 import com.univerindream.maicaiassistant.ui.MainActivity
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
@@ -29,7 +29,7 @@ object MCUtil {
      */
     fun hasServicePermission(): Boolean {
         val ct = Utils.getApp()
-        val serviceClass = MaiCaiAssistantService::class.java
+        val serviceClass = ZaishouService::class.java
 
         var ok = 0
         try {
@@ -62,7 +62,7 @@ object MCUtil {
     fun startForegroundService(context: Service) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val serviceChannel = NotificationChannel(
-                MAI_CAI_ASSISTANT_CHANNEL_ID,
+                ZAI_SHOU_CHANNEL_ID,
                 "Recording Service Channel",
                 NotificationManager.IMPORTANCE_HIGH
             )
@@ -80,7 +80,7 @@ object MCUtil {
             },
             PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
         )
-        val notification: Notification = NotificationCompat.Builder(context, MAI_CAI_ASSISTANT_CHANNEL_ID)
+        val notification: Notification = NotificationCompat.Builder(context, ZAI_SHOU_CHANNEL_ID)
             .setContentTitle("持续抢购中")
             .setContentText("请勿关闭")
             .setSmallIcon(R.mipmap.ic_launcher)

@@ -33,8 +33,9 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class MaiCaiAssistantService : AccessibilityService() {
+class ZaishouService : AccessibilityService() {
 
+    private val mServiceScope = CoroutineScope(Dispatchers.Main + Job())
     private val mTaskScope = CoroutineScope(Dispatchers.Main + Job())
     private var mTaskJob: Job? = null
 
@@ -159,7 +160,7 @@ class MaiCaiAssistantService : AccessibilityService() {
             }
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 LogUtils.v("TYPE_WINDOW_STATE_CHANGED - %s - %s", event, source)
-                mTaskScope.launch {
+                mServiceScope.launch {
                     if (ActivityUtils.isActivityExists(pName, cName)) {
                         mCurPackageName = pName
                         mCurActivityName = cName
@@ -309,7 +310,7 @@ class MaiCaiAssistantService : AccessibilityService() {
         mTaskJobLaunchTime.set(System.currentTimeMillis())
         mTaskJobLaunchLog.clear()
 
-        mTaskScope.launch(Dispatchers.Main) {
+        mServiceScope.launch(Dispatchers.Main) {
             mWinDashBoardBinding.btnSnapUp.tag = true
             mWinDashBoardBinding.btnSnapUp.setImageResource(R.drawable.baseline_stop_24)
             setWinMessageView(true)
@@ -378,7 +379,7 @@ class MaiCaiAssistantService : AccessibilityService() {
                     }
 
                     val handleResult =
-                        NodeInfoUtils.stepHandle(this@MaiCaiAssistantService, rootInActiveWindow, step.handle)
+                        NodeInfoUtils.stepHandle(this@ZaishouService, rootInActiveWindow, step.handle)
                     LogUtils.v("steps - $stepName - 执行结果 - $handleResult")
 
                     //步骤失败返回
@@ -423,7 +424,7 @@ class MaiCaiAssistantService : AccessibilityService() {
     }
 
     private fun cancelSolution() {
-        mTaskScope.launch(Dispatchers.Main) {
+        mServiceScope.launch(Dispatchers.Main) {
             mWinDashBoardBinding.btnSnapUp.tag = false
             mWinDashBoardBinding.btnSnapUp.setImageResource(R.drawable.baseline_play_arrow_24)
             setWinMessageView(false)

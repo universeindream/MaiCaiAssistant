@@ -1,6 +1,6 @@
 package com.univerindream.maicaiassistant
 
-const val MAI_CAI_ASSISTANT_CHANNEL_ID = "MaiCaiAssistant_fixed"
+const val ZAI_SHOU_CHANNEL_ID = "MaiCaiAssistant_fixed"
 
 /**
  * LiveEventBus

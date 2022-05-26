@@ -31,7 +31,7 @@
         </activity>
 
         <service
-            android:name="com.univerindream.maicaiassistant.service.MaiCaiAssistantService"
+            android:name="com.univerindream.maicaiassistant.service.ZaishouService"
             android:exported="true"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
